@@ -1,0 +1,11 @@
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\bin\Debug\net9.0\BistroStarsHollow.Domain.deps.json
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\bin\Debug\net9.0\BistroStarsHollow.Domain.dll
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\bin\Debug\net9.0\BistroStarsHollow.Domain.pdb
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\obj\Debug\net9.0\BistroStarsHollow.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\obj\Debug\net9.0\BistroStarsHollow.Domain.AssemblyInfoInputs.cache
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\obj\Debug\net9.0\BistroStarsHollow.Domain.AssemblyInfo.cs
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\obj\Debug\net9.0\BistroStarsHollow.Domain.csproj.CoreCompileInputs.cache
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\obj\Debug\net9.0\BistroStarsHollow.Domain.dll
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\obj\Debug\net9.0\refint\BistroStarsHollow.Domain.dll
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\obj\Debug\net9.0\BistroStarsHollow.Domain.pdb
+C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Domain\obj\Debug\net9.0\ref\BistroStarsHollow.Domain.dll

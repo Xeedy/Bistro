@@ -1,0 +1,122 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Public.Pages.Beers.BreweryDetailModel
+@{
+    ViewData["Title"] = Model.Brewery?.Name ?? "Detail pivovaru";
+}
+
+@if (Model.Brewery == null)
+{
+    <section class="py-5">
+        <div class="container">
+            <div class="empty-state">
+                <i class="bi bi-building"></i>
+                <p>Pivovar nebyl nalezen.</p>
+                <a asp-page="/Beers/Breweries" class="btn btn-outline-primary mt-2">
+                    <i class="bi bi-arrow-left me-1"></i> Zpět na pivovary
+                </a>
+            </div>
+        </div>
+    </section>
+    return;
+}
+
+<!-- Breadcrumb -->
+<section class="py-3 section-light">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0 small">
+                <li class="breadcrumb-item"><a asp-page="/Index" class="text-decoration-none">Domů</a></li>
+                <li class="breadcrumb-item"><a asp-page="/Beers/Breweries" class="text-decoration-none">Pivovary</a></li>
+                <li class="breadcrumb-item active" aria-current="page">@Model.Brewery.Name</li>
+            </ol>
+        </nav>
+    </div>
+</section>
+
+<!-- Brewery Detail -->
+<section class="py-5 section-white">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Logo -->
+            <div class="col-lg-4">
+                <div class="brewery-detail-logo">
+                    @if (!string.IsNullOrEmpty(Model.Brewery.LogoImagePath))
+                    {
+                        <img src="@Model.Brewery.LogoImagePath" alt="@Model.Brewery.Name" />
+                    }
+                    else
+                    {
+                        <i class="bi bi-building"></i>
+                    }
+                </div>
+            </div>
+
+            <!-- Info -->
+            <div class="col-lg-8">
+                <h1 class="section-title">@Model.Brewery.Name</h1>
+                <hr class="section-divider" />
+
+                @if (!string.IsNullOrEmpty(Model.Brewery.Description))
+                {
+                    <p style="line-height: 1.8;">@Model.Brewery.Description</p>
+                }
+
+                <div class="d-flex gap-4 mt-4 flex-wrap">
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="bistro-card-icon" style="width: 40px; height: 40px; font-size: 1rem;">
+                            <i class="bi bi-cup-fill"></i>
+                        </div>
+                        <div>
+                            <div class="small text-muted">Počet piv</div>
+                            <div class="fw-bold">@Model.Brewery.BeerCount</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Beers from this brewery -->
+@if (Model.Brewery.Beers.Any())
+{
+    <section class="py-5 section-light">
+        <div class="container">
+            <h2 class="section-title section-title-center mb-4">Piva z tohoto pivovaru</h2>
+
+            <div class="row g-4 justify-content-center">
+                @foreach (var beer in Model.Brewery.Beers.OrderBy(b => b.SortOrder))
+                {
+                    <div class="col-sm-6 col-lg-4">
+                        <div class="beer-card">
+                            <div class="beer-card-img @(beer.Type == BistroStarsHollow.Domain.Enums.BeerType.Bottled ? "beer-card-img-bottled" : "")">
+                                <i class="bi @(beer.Type == BistroStarsHollow.Domain.Enums.BeerType.Bottled ? "bi-box-seam" : "bi-cup-fill")"></i>
+                            </div>
+                            <div class="beer-card-body">
+                                <h5 class="beer-card-name">@beer.Name</h5>
+                                @if (!string.IsNullOrEmpty(beer.Style))
+                                {
+                                    <span class="beer-card-style">@beer.Style</span>
+                                }
+                                @if (!string.IsNullOrEmpty(beer.Description))
+                                {
+                                    <p class="beer-card-desc">@beer.Description</p>
+                                }
+                                <div class="beer-card-price">@beer.PriceText</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Back link -->
+<section class="py-4 section-white">
+    <div class="container text-center">
+        <a asp-page="/Beers/Breweries" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left me-1"></i> Zpět na všechny pivovary
+        </a>
+    </div>
+</section>

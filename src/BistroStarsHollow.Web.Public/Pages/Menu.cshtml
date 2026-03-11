@@ -1,0 +1,66 @@
+@page
+@model BistroStarsHollow.Web.Public.Pages.MenuModel
+@{
+    ViewData["Title"] = "Menu";
+}
+
+<!-- Page Header -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h1 class="section-title section-title-center">Menu</h1>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center">
+            Naše nabídka jídel, nápojů a dalších specialit.
+        </p>
+    </div>
+</section>
+
+<!-- Menu Content -->
+<section class="py-5 section-white">
+    <div class="container">
+
+        <!-- Jídelní & Nápojový lístek (two columns) -->
+        <div class="row g-5 mb-5">
+            <div class="col-lg-6" id="jidelni-listek">
+                <div class="menu-card">
+                    <partial name="_MenuSection" model='new MenuSectionViewModel { Title = "Jídelní lístek", Icon = "bi-egg-fried", Items = Model.FoodItems }' />
+                </div>
+            </div>
+            <div class="col-lg-6" id="napojovy-listek">
+                <div class="menu-card">
+                    <partial name="_MenuSection" model='new MenuSectionViewModel { Title = "Nápojový lístek", Icon = "bi-cup-straw", Items = Model.DrinkItems }' />
+                </div>
+            </div>
+        </div>
+
+        <!-- Vodní dýmky & Čaje (two columns) -->
+        <div class="row g-5 mb-5">
+            <div class="col-lg-6" id="vodni-dymky">
+                <div class="menu-card">
+                    <partial name="_MenuSection" model='new MenuSectionViewModel { Title = "Vodní dýmky", Icon = "bi-cloud", Items = Model.WaterPipeItems }' />
+                </div>
+            </div>
+            <div class="col-lg-6" id="caje">
+                <div class="menu-card">
+                    <partial name="_MenuSection" model='new MenuSectionViewModel { Title = "Čaje", Icon = "bi-cup-hot", Items = Model.TeaItems }' />
+                </div>
+            </div>
+        </div>
+
+        <!-- Prodej (centered single column) -->
+        <div class="row justify-content-center" id="prodej">
+            <div class="col-lg-8">
+                <div class="menu-card">
+                    <partial name="_MenuSection" model='new MenuSectionViewModel { Title = "Prodej", Icon = "bi-bag", Items = Model.ProductItems, Subtitle = "Vybrané produkty si můžete zakoupit i s sebou." }' />
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center mt-5">
+            <p class="text-muted small">
+                <i class="bi bi-info-circle me-1"></i>
+                Menu se načítá z databáze &ndash; toto jsou demo data. Ceny a položky se mohou měnit.
+            </p>
+        </div>
+    </div>
+</section>

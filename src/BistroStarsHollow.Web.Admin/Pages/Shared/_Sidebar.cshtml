@@ -1,0 +1,164 @@
+@using BistroStarsHollow.Domain.Constants
+@{
+    var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? "";
+}
+
+<aside class="app-sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <a href="/" class="sidebar-brand">
+            <span class="sidebar-brand-text">Bistro SH</span>
+        </a>
+        <button class="btn-sidebar-close d-lg-none" id="sidebarClose" aria-label="Zavřít menu">
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+
+    <nav class="sidebar-nav">
+        <div class="sidebar-section">
+            <span class="sidebar-section-title">Hlavní</span>
+            <ul class="sidebar-menu">
+                <li>
+                    <a class="sidebar-link @(currentPage.Contains("Dashboard") ? "active" : "")" asp-page="/Dashboard/Index">
+                        <i class="bi bi-grid-1x2"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        @if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Superadmin))
+        {
+            <div class="sidebar-section">
+                <span class="sidebar-section-title">Správa obsahu</span>
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-card-list"></i>
+                            <span>Menu</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-cup-straw"></i>
+                            <span>Čepovaná piva</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-box-seam"></i>
+                            <span>Lahvová piva</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-building"></i>
+                            <span>Pivovary</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-images"></i>
+                            <span>Galerie</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-megaphone"></i>
+                            <span>Akce</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+
+        <div class="sidebar-section">
+            <span class="sidebar-section-title">Provoz</span>
+            <ul class="sidebar-menu">
+                <li>
+                    <a class="sidebar-link" href="#">
+                        <i class="bi bi-calendar3"></i>
+                        <span>Směny</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" href="#">
+                        <i class="bi bi-bookmark-check"></i>
+                        <span>Rezervace</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="sidebar-link" href="#">
+                        <i class="bi bi-cash-stack"></i>
+                        <span>Uzávěrka</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        @if (User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Superadmin))
+        {
+            <div class="sidebar-section">
+                <span class="sidebar-section-title">Administrace</span>
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-people"></i>
+                            <span>Uživatelé</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-clock-history"></i>
+                            <span>Otevírací doba</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-journal-text"></i>
+                            <span>Audit log</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+
+        @if (User.IsInRole(Roles.Superadmin))
+        {
+            <div class="sidebar-section">
+                <span class="sidebar-section-title">Systém</span>
+                <ul class="sidebar-menu">
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-shield-lock"></i>
+                            <span>Systémový log</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="sidebar-link" href="#">
+                            <i class="bi bi-bar-chart"></i>
+                            <span>Analytika</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        }
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="sidebar-user">
+            <div class="sidebar-user-avatar">
+                <i class="bi bi-person-circle"></i>
+            </div>
+            <div class="sidebar-user-info">
+                <span class="sidebar-user-name">@User.Identity?.Name</span>
+                <span class="sidebar-user-role">
+                    @if (User.IsInRole(Roles.Superadmin)) { <text>Superadmin</text> }
+                    else if (User.IsInRole(Roles.Admin)) { <text>Administrátor</text> }
+                    else if (User.IsInRole(Roles.Employee)) { <text>Zaměstnanec</text> }
+                </span>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>

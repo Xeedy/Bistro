@@ -1,0 +1,71 @@
+Bistro dokumentace
+Základ informační stránky:
+Stránka by měla mít roboto font. Stránka by měla používat barvy do modré (bude se dat změnit a změny se provedou globálně. To stejné s fontem)
+Header a footer:
+Header by měl obsahovat logo zatím psané vlevo a potom menu, které bude mít stránky jako piva, ve kterém bude rozklikávací nabídka s pivy co jsou v lednici, piva co jsou na čepu, naše oblíbené pivovary atd. pak tam budou také tlačítka s lokalizací takže anglicky a česky (řešit přes resx soubory). Dále by měl obsahovat tlačítko na fotogalerii, kde nás najdete a taky rezervační systém na stoly.
+Footer by měl obsahovat opět logo, nějaký copyright a také dále Tlačítko na přihlášení (toto tlačítko bude vést na app.bistro.cz jako přihlášení do administrace). Dále tam budou časy otevírací doby (načítáno z databáze bude možno v administraci změnit podle potřeby) A potom další věci jako cookies, privacy policy atd. Dále kontakt, telefon, email atd na šéfa (doplním sám klidně udělej nějaké demo)
+Hlavní stránka
+Na hlavní stránce by měl být slider s obrázky načítané z databáze. Také by tam měl být nějaký na slideru proklik na další stránky. Na hlavní stránce by měl být nějaký text o bistro stars hollow co je ve Frenštátě pod Radhoštěm. Jako pivní speciály a zajímavá kuchyně jako palačinky slané sladké, vodní dýmky atd.
+Dále by tam měla být nějaká část s tím kdo dneska čepuje (někdy tam jsou dva lidi ale většinou jeden tak to udělej nějak pěkně třeba hlavního jako velkou fotku a druhého kdo bude v kuchyni jako menší nějak s tím). Dále tam bude seznam piv co se ten den čepujou (zase načítáno z databáze podle toho jaký je den).
+Dále potom nějaké prokliky třeba hodnocení z google atd na podnik bistro stars hollow frenštát pod radhoštěm
+Nějaká menší slide show galerie s proklikem na galerii (přibude do headeru)
+Jako další tam bude například akce (to by mohlo být nahoře a zase modifikovatelné z administrace. Můžou být dny kdy nic není)
+Jako další by tam měl být nějaký infinite kolotoč pivovarů co podporujeme (obrázky 1x1 v jakékoliv velikosti bajtové, ale velikostně vizuálně stejné)
+Fotogalerie stránka:
+Klasická stránka na prohlížení fotek z podniku, budou tam nějaké prostě fotky různě velké nějaké rádoby album asi toho nebude hodně
+Kde nás najdete / Kontakt stránka:
+Tady bych rád udělal že tam bude mapa s lokací podniku, adresa, majitel, telefon, email atd, klidně s nějakým proklikem nebo tak něco Prostě klasická stránka s kontaktem
+O nás:
+Stránka o nás bude prostě informace kdy jsme začali, co děláme, proč to děláme, co a jak atd. Zatím stačí jenom nějaké demo
+Menu:
+Stránka menu bude obsahovat seznam všech položek co jsou zrovna k mání. Položky jsou opět načítány z databáze. Položky budou prostě zarovnané jako kdyby na A4 papír do dvou sloupců a vždycky položka bude mít název ve kterém toho bude někdy dost a potom odsazení a na konci sloupce na pravé straně cenu (mohou být přidány položky, odebrány položky, změněn název, cena atd.)
+Budou dvě. Jídelní lístek, nápojový lístek takto udělány.
+Na menu také bude ještě nabídka vodních dýmek, takže bych u menu v headeru udělal možná rozbalovací nabídku kde bude proklik na nápoják, jídelák, vodní dýmky, nebo čaje.
+Vodní dýmky a čaje budou mít jenom jeden sloupec ale zase stejně designově nastavený. 
+Dále v menu bude taky v rozbalovací nabídce proklik na prodej a tam budou už jenom prostě kusové položky.
+!NEJEDNÁ SE O ESHOP, JE TO POUZE INFORMATIVNÍ!
+Stránka rezervace:
+Tady tato stránka bude trošku zajímavá, protože tam bude rezervační systém. Byl bych rád, kdyby v pravo byl nějaký model stolů nějaký jednoduchý a vlevo kalendář. Bude to interaktivní a uživatelé si budou moci na nevybarvené stoly kliknout a udělat rezervaci. Když na to kliknou, vyskočí jim nějaké okno nebo tak s tím aby tam napsali telefon a jméno. Bude ale potřeba to nějak podchytit proti spamování rezervací. Jenom nevím jak to udělat, kdyby chtěli rezervaci zrušit. To je zatím nepromyšlený systém a netuším jak na něj, ale chci jej bez přihlášení a chci aby to fungovalo že si mohou prostě zarezervovat stůl bez přihlášení. Zase ale aby to bylo zabezpečené a nemohlo být nějak zneužito.  Nechám zbytek na tobě.
+Při zakládání rezervace je potřeba přijímení, telefon, vybraný stůl a od jaké hodiny (bude tam na vyplnění čas, ale musí být v době v otevíracích hodinách. Nemůže si udělat rezervaci na 10, když není otevřeno)
+
+Administrativní aplikace:
+V administrativní aplikaci už je to trošku složitější. Potřebuji aby když se uživatel přihlásí ze stránky informační do administrace tak potřebuji role. Role budou stylem zaměstnanec, administrátor, superadministrátor.
+Role:
+Zaměstnanec – tato role bude mít právo se podívat na kalendář směn, tam se zepsat, přepsat někoho jiného s warningem, nebo odepsat. Dále bude mít možnost podívat se na rezervace které jsou na daný den. Měl by dostávat i nějaké upozornění na novou rezervaci někde nahoře jako oznámení. Dále by měl vidět všechny nadcházející směny atd někde na hlavní stránce.
+Administrátor – má všechny práva jako zaměstnanec a plus k tomu může měnit položky co jsou na informativní stránce. Nahrávat obrázky do galerie, které budou nahrány do databáze. Poté bude mít možnost měnit další věci jako přidávat uživatele, odebírat uživatele, měnit role. Dále uvidí nějak administrativu jako kdo se kdy zapsal a čas, kdo se kdy odepsal. Prostě takový log akcí co se stalo. Třeba že si někdo zarezervoval místo atd. Dále bude moci vytvořit akci, kde nahraje obrázek atd. Dále uvidí seznam piv v lednici a ten bude trošku komplikovanější, popíšu přímo na stránce.
+Superadministrátor – inherituje všechny předchozí role a jejich práva, ale uvidí i další obsah co už nepotřebuje nikdo jiný vidět jako stav stránky, pokročilejší logování, spuštění testů, prostě pro mě jakožto pro programátora. Ostatní to nemusí zajímat tyhle high tech srandy.)
+
+Design:
+Header:
+V headeru by mělo být jenom vpravo kdo je přihlášen jako jméno a možnost se odhlásit nebo zobrazit profil. Dále by tam opět měla být lokalizace
+Sidebar:
+Veškerá funkcionalita se odehrává okolo side baru, kde na základě role uvidí uživatel všechny sekce co má vidět. Samozřejmě s proklikem na danou stránku.
+Footer:
+Asi nemusí být. Jenom možná nějaký copyright atd.
+Stránky:
+Hlavní stránka(Všechny role): 
+by měla obsahovat nějaký rychlý navigátor, datumy nadcházejících směn, nové notifikace, upozornění třeba že na moji směnu udělal šéf nějakou akci. Rezervace, statistiky atd. Prostě klasická hlavní stránka pro všechny podle role.
+Kalendář (všechny role):
+Jedná se o interaktivní kalendář, kde se lidé budou moci zapsat na směnu a uvidí svoji přezdívku. Udělal bych to normálně jako okénka a měl by být generovaný od pondělí do neděle po měsících s proklikem šipkou na další měsíc. Dále by tam mělo být zapsat se na směnu, odepsat se ze směny atd. Prostě mohu se zapsat, odepsat a nebo někoho přepsat, ale tam mi to hodí warning a to stejné u odepsání atd. Klidně pop up okno. Dny které jsou už v minulosti nebude možné zapsat a budou šedé a bude tam klidně kdo na té směně pracoval, nechám to na tobě, kdyžtak poladíme.
+Čep (všechny role):
+Tady bude jednoduchý seznam všech aktivně čepovaných piv. Tady zase bude aktivní neaktivní jako u láhvových piv akorát obrázek bude nahrán z tabulky pivovarů. Prostě třeba bernard 11 a logo Bernarda a cena (můžou měnit všechny role i přidávat a odebírat pokud třeba majitel zapomene). Máme čtyř pípu, ale může být speciálně aktivních více piv, takže třeba 5 a více, potřebuji hlavně aby to hodilo nějaké upozornění, že pozor dáváte aktivních více jak 4 piva, ale jde to. Měla by tam být i filtrace a nějak ten aktivační systém, který bude funkční na to aby se prostě piva co nejsou aktivní znovu nemusely psát ale aby zůstaly neaktivní a když zase někdy budou na čepu, tak je prostě jenom aktivujeme a hned se to propíše do nějaké tabulky co si potom vezme informace a nějak pěkně je zobrazí s názvem, pivovarem a cenou. Je zase možno real time vyhledávat podle ceny, názvu, obsahu názvu, pivovaru atd.
+Rezervace (všechny role):
+Jsou úzce spojeny se směnou a datem. Prostě pokud někdo udělá rezervaci na moji směnu, měl bych to vidět. Pokud tam ale nejsem napsaný, tak mě to nezajímá, chápeme se. Takže uvidím všechny rezervace třeba na nějaké dny a podívat se na jaké stoly, jaké jméno, kolik lidí, telefon a od jaké hodiny.  Pouze role admin a superadmin uvidí všechny rezervace, aby nad tím měli kontrolu.
+Uživatelé(role admin a superadmin):
+Bude zde list uživatelů zaregistrovaných. Admin a superadmin bude moci měnit role uživatelů, odebrat uživatele, přidat uživatele atd. 
+Menu(admin superadmin):
+Zde se bude moci měnit nábidník. V podstatě položky co jsou v menu. Mělo by se tady dát vyhledávat položky na základě obsahu v názvu, ceny a klasifikace (klasifikace je třeba studené nápoje, pivo, jídla atd. prostě kategorie produktů). Bude možno taky vytisknout. Ale to už je spíše bonus, který je třeba pořešit v budoucnu. Vyhledávání by mělo být real time i když je to z databáze, takže prostě napíšu L a ono mi to najde všechny položky co obashují L. (Opatrně u ceny, protože to může být cena jako číselná, nebo tam může být text. Standartně to bude cena, ale může se ve výjimečných situacích stát, že to bude text, takže to nějak udělat aby to fungovalo i s databází). Prostě crud menu produktů.
+To stejné bude u vodních dýmek, čaju jednonálevových a vícenálevových, potom položky na prodej (třeba tabáky, korunky, příslušenství, celé dýmky no chápeš drive)
+Láhvová piva(admin, superadmin):
+Tady bude toršku oříšek. Potřebuji aby tady byl seznam i s fotkami daných piv. Tyto piva budou moci být aktivní, nebo neaktivní. Nechci aby šéf musel pořád psát dokola piva pokud dojde, pak zase je a pak zase dojde. Takže jednorrázově se tam nasázejí piva a bu´se dají jako aktivní, nebo jako neaktivní.
+Piva by měly mít fotku, cenu a také pivovar. Potřebuji ale ještě nějakou záložku na pivovary. Ony by měly mít fotku, která se dá nahrát, změnit atd (propojeno taky s kolotočem na hlavní stránce jako pivovary). Tyto pivovary potom bude možno rozkliknout na nabídku čepovaných piv a láhvových piv pokud nějaké mají propojené. Prostě pivovar, něco o pivovaru, fotka (formáty jpg, jpeg, webp, png atd.) 
+Piva budou zase vyhledávatelná podle ceny (zde je cena už opravdu v korunách takže číselná hodnota) název, pivní styl, importovanou fotku pivovaru a něco o pivovaru, cenu, je možný i popis ale není vyžadován takže pokud nějaký bude, zobrazí se. Pokud žádný nemá, nezobrazí se na informační stránce. Také bude možnost se prokliknou na náhled, jak to bude vypadat před uložením daného piva, jako kdyby to bylo na té informativní stránce.
+Log (admin, superadmin):
+Toto slouží pouze jako kontrolní věc. Potřebujeme aby aplikace logovala do nějaké tabulky všechny záznamy o akcích, třeba založena nová rezervace, popis události, uživatel bla bla si zapsal směnu na toto a toto v tolik a tolik. V podstatě monitoring všech akcí na stránce takže nějaký seznam, popis události, čas události. Abychom měli přehled. 
+Log ultra (Superadmin):
+Tady tento log bude trošku rozšířenější a bude sloužit jako funkcionalita pro korektní správu stránky. Budou se zde zobrazovat zprávy stejně jako u logu admina, ale i o stránce jako takové co běžný uživatel bez znalosti programování neví. Bude tam třeba jestli se někde vyskytly errory, návštěvnost stránky, nebo možná si vymýšlím ale prostě určitě tam bude spousta věcí, které je potřeba vidět abych mohl stránku posouvat dál. 
+Uzávěrka (všechny role):
+Pokud uživatel je daný den na směně, musí na konci otevírací doby (nebo po ní, může skončit později) udělat uzávěrku. Prostě jenom vyplní pár čísel. Bude tam jenom na vyplnění kolik bylo zaplaceno kartou, kolik bylo zaplaceno hotově, kolik byl celkově (ale to se dopočítá samo real time ze zadaných hodnot, nebo se dá změnit. Pokud se změní jinak než automatickým výpočtem, tak tam přbude poznámka jestli plus nebo mínus, může být něco pod kasou, tak tam napsat poznámku). 
+
+CORE:
+Stránka by měla být dostupná na všech zařízeních a pěkně zobrazená s použitím bootstrapu. Použije se razor web pages, sql databáze, jwt, cookies, lokalizace přes resx, čistý kód, stored procedure kde je třeba, zabezpečená a škálovatelná stránka.

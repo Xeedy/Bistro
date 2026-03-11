@@ -1,0 +1,88 @@
+@page
+@model BistroStarsHollow.Web.Public.Pages.Beers.BreweriesModel
+@{
+    ViewData["Title"] = "Oblíbené pivovary";
+}
+
+<!-- Page Header -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h1 class="section-title section-title-center">Oblíbené pivovary</h1>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center">
+            Spolupracujeme s českými i zahraničními pivovary, které sdílejí naši vášeň pro kvalitní pivo.
+        </p>
+    </div>
+</section>
+
+<!-- Breweries Grid -->
+<section class="py-5 section-white">
+    <div class="container">
+        @if (Model.Breweries.Any())
+        {
+            <div class="row g-4">
+                @foreach (var brewery in Model.Breweries.OrderBy(b => b.SortOrder))
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="brewery-card">
+                            <div class="brewery-card-logo">
+                                @if (!string.IsNullOrEmpty(brewery.LogoImagePath))
+                                {
+                                    <img src="@brewery.LogoImagePath" alt="@brewery.Name" />
+                                }
+                                else
+                                {
+                                    <i class="bi bi-building"></i>
+                                }
+                            </div>
+                            <div class="brewery-card-body">
+                                <h5 class="brewery-card-name">@brewery.Name</h5>
+                                @if (!string.IsNullOrEmpty(brewery.Description))
+                                {
+                                    <p class="brewery-card-desc">@brewery.Description</p>
+                                }
+                                <div class="d-flex justify-content-between align-items-center mt-auto">
+                                    <span class="brewery-card-count">
+                                        <i class="bi bi-cup-fill me-1"></i>@brewery.BeerCount piv
+                                    </span>
+                                    <a asp-page="/Beers/BreweryDetail" asp-route-id="@brewery.Id" class="btn btn-sm btn-outline-primary">
+                                        Detail <i class="bi bi-arrow-right ms-1"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="bi bi-building"></i>
+                <p>Žádné pivovary k zobrazení.</p>
+            </div>
+        }
+
+        <div class="text-center mt-5">
+            <p class="text-muted small">
+                <i class="bi bi-info-circle me-1"></i>
+                Pivovary se načítají z databáze &ndash; toto jsou demo data.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Other Beer Sections -->
+<section class="py-5 section-light">
+    <div class="container text-center">
+        <h3 class="section-title mb-4">Naše pivní nabídka</h3>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a asp-page="/Beers/DraftBeers" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-cup-fill me-1"></i> Piva na čepu
+            </a>
+            <a asp-page="/Beers/BottledBeers" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-box-seam me-1"></i> Piva v lednici
+            </a>
+        </div>
+    </div>
+</section>

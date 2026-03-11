@@ -1,0 +1,47 @@
+@page
+@model BistroStarsHollow.Web.Public.Pages.GalleryModel
+@{
+    ViewData["Title"] = "Fotogalerie";
+}
+
+<!-- Page Header -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h1 class="section-title section-title-center">Fotogalerie</h1>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center">
+            Nahlédněte do Bistro Stars Hollow &ndash; náš interiér, jídlo a atmosféra.
+        </p>
+    </div>
+</section>
+
+<!-- Gallery Grid -->
+<section class="py-5 section-white">
+    <div class="container">
+        @if (Model.Images.Any())
+        {
+            <div class="gallery-grid">
+                @foreach (var img in Model.Images)
+                {
+                    <div class="gallery-item" title="@img.AltText">
+                        <i class="bi bi-image"></i>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="bi bi-images"></i>
+                <p>Galerie je zatím prázdná.</p>
+            </div>
+        }
+
+        <div class="text-center mt-5">
+            <p class="text-muted small">
+                <i class="bi bi-info-circle me-1"></i>
+                Fotografie se načítají z databáze. Lightbox bude implementován v dalším sprintu.
+            </p>
+        </div>
+    </div>
+</section>

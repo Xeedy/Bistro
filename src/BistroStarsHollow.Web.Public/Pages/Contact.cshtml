@@ -1,0 +1,121 @@
+@page
+@model BistroStarsHollow.Web.Public.Pages.ContactModel
+@{
+    ViewData["Title"] = "Kde nás najdete";
+}
+
+<!-- Page Header -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h1 class="section-title section-title-center">Kde nás najdete</h1>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center">
+            Navštivte nás ve Frenštátě pod Radhoštěm. Rádi vás uvidíme!
+        </p>
+    </div>
+</section>
+
+<!-- Map & Contact -->
+<section class="py-5 section-white">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Map -->
+            <div class="col-lg-7">
+                <div class="map-placeholder">
+                    <i class="bi bi-geo-alt"></i>
+                    <span class="fw-medium">Mapa se zobrazí po konfiguraci</span>
+                    <span class="small text-muted">Google Maps / Mapy.cz embed</span>
+                </div>
+            </div>
+
+            <!-- Contact Info -->
+            <div class="col-lg-5">
+                <h3 class="section-title mb-4">Kontaktní údaje</h3>
+
+                <div class="contact-info-item">
+                    <div class="contact-info-icon">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <div class="contact-info-text">
+                        <h6>Adresa</h6>
+                        <p>Frenštát pod Radhoštěm</p>
+                    </div>
+                </div>
+
+                <div class="contact-info-item">
+                    <div class="contact-info-icon">
+                        <i class="bi bi-telephone-fill"></i>
+                    </div>
+                    <div class="contact-info-text">
+                        <h6>Telefon</h6>
+                        <p><a href="tel:+420000000000">+420 000 000 000</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-info-item">
+                    <div class="contact-info-icon">
+                        <i class="bi bi-envelope-fill"></i>
+                    </div>
+                    <div class="contact-info-text">
+                        <h6>E-mail</h6>
+                        <p><a href="mailto:info@bistrosh.cz">info@bistrosh.cz</a></p>
+                    </div>
+                </div>
+
+                <div class="contact-info-item">
+                    <div class="contact-info-icon">
+                        <i class="bi bi-clock-fill"></i>
+                    </div>
+                    <div class="contact-info-text">
+                        <h6>Otevírací doba</h6>
+                        @foreach (var oh in Model.OpeningHoursList)
+                        {
+                            <p class="mb-0">
+                                @OpeningHoursHelper.GetShortDayName(oh.DayOfWeek):
+                                @if (oh.IsClosed)
+                                {
+                                    <span class="text-muted fst-italic">Zavřeno</span>
+                                }
+                                else
+                                {
+                                    @($"{oh.OpenTime:hh\\:mm} - {oh.CloseTime:hh\\:mm}")
+                                }
+                            </p>
+                        }
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <!-- CTA Buttons -->
+                <div class="d-flex flex-wrap gap-2">
+                    <a href="tel:+420000000000" class="btn btn-primary">
+                        <i class="bi bi-telephone me-1"></i> Zavolat
+                    </a>
+                    <a href="mailto:info@bistrosh.cz" class="btn btn-outline-primary">
+                        <i class="bi bi-envelope me-1"></i> Napsat e-mail
+                    </a>
+                    <a href="#" class="btn btn-outline-primary">
+                        <i class="bi bi-cursor me-1"></i> Navigovat
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Social & CTA -->
+<section class="py-5 section-light">
+    <div class="container text-center">
+        <h3 class="section-title mb-3">Sledujte nás</h3>
+        <p class="text-muted mb-4">Buďte v obraze o novinkách, akcích a speciální nabídce.</p>
+        <div class="d-flex gap-3 justify-content-center">
+            <a href="#" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-facebook me-1"></i> Facebook
+            </a>
+            <a href="#" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-instagram me-1"></i> Instagram
+            </a>
+        </div>
+    </div>
+</section>

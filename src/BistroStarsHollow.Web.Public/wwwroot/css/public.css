@@ -1,0 +1,1128 @@
+/* ============================================
+   Bistro Stars Hollow Public - Design System
+   ============================================ */
+
+/* --- CSS Variables --- */
+:root {
+    --bistro-primary: #2563eb;
+    --bistro-primary-dark: #1d4ed8;
+    --bistro-primary-light: #3b82f6;
+    --bistro-primary-rgb: 37, 99, 235;
+    --bistro-dark: #1e293b;
+    --bistro-darker: #0f172a;
+    --bistro-text: #334155;
+    --bistro-muted: #64748b;
+    --bistro-light: #f1f5f9;
+    --bistro-bg: #f8fafc;
+    --bistro-border: #e2e8f0;
+    --bistro-gold: #f59e0b;
+    --bistro-gold-dark: #d97706;
+    --bistro-success: #10b981;
+    --bistro-radius: 0.5rem;
+    --bistro-radius-lg: 0.75rem;
+    --bistro-shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
+    --bistro-shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.06);
+    --bistro-shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1), 0 6px 10px rgba(0, 0, 0, 0.08);
+    --bistro-transition: 0.2s ease;
+}
+
+/* --- Base --- */
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    color: var(--bistro-text);
+    margin: 0;
+    background: #ffffff;
+}
+
+/* --- Typography --- */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--bistro-dark);
+    font-weight: 700;
+}
+
+.section-title {
+    font-weight: 700;
+    color: var(--bistro-dark);
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.section-title-center {
+    text-align: center;
+}
+
+.section-subtitle {
+    color: var(--bistro-muted);
+    font-size: 1.1rem;
+    max-width: 600px;
+}
+
+.section-subtitle-center {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.section-divider {
+    width: 60px;
+    height: 3px;
+    background: var(--bistro-primary);
+    border: none;
+    margin: 1rem 0 1.5rem;
+}
+
+.section-divider-center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text-gold {
+    color: var(--bistro-gold) !important;
+}
+
+/* ============================================
+   Header / Navigation
+   ============================================ */
+.site-header {
+    background: var(--bistro-dark);
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+}
+
+.site-header .navbar {
+    padding: 0;
+}
+
+.site-header .navbar-brand {
+    padding: 0.75rem 0;
+}
+
+.brand-text {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--bistro-primary-light);
+    letter-spacing: -0.01em;
+}
+
+.site-header .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 1rem 0.85rem !important;
+    transition: color var(--bistro-transition), background var(--bistro-transition);
+    position: relative;
+}
+
+.site-header .nav-link:hover,
+.site-header .nav-link.active {
+    color: #ffffff;
+}
+
+.site-header .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0.85rem;
+    right: 0.85rem;
+    height: 2px;
+    background: var(--bistro-primary-light);
+}
+
+/* Dropdown styling */
+.site-header .dropdown-menu {
+    background: var(--bistro-dark);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--bistro-radius);
+    padding: 0.5rem 0;
+    margin-top: 0 !important;
+    box-shadow: var(--bistro-shadow-lg);
+    min-width: 200px;
+}
+
+.site-header .dropdown-item {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    transition: background var(--bistro-transition), color var(--bistro-transition);
+}
+
+.site-header .dropdown-item:hover,
+.site-header .dropdown-item:focus {
+    background: rgba(255, 255, 255, 0.1);
+    color: #ffffff;
+}
+
+.site-header .dropdown-item i {
+    width: 20px;
+    text-align: center;
+}
+
+/* Language switch */
+.lang-switch {
+    display: flex;
+    gap: 2px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 6px;
+    padding: 2px;
+}
+
+.lang-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 26px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0.5);
+    transition: all var(--bistro-transition);
+}
+
+.lang-pill:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.lang-pill.active {
+    background: var(--bistro-primary);
+    color: white;
+}
+
+/* ============================================
+   Hero Section
+   ============================================ */
+.hero-section {
+    background: linear-gradient(135deg, var(--bistro-dark) 0%, var(--bistro-darker) 50%, #172554 100%);
+    min-height: 520px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(var(--bistro-primary-rgb), 0.15) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.hero-section::after {
+    content: '';
+    position: absolute;
+    bottom: -30%;
+    left: -10%;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(var(--bistro-primary-rgb), 0.1) 0%, transparent 70%);
+    border-radius: 50%;
+}
+
+.hero-overlay {
+    width: 100%;
+    padding: 4rem 0;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.8;
+    max-width: 550px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.hero-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 2rem;
+    font-weight: 600;
+    font-size: 1rem;
+    border-radius: var(--bistro-radius);
+    transition: transform var(--bistro-transition), box-shadow var(--bistro-transition);
+}
+
+.hero-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--bistro-primary-rgb), 0.4);
+}
+
+/* ============================================
+   Section Backgrounds
+   ============================================ */
+.section-light {
+    background: var(--bistro-bg);
+}
+
+.section-white {
+    background: #ffffff;
+}
+
+.section-dark {
+    background: var(--bistro-dark);
+    color: var(--bistro-light);
+}
+
+.section-dark .section-title {
+    color: var(--bistro-light);
+}
+
+.section-dark .section-subtitle {
+    color: rgba(255, 255, 255, 0.6);
+}
+
+/* ============================================
+   Cards
+   ============================================ */
+.bistro-card {
+    background: #ffffff;
+    border: 1px solid var(--bistro-border);
+    border-radius: var(--bistro-radius-lg);
+    box-shadow: var(--bistro-shadow);
+    transition: transform var(--bistro-transition), box-shadow var(--bistro-transition);
+    overflow: hidden;
+}
+
+.bistro-card:hover {
+    box-shadow: var(--bistro-shadow-md);
+    transform: translateY(-2px);
+}
+
+.bistro-card-body {
+    padding: 1.5rem;
+}
+
+.bistro-card-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: rgba(var(--bistro-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--bistro-primary);
+    margin-bottom: 1rem;
+}
+
+/* Beer on tap card */
+.tap-card {
+    background: #ffffff;
+    border: 1px solid var(--bistro-border);
+    border-radius: var(--bistro-radius-lg);
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--bistro-shadow);
+    transition: transform var(--bistro-transition), box-shadow var(--bistro-transition);
+}
+
+.tap-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--bistro-shadow-md);
+}
+
+.tap-card .tap-icon {
+    font-size: 2.5rem;
+    color: var(--bistro-gold);
+    margin-bottom: 0.75rem;
+}
+
+.tap-card .tap-name {
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--bistro-dark);
+    margin-bottom: 0.25rem;
+}
+
+.tap-card .tap-brewery {
+    color: var(--bistro-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.tap-card .tap-style {
+    display: inline-block;
+    background: rgba(var(--bistro-primary-rgb), 0.1);
+    color: var(--bistro-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 0.5rem;
+}
+
+.tap-card .tap-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--bistro-primary);
+}
+
+/* Staff card */
+.staff-card {
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.staff-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--bistro-border), #cbd5e1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-size: 3rem;
+    color: #94a3b8;
+    box-shadow: var(--bistro-shadow);
+    overflow: hidden;
+}
+
+.staff-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.staff-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: var(--bistro-dark);
+    margin-bottom: 0.25rem;
+}
+
+.staff-role {
+    font-size: 0.85rem;
+    color: var(--bistro-muted);
+}
+
+/* Beer card */
+.beer-card {
+    background: #ffffff;
+    border: 1px solid var(--bistro-border);
+    border-radius: var(--bistro-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--bistro-shadow);
+    transition: transform var(--bistro-transition), box-shadow var(--bistro-transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.beer-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--bistro-shadow-md);
+}
+
+.beer-card-img {
+    height: 140px;
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 3rem;
+}
+
+.beer-card-img-bottled {
+    background: linear-gradient(135deg, var(--bistro-primary-light) 0%, var(--bistro-primary) 100%);
+}
+
+.beer-card-body {
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.beer-card-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--bistro-dark);
+    margin-bottom: 0.35rem;
+}
+
+.beer-card-brewery {
+    color: var(--bistro-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.5rem;
+}
+
+.beer-card-style {
+    display: inline-block;
+    background: rgba(var(--bistro-primary-rgb), 0.1);
+    color: var(--bistro-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 0.75rem;
+    align-self: flex-start;
+}
+
+.beer-card-desc {
+    font-size: 0.85rem;
+    color: var(--bistro-muted);
+    line-height: 1.5;
+    flex: 1;
+}
+
+.beer-card-price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--bistro-gold-dark);
+    margin-top: auto;
+}
+
+/* Brewery card */
+.brewery-card {
+    background: #ffffff;
+    border: 1px solid var(--bistro-border);
+    border-radius: var(--bistro-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--bistro-shadow);
+    transition: transform var(--bistro-transition), box-shadow var(--bistro-transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.brewery-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--bistro-shadow-md);
+}
+
+.brewery-card-logo {
+    height: 140px;
+    background: var(--bistro-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    color: var(--bistro-muted);
+    font-size: 3rem;
+}
+
+.brewery-card-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.brewery-card-body {
+    padding: 1.25rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.brewery-card-name {
+    font-weight: 700;
+    color: var(--bistro-dark);
+    margin-bottom: 0.5rem;
+}
+
+.brewery-card-desc {
+    font-size: 0.9rem;
+    color: var(--bistro-muted);
+    line-height: 1.6;
+    flex: 1;
+}
+
+.brewery-card-count {
+    font-size: 0.85rem;
+    color: var(--bistro-muted);
+}
+
+/* Brewery detail logo */
+.brewery-detail-logo {
+    background: var(--bistro-bg);
+    border: 1px solid var(--bistro-border);
+    border-radius: var(--bistro-radius-lg);
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 250px;
+    color: var(--bistro-muted);
+    font-size: 5rem;
+}
+
+.brewery-detail-logo img {
+    max-width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+/* Event card */
+.event-card {
+    background: #ffffff;
+    border: 1px solid var(--bistro-border);
+    border-radius: var(--bistro-radius-lg);
+    overflow: hidden;
+    box-shadow: var(--bistro-shadow);
+    transition: transform var(--bistro-transition), box-shadow var(--bistro-transition);
+}
+
+.event-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--bistro-shadow-md);
+}
+
+.event-card-img {
+    height: 200px;
+    background: linear-gradient(135deg, var(--bistro-dark), var(--bistro-darker));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 3rem;
+}
+
+.event-card-body {
+    padding: 1.5rem;
+}
+
+.event-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--bistro-primary);
+    margin-bottom: 0.5rem;
+}
+
+/* Gallery grid */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.gallery-item {
+    border-radius: var(--bistro-radius-lg);
+    overflow: hidden;
+    background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    aspect-ratio: 4 / 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #94a3b8;
+    font-size: 2.5rem;
+    cursor: pointer;
+    transition: transform var(--bistro-transition), box-shadow var(--bistro-transition);
+}
+
+.gallery-item:hover {
+    transform: scale(1.03);
+    box-shadow: var(--bistro-shadow-lg);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Brewery carousel */
+.brewery-track {
+    display: flex;
+    gap: 3rem;
+    overflow: hidden;
+    padding: 1rem 0;
+}
+
+.brewery-logo {
+    flex-shrink: 0;
+    width: 120px;
+    height: 80px;
+    background: #ffffff;
+    border: 1px solid var(--bistro-border);
+    border-radius: var(--bistro-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem;
+    box-shadow: var(--bistro-shadow);
+}
+
+.brewery-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* ============================================
+   Menu Page Styles
+   ============================================ */
+.menu-section {
+    margin-bottom: 2.5rem;
+}
+
+.menu-section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--bistro-dark);
+    padding-bottom: 0.75rem;
+    border-bottom: 2px solid var(--bistro-primary);
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.menu-section-title i {
+    color: var(--bistro-primary);
+}
+
+.menu-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 0.6rem 0;
+    border-bottom: 1px dotted var(--bistro-border);
+}
+
+.menu-item:last-child {
+    border-bottom: none;
+}
+
+.menu-item-name {
+    font-weight: 500;
+    color: var(--bistro-dark);
+    flex: 1;
+    padding-right: 1rem;
+}
+
+.menu-item-desc {
+    font-size: 0.85rem;
+    color: var(--bistro-muted);
+    margin-top: 0.15rem;
+}
+
+.menu-item-price {
+    font-weight: 700;
+    color: var(--bistro-primary);
+    white-space: nowrap;
+}
+
+/* Menu card wrapper */
+.menu-card {
+    background: #ffffff;
+    border: 1px solid var(--bistro-border);
+    border-radius: var(--bistro-radius-lg);
+    padding: 2rem;
+    box-shadow: var(--bistro-shadow);
+}
+
+/* ============================================
+   Contact / Map
+   ============================================ */
+.contact-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.contact-info-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: rgba(var(--bistro-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--bistro-primary);
+    flex-shrink: 0;
+}
+
+.contact-info-text h6 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--bistro-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+}
+
+.contact-info-text p {
+    margin: 0;
+    color: var(--bistro-dark);
+    font-weight: 500;
+}
+
+.contact-info-text a {
+    color: var(--bistro-dark);
+    text-decoration: none;
+    transition: color var(--bistro-transition);
+}
+
+.contact-info-text a:hover {
+    color: var(--bistro-primary);
+}
+
+.map-placeholder {
+    background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    border-radius: var(--bistro-radius-lg);
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--bistro-muted);
+    gap: 0.75rem;
+    overflow: hidden;
+}
+
+.map-placeholder i {
+    font-size: 3rem;
+    opacity: 0.5;
+}
+
+/* ============================================
+   About Page
+   ============================================ */
+.about-feature {
+    display: flex;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+}
+
+.about-feature-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    background: rgba(var(--bistro-primary-rgb), 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    color: var(--bistro-primary);
+    flex-shrink: 0;
+}
+
+/* ============================================
+   Opening Hours Table
+   ============================================ */
+.opening-hours {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.opening-hours li {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 0.9rem;
+}
+
+.opening-hours li:last-child {
+    border-bottom: none;
+}
+
+.opening-hours .day {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.opening-hours .time {
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.opening-hours .closed {
+    color: rgba(255, 255, 255, 0.4);
+    font-style: italic;
+}
+
+/* ============================================
+   Placeholder / Empty State
+   ============================================ */
+.placeholder-img {
+    background: linear-gradient(135deg, #e2e8f0, #cbd5e1);
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--bistro-radius-lg);
+    color: #94a3b8;
+    gap: 0.5rem;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--bistro-muted);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    opacity: 0.4;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+/* ============================================
+   Footer
+   ============================================ */
+.site-footer {
+    background: var(--bistro-dark);
+    color: var(--bistro-light);
+    padding: 0;
+}
+
+.footer-main {
+    padding: 3.5rem 0 2.5rem;
+}
+
+.footer-brand {
+    font-weight: 900;
+    font-size: 1.25rem;
+    color: var(--bistro-primary-light);
+    margin-bottom: 0.75rem;
+}
+
+.footer-desc {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    max-width: 280px;
+}
+
+.footer-social {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.footer-social a {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: all var(--bistro-transition);
+}
+
+.footer-social a:hover {
+    background: var(--bistro-primary);
+    color: #ffffff;
+}
+
+.site-footer h6 {
+    color: var(--bistro-light);
+    font-weight: 700;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.25rem;
+}
+
+.footer-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-links li {
+    margin-bottom: 0.6rem;
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.55);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color var(--bistro-transition);
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+}
+
+.footer-links a i {
+    width: 18px;
+    margin-right: 0.35rem;
+    text-align: center;
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 1.25rem 0;
+}
+
+.footer-bottom-text {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 0.8rem;
+    margin: 0;
+}
+
+.footer-bottom a {
+    color: rgba(255, 255, 255, 0.4);
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color var(--bistro-transition);
+}
+
+.footer-bottom a:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* ============================================
+   Buttons
+   ============================================ */
+.btn-primary {
+    background-color: var(--bistro-primary);
+    border-color: var(--bistro-primary);
+}
+
+.btn-primary:hover {
+    background-color: var(--bistro-primary-dark);
+    border-color: var(--bistro-primary-dark);
+}
+
+.btn-outline-primary {
+    color: var(--bistro-primary);
+    border-color: var(--bistro-primary);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--bistro-primary);
+    border-color: var(--bistro-primary);
+}
+
+.btn-outline-light:hover {
+    color: var(--bistro-dark) !important;
+}
+
+.btn-gold {
+    background: var(--bistro-gold);
+    border-color: var(--bistro-gold);
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.btn-gold:hover {
+    background: var(--bistro-gold-dark);
+    border-color: var(--bistro-gold-dark);
+    color: #ffffff;
+}
+
+/* ============================================
+   Utilities
+   ============================================ */
+.bg-bistro-light {
+    background: var(--bistro-bg) !important;
+}
+
+.border-bistro {
+    border-color: var(--bistro-border) !important;
+}
+
+/* Scroll margin for anchor navigation */
+section[id] {
+    scroll-margin-top: 80px;
+}
+
+/* ============================================
+   Responsive
+   ============================================ */
+
+/* Mobile nav overrides */
+@media (max-width: 991.98px) {
+    .site-header .navbar-collapse {
+        background: var(--bistro-darker);
+        margin: 0 -0.75rem;
+        padding: 0.5rem 1rem 1rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .site-header .nav-link {
+        padding: 0.65rem 0.5rem !important;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .site-header .nav-link.active::after {
+        display: none;
+    }
+
+    .site-header .dropdown-menu {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        padding-left: 1.25rem;
+    }
+
+    .site-header .dropdown-item {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    }
+
+    .lang-switch {
+        margin: 0.5rem 0;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .hero-title {
+        font-size: 2.25rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .hero-section {
+        min-height: 400px;
+    }
+
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
+    }
+
+    .menu-card {
+        padding: 1.25rem;
+    }
+
+    .footer-main {
+        padding: 2.5rem 0 2rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .gallery-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-title {
+        font-size: 1.85rem;
+    }
+}

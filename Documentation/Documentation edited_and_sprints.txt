@@ -1,0 +1,1401 @@
+# Projektová dokumentace
+
+## Bistro Stars Hollow
+
+## 1. Úvod
+
+Tento dokument popisuje návrh webového a administrativního systému pro podnik **Bistro Stars Hollow** ve Frenštátě pod Radhoštěm. Cílem je vytvořit moderní, responzivní a dlouhodobě rozšiřitelnou platformu, která bude mít dvě hlavní části:
+
+1. **Veřejnou informační webovou prezentaci** pro návštěvníky podniku.
+2. **Interní administrativní aplikaci** pro správu provozu, obsahu, rezervací, směn a dalších interních procesů.
+
+Systém musí být navržen tak, aby byl od začátku připraven na postupné rozšiřování. První implementační fáze bude zaměřena na **informační web**, který bude od počátku navržen s ohledem na budoucí propojení s databází a administrativní aplikací.
+
+Technologicky bude projekt postaven na:
+
+* **ASP.NET Core Razor Pages**
+* **SQL databázi**
+* **Bootstrapu** pro responzivní design
+* **JWT a cookies** pro autentizaci a autorizaci
+* **lokalizaci přes `.resx` soubory**
+* důrazu na **čistý kód, bezpečnost, modularitu a škálovatelnost**
+
+---
+
+## 2. Cíle projektu
+
+### 2.1 Hlavní cíle
+
+Hlavním cílem projektu je vytvořit jednotný systém, který:
+
+* profesionálně prezentuje podnik navenek,
+* umožňuje návštěvníkům snadno najít důležité informace,
+* nabízí přehledné zobrazení nabídky, piv, akcí a kontaktů,
+* umožní online rezervaci stolů bez nutnosti přihlášení,
+* poskytne zaměstnancům a vedení interní nástroje pro každodenní provoz,
+* usnadní správu obsahu bez nutnosti zásahu do zdrojového kódu,
+* umožní budoucí integraci s další aplikací a případně mobilní nadstavbou.
+
+### 2.2 Vedlejší cíle
+
+* centralizovaná správa obsahu v administraci,
+* evidence směn a rezervací,
+* auditní logování změn,
+* možnost lokalizace webu minimálně do češtiny a angličtiny,
+* globální správa vizuálních parametrů jako jsou barvy a fonty,
+* snadná údržba a rozšiřování systému do budoucna.
+
+---
+
+## 3. Funkční rozdělení systému
+
+Systém bude rozdělen do dvou hlavních částí:
+
+### 3.1 Veřejná část
+
+Slouží návštěvníkům podniku. Bude obsahovat:
+
+* domovskou stránku,
+* menu a nápojové přehledy,
+* informace o podniku,
+* fotogalerii,
+* kontaktní stránku s mapou,
+* rezervační systém,
+* přehled piv a podporovaných pivovarů.
+
+### 3.2 Interní část (administrace)
+
+Slouží zaměstnancům, administrátorům a superadministrátorům. Bude obsahovat:
+
+* dashboard,
+* kalendář směn,
+* správu rezervací,
+* správu uživatelů a rolí,
+* správu menu,
+* správu čepovaných a lahvových piv,
+* správu pivovarů,
+* správu galerie a akcí,
+* provozní uzávěrky,
+* auditní a technické logy.
+
+---
+
+## 4. Technologická a architektonická koncepce
+
+### 4.1 Architektonický přístup
+
+Projekt bude navržen jako vícevrstvá webová aplikace s jasným oddělením odpovědností:
+
+* **Prezentační vrstva** – Razor Pages, Bootstrap, lokalizované texty.
+* **Aplikační vrstva** – business logika, validace, pravidla rezervací, práce s rolemi.
+* **Datová vrstva** – SQL databáze, repository/service přístup, případně stored procedures tam, kde to bude dávat smysl.
+
+### 4.2 Zásady návrhu
+
+* konfigurovatelnost vzhledu z jednoho místa,
+* minimalizace duplicit,
+* bezpečná práce s formuláři a vstupy,
+* připravenost na integraci s externí aplikací,
+* auditovatelnost důležitých změn,
+* dobrá testovatelnost a oddělení business logiky.
+
+### 4.3 Doporučené technické principy
+
+* použití **Options pattern** pro globální nastavení vzhledu a chování,
+* rozdělení do samostatných modulů/služeb,
+* využití **DTO/ViewModelů** pro oddělení databázových entit od UI,
+* použití **soft delete** tam, kde je výhodné zachovat historii,
+* logování pomocí standardního logging frameworku s možností zápisu do databáze.
+
+---
+
+## 5. Vizuální styl a design systém
+
+### 5.1 Typografie
+
+Výchozím fontem bude **Roboto**. Font bude definován centrálně tak, aby jej bylo možné v budoucnu změnit bez zásahu do jednotlivých komponent.
+
+### 5.2 Barevnost
+
+Výchozí barevná paleta bude laděna do **modrých tónů**. Primární, sekundární a akcentní barvy musí být definovány centrálně, ideálně pomocí:
+
+* CSS proměnných,
+* konfigurace tématu,
+* případně databázového nastavení pro budoucí správu z administrace.
+
+Cílem je, aby změna vzhledu byla globální a nevyžadovala ruční zásahy ve více částech projektu.
+
+### 5.3 Responsivita
+
+Celý systém musí být plně responzivní a správně použitelný na:
+
+* mobilních telefonech,
+* tabletech,
+* noteboocích,
+* desktopových monitorech.
+
+Primární styling bude řešen přes **Bootstrap** a doplněn vlastními komponentami tam, kde standardní prvky nebudou dostačovat.
+
+---
+
+## 6. Veřejná část – detailní funkční specifikace
+
+## 6.1 Globální layout veřejné části
+
+### Header
+
+Header bude obsahovat:
+
+* logo podniku vlevo,
+* hlavní navigaci,
+* rozbalovací nabídku pro sekci piv,
+* přepínač lokalizace (CZ/EN),
+* odkazy na klíčové stránky.
+
+#### Navrhovaná struktura menu
+
+* Domů
+* Menu
+
+  * Jídelní lístek
+  * Nápojový lístek
+  * Vodní dýmky
+  * Čaje
+  * Prodej
+* Piva
+
+  * Piva v lednici
+  * Piva na čepu
+  * Oblíbené pivovary
+* Fotogalerie
+* Kde nás najdete
+* O nás
+* Rezervace
+
+Lokalizace bude řešena přes `.resx` soubory a middleware pro lokalizaci.
+
+### Footer
+
+Footer bude obsahovat:
+
+* logo podniku,
+* copyright,
+* otevírací dobu,
+* kontaktní údaje,
+* odkaz na přihlášení do administrace,
+* právní odkazy.
+
+#### Povinný obsah footeru
+
+* copyright text,
+* odkaz na **Přihlášení do administrace** (směřující na `app.bistro.cz`),
+* otevírací doba načítaná z databáze,
+* telefon,
+* email,
+* adresa,
+* odkazy na Cookies Policy a Privacy Policy.
+
+Otevírací doba musí být spravovatelná z administrace.
+
+---
+
+## 6.2 Domovská stránka
+
+Domovská stránka bude hlavní marketingovou a informační plochou webu.
+
+### Obsah domovské stránky
+
+#### 1. Hero slider
+
+* obrázky načítané z databáze,
+* možnost spravovat pořadí snímků,
+* volitelný textový overlay,
+* volitelný proklik na jinou stránku,
+* možnost aktivace/deaktivace jednotlivých slidů.
+
+#### 2. Blok „O podniku“
+
+Krátký prezentační text o Bistro Stars Hollow ve Frenštátě pod Radhoštěm. Text bude popisovat charakter podniku, například:
+
+* pivní speciály,
+* zajímavou kuchyni,
+* slané a sladké palačinky,
+* vodní dýmky,
+* celkovou atmosféru podniku.
+
+#### 3. Blok „Kdo dnes čepuje“
+
+Tato sekce bude dynamická a napojená na rozpis směn.
+
+Požadavky:
+
+* zobrazení hlavní osoby na čepu jako dominantní karta/fotografie,
+* možnost zobrazení druhé osoby, např. kuchyně, v menším panelu,
+* data načítaná podle aktuálního dne,
+* pokud není obsazení vyplněno, sekce se nezobrazí nebo zobrazí neutrální text.
+
+#### 4. Blok „Dnes na čepu“
+
+* seznam aktuálně čepovaných piv pro daný den,
+* název piva,
+* pivovar,
+* cena,
+* případně styl nebo krátký popis,
+* data z databáze.
+
+#### 5. Akce / události
+
+* editovatelný blok pro aktuální akce,
+* možnost nahrát obrázek, název, text, datum platnosti,
+* možnost sekci skrýt, pokud zrovna žádná akce neprobíhá,
+* vhodné umístění v horní části stránky.
+
+#### 6. Google hodnocení / reference
+
+* proklik na Google profil podniku,
+* případně zobrazení průměrného hodnocení a výzvy k návštěvě recenzí,
+* ideálně řešit legálně a technicky udržitelným způsobem bez neoficiálního scrapování.
+
+#### 7. Mini galerie
+
+* malá náhledová galerie vybraných fotografií,
+* proklik na plnou galerii,
+* data z databáze.
+
+#### 8. Nekonečný karusel podporovaných pivovarů
+
+* loga pivovarů ve vizuálně jednotném formátu,
+* obrázky mohou mít různé datové velikosti, ale musí být vykresleny konzistentně,
+* plynulé horizontální posouvání,
+* ideálně možnost kliknutí na detail pivovaru.
+
+---
+
+## 6.3 Fotogalerie
+
+Fotogalerie bude sloužit jako jednoduchá prezentační sekce.
+
+### Funkce
+
+* zobrazení fotografií z podniku,
+* podpora různých velikostí obrázků,
+* layout typu album / masonry grid,
+* možnost kategorizace do budoucna,
+* lightbox pro zobrazení detailu fotografie,
+* optimalizace obrázků pro web.
+
+---
+
+## 6.4 Kde nás najdete / Kontakt
+
+Tato stránka bude obsahovat základní kontaktní informace.
+
+### Obsah
+
+* mapa s umístěním podniku,
+* adresa,
+* telefon,
+* email,
+* kontaktní osoba / majitel,
+* možnost prokliků na telefon a email,
+* případně odkaz na navigaci.
+
+### Doporučení
+
+* použít embeddovanou mapu,
+* doplnit CTA prvky jako „Zavolat“, „Napsat email“, „Spustit navigaci“.
+
+---
+
+## 6.5 O nás
+
+Obsahová stránka s příběhem podniku.
+
+### Typický obsah
+
+* kdy podnik vznikl,
+* proč vznikl,
+* co nabízí,
+* jaká je jeho filozofie,
+* čím je specifický.
+
+Pro první verzi postačí demo obsah spravovatelný z administrace.
+
+---
+
+## 6.6 Menu
+
+Sekce Menu bude čistě informativní a **nejedná se o e‑shop**. Uživatel zde nebude nic objednávat ani vkládat do košíku.
+
+### Struktura sekcí
+
+* Jídelní lístek
+* Nápojový lístek
+* Vodní dýmky
+* Čaje
+* Prodej
+
+### Vizuální forma
+
+#### Jídelní a nápojový lístek
+
+* rozložení podobné A4 menu,
+* dva sloupce,
+* název položky vlevo,
+* cena vpravo,
+* dlouhé názvy musí být správně zalomeny,
+* dobrá čitelnost i na mobilu.
+
+#### Vodní dýmky a čaje
+
+* jeden sloupec,
+* stejný vizuální styl,
+* vhodné pro menší množství položek.
+
+#### Prodej
+
+* samostatná informativní sekce pro kusové položky,
+* bez e‑shop funkcionality.
+
+### Datový model menu položek
+
+Každá položka by měla mít minimálně:
+
+* ID,
+* název,
+* kategorii,
+* cenu nebo textovou cenu,
+* pořadí,
+* aktivní/neaktivní stav,
+* volitelný popis,
+* datum vytvoření/úpravy.
+
+### Poznámka k ceně
+
+Cena může být:
+
+* standardně číselná hodnota,
+* výjimečně textová hodnota.
+
+Z toho důvodu je vhodné oddělit:
+
+* **numeric price** pro standardní použití,
+* **display price text** pro nestandardní případy.
+
+---
+
+## 6.7 Rezervační stránka
+
+Rezervační systém bude jednou z klíčových funkcionalit veřejné části.
+
+### Cíl
+
+Umožnit návštěvníkům rezervovat stůl bez registrace a bez přihlášení, ale současně systém zabezpečit proti spamování a zneužití.
+
+### Uživatelské rozhraní
+
+* vlevo kalendář / výběr data,
+* vpravo jednoduchý interaktivní model stolů,
+* dostupné stoly budou vizuálně odlišeny od nedostupných,
+* po kliknutí na volný stůl se otevře formulář rezervace.
+
+### Povinné údaje rezervace
+
+* jméno,
+* příjmení,
+* telefon,
+* datum,
+* čas rezervace,
+* vybraný stůl,
+* počet osob.
+
+### Pravidla rezervací
+
+* rezervaci lze vytvořit pouze v rámci otevírací doby,
+* rezervace nesmí kolidovat s jinou rezervací stejného stolu,
+* nelze rezervovat do minulosti,
+* systém musí ověřit dostupnost při finálním odeslání formuláře,
+* u stolu musí být definována kapacita.
+
+### Návrh zabezpečení bez přihlášení
+
+Doporučená kombinace:
+
+* rate limiting podle IP,
+* anti-forgery ochrana,
+* CAPTCHA / reCAPTCHA / Turnstile,
+* potvrzení rezervace přes SMS nebo alespoň telefonní validace formátu,
+* případně limit počtu aktivních rezervací na stejné telefonní číslo,
+* logování rezervačních pokusů.
+
+### Návrh zrušení rezervace
+
+Doporučené řešení:
+
+* po vytvoření rezervace vygenerovat unikátní **cancel token**,
+* uživatel obdrží potvrzení s odkazem na správu/zrušení rezervace,
+* zrušení bude možné bez přihlášení pouze s tímto tokenem,
+* alternativně může mít rezervace stav „storno požadováno“ a administrace jej potvrdí.
+
+### Stavový model rezervace
+
+* Čekající potvrzení
+* Potvrzená
+* Zrušená uživatelem
+* Zrušená administrací
+* Dokončená / proběhlá
+* No-show
+
+---
+
+## 7. Administrativní aplikace – detailní funkční specifikace
+
+Administrativní aplikace bude oddělena od veřejné části, ale datově s ní úzce propojena.
+
+## 7.1 Role a oprávnění
+
+### Zaměstnanec
+
+Má přístup k provozním funkcím:
+
+* dashboard,
+* kalendář směn,
+* přehled rezervací relevantních pro jeho směny,
+* notifikace,
+* uzávěrka,
+* přehled nadcházejících směn.
+
+Možnosti:
+
+* zapsat se na směnu,
+* odepsat se ze směny,
+* přepsat jiného uživatele s varováním,
+* zobrazit rezervace pro své směny,
+* vidět upozornění na nové rezervace.
+
+### Administrátor
+
+Dědí oprávnění zaměstnance a navíc může:
+
+* upravovat veřejný obsah webu,
+* spravovat menu,
+* spravovat galerii,
+* spravovat akce,
+* přidávat a upravovat piva a pivovary,
+* spravovat uživatele,
+* měnit role uživatelů,
+* zobrazovat auditní log.
+
+### Superadministrátor
+
+Dědí všechna předchozí oprávnění a navíc má přístup k:
+
+* technickým logům,
+* pokročilé správě systému,
+* monitoringu chyb,
+* návštěvnosti,
+* systémovým testům,
+* rozšířeným diagnostickým funkcím.
+
+---
+
+## 7.2 Layout administrace
+
+### Header
+
+* zobrazení přihlášeného uživatele,
+* přístup do profilu,
+* odhlášení,
+* přepínač lokalizace.
+
+### Sidebar
+
+Hlavní navigační prvek administrace. Položky budou viditelné podle role.
+
+### Footer
+
+Není kritický. Může obsahovat jen minimalistický copyright a verzi aplikace.
+
+---
+
+## 7.3 Dashboard
+
+Dashboard bude sloužit jako hlavní přehledová stránka.
+
+### Obsah podle role
+
+* rychlá navigace,
+* nadcházející směny,
+* nové notifikace,
+* nové rezervace,
+* provozní upozornění,
+* základní statistiky,
+* akce týkající se přihlášeného uživatele.
+
+### Přínos
+
+Dashboard má minimalizovat počet kliknutí k nejčastěji používaným funkcím.
+
+---
+
+## 7.4 Kalendář směn
+
+Interaktivní kalendář bude jednou z klíčových interních funkcí.
+
+### Požadavky
+
+* měsíční zobrazení od pondělí do neděle,
+* přechod mezi měsíci,
+* zápis na směnu,
+* odepsání ze směny,
+* přepsání jiného uživatele s potvrzovacím dialogem,
+* zamezení zápisu do minulosti,
+* šedé zobrazení minulých dnů,
+* zobrazení obsazení směn v jednotlivých dnech.
+
+### Doporučený datový model
+
+* datum,
+* typ směny,
+* počet potřebných lidí,
+* seznam přiřazených uživatelů,
+* stav dne,
+* poznámka,
+* audit změn.
+
+---
+
+## 7.5 Čepovaná piva
+
+Tato sekce slouží ke správě aktivně čepovaných piv.
+
+### Funkce
+
+* seznam piv,
+* stav aktivní/neaktivní,
+* možnost přidat, upravit, deaktivovat,
+* filtrace dle názvu, pivovaru, ceny,
+* upozornění při více než 4 aktivních pivech,
+* možnost ponechat historická piva v systému a pouze je aktivovat/deaktivovat.
+
+### Důležitá pravidla
+
+* aktivní piva se propisují na veřejný web,
+* neaktivní piva zůstávají v databázi,
+* není nutné je zadávat opakovaně,
+* aktivace musí být rychlá a přehledná.
+
+---
+
+## 7.6 Rezervace
+
+Rezervace jsou svázány s datem a směnou.
+
+### Zaměstnanec
+
+Vidí pouze rezervace relevantní pro své směny.
+
+### Administrátor a superadministrátor
+
+Vidí všechny rezervace a mohou nad nimi vykonávat plnou kontrolu.
+
+### Zobrazené údaje
+
+* datum,
+* čas,
+* stůl,
+* jméno a příjmení,
+* telefon,
+* počet osob,
+* stav rezervace,
+* poznámka.
+
+### Akce nad rezervací
+
+* potvrzení,
+* storno,
+* označení proběhlé rezervace,
+* filtrování,
+* vyhledávání.
+
+---
+
+## 7.7 Uživatelé
+
+Sekce pro správu interních účtů.
+
+### Funkce
+
+* seznam uživatelů,
+* přidání uživatele,
+* editace uživatele,
+* deaktivace/odebrání uživatele,
+* změna role,
+* základní profilové údaje.
+
+### Poznámka
+
+Je vhodné oddělit autentizační data od profilových dat uživatele.
+
+---
+
+## 7.8 Menu – správa položek
+
+Sekce pro CRUD operace nad položkami menu.
+
+### Funkce
+
+* přidání položky,
+* editace,
+* deaktivace,
+* kategorizace,
+* fulltextové a realtime filtrování,
+* filtrace podle ceny,
+* možnost tisku do budoucna.
+
+### Kategorie
+
+* jídlo,
+* studené nápoje,
+* pivo,
+* čaj,
+* vodní dýmky,
+* prodej.
+
+### Technická poznámka
+
+Kvůli ceně, která může být v určitých případech textová, je vhodné mít zvlášť pole pro:
+
+* číselnou hodnotu ceny,
+* textový zápis ceny pro zobrazení.
+
+---
+
+## 7.9 Lahvová piva
+
+### Funkce
+
+* správa seznamu piv s obrázky,
+* aktivní/neaktivní stav,
+* filtrace,
+* propojení na pivovar,
+* volitelný popis,
+* náhled zobrazení před uložením.
+
+### Datové atributy piva
+
+* název,
+* cena,
+* pivní styl,
+* pivovar,
+* obrázek,
+* aktivní stav,
+* popis,
+* pořadí,
+* datum vytvoření a úpravy.
+
+### Chování
+
+* piva se po vyprodání nemažou,
+* pouze se deaktivují,
+* znovu dostupná piva lze opět aktivovat.
+
+---
+
+## 7.10 Pivovary
+
+Samostatná sekce pro správu pivovarů.
+
+### Funkce
+
+* vytvoření a editace pivovaru,
+* nahrání loga nebo fotografie,
+* text „o pivovaru“,
+* propojení na čepovaná a lahvová piva,
+* zobrazení v karuselu na hlavní stránce.
+
+### Podporované formáty obrázků
+
+* JPG,
+* JPEG,
+* PNG,
+* WEBP.
+
+### Doporučení
+
+* kontrola velikosti souboru,
+* automatická optimalizace a generování náhledů.
+
+---
+
+## 7.11 Galerie a akce
+
+### Galerie
+
+* upload obrázků,
+* editace metadat,
+* aktivace/deaktivace,
+* pořadí zobrazení.
+
+### Akce
+
+* vytvoření akce,
+* nahrání obrázku,
+* název,
+* popis,
+* časová platnost,
+* aktivní/neaktivní stav.
+
+---
+
+## 7.12 Log
+
+Auditní log určený pro administrátory a superadministrátory.
+
+### Co se bude logovat
+
+* přihlášení a odhlášení,
+* vytvoření a změna rezervace,
+* zápis a odepsání směny,
+* změna menu,
+* změna piv,
+* změny uživatelů,
+* důležité obsahové zásahy.
+
+### Struktura záznamu
+
+* typ události,
+* popis,
+* uživatel,
+* čas,
+* související entita,
+* případně IP adresa / technický kontext.
+
+---
+
+## 7.13 Log ultra
+
+Rozšířený technický log pro superadministrátora.
+
+### Možný obsah
+
+* chyby aplikace,
+* interní warningy,
+* systémové události,
+* výkonové informace,
+* návštěvnost,
+* stav background procesů,
+* technické diagnostické zprávy.
+
+Tato sekce je určena především pro údržbu a další rozvoj systému.
+
+---
+
+## 7.14 Uzávěrka
+
+Uzávěrka slouží k uzavření směny.
+
+### Podmínka
+
+Uzávěrku vyplňuje uživatel, který má v daný den směnu.
+
+### Pole uzávěrky
+
+* částka kartou,
+* částka hotově,
+* celková částka,
+* rozdíl plus/mínus,
+* poznámka.
+
+### Chování
+
+* celková částka se automaticky dopočítává,
+* uživatel ji může ručně upravit,
+* při odchylce od automatického výpočtu musí být možné doplnit poznámku.
+
+### Přínos
+
+* základní evidence denního provozu,
+* přehled o uzavřených směnách,
+* jednoduchá kontrola odchylek.
+
+---
+
+## 8. Ne-funkční požadavky
+
+## 8.1 Bezpečnost
+
+Systém musí splňovat základní bezpečnostní standardy:
+
+* bezpečné ukládání hesel,
+* ochrana proti CSRF,
+* ochrana proti XSS,
+* ochrana proti SQL injection,
+* validace všech vstupů,
+* autorizace podle rolí,
+* bezpečná práce se soubory,
+* rate limiting u veřejných formulářů,
+* audit důležitých operací.
+
+## 8.2 Výkon
+
+* rychlé načítání veřejných stránek,
+* optimalizace obrázků,
+* cachování často používaných dat,
+* pagination a filtrace v administraci,
+* efektivní databázové dotazy.
+
+## 8.3 Škálovatelnost
+
+* modulární návrh,
+* rozumná normalizace databáze,
+* příprava na oddělení veřejné a interní aplikace,
+* připravenost na budoucí API vrstvu.
+
+## 8.4 Dostupnost a UX
+
+* responzivní design,
+* přehledné formuláře,
+* srozumitelné chybové hlášky,
+* logická navigace,
+* přístupnost v rozumné míře.
+
+---
+
+## 9. Návrh datových domén
+
+Pro první verzi systému se počítá minimálně s následujícími doménami:
+
+* Users
+* Roles
+* UserProfiles
+* Shifts
+* ShiftAssignments
+* Reservations
+* Tables
+* OpeningHours
+* MenuCategories
+* MenuItems
+* Brewery
+* DraftBeers
+* BottledBeers
+* GalleryImages
+* Events
+* SiteSettings
+* Pages / ContentBlocks
+* Notifications
+* CashClosures
+* AuditLogs
+* SystemLogs
+* SliderItems
+
+Tento seznam je orientační a bude dále upřesněn při návrhu databáze.
+
+---
+
+## 10. Doporučený implementační přístup
+
+Doporučené je neimplementovat vše najednou, ale postupovat po vrstvách:
+
+1. připravit technický základ,
+2. vytvořit veřejný informační web,
+3. napojit jej na databázi,
+4. vytvořit administrativní správu obsahu,
+5. přidat provozní moduly jako směny a rezervace,
+6. rozšířit systém o logování, uzávěrku a technické funkce.
+
+Tímto přístupem bude možné mít relativně brzy nasaditelnou první verzi, která už bude mít praktickou hodnotu.
+
+---
+
+# Implementační plán a sprinty
+
+## 11. Strategické pořadí implementace
+
+Vzhledem k tomu, že chceš začít s informační stránkou a současně ji od začátku připravit na napojení na aplikaci a databázi, dává smysl tento postup:
+
+### Fáze 1
+
+Technický základ a architektura projektu.
+
+### Fáze 2
+
+Veřejný informační web včetně layoutu a základních obsahových stránek.
+
+### Fáze 3
+
+Datové napojení veřejného webu a správa obsahu.
+
+### Fáze 4
+
+Autentizace, role a základ administrace.
+
+### Fáze 5
+
+Provozní moduly: směny, rezervace, čep, menu.
+
+### Fáze 6
+
+Pokročilé moduly: logy, uzávěrky, technický monitoring, optimalizace.
+
+---
+
+## 12. Návrh sprintů
+
+Níže uvedený plán počítá s relativně detailní implementací. Délka sprintu může být například **2 týdny**, ale struktura funguje i pro jiné časování.
+
+## Sprint 0 – Analýza a technický základ
+
+### Cíl
+
+Připravit projektovou kostru, rozhodnout o architektuře a vytvořit pevný základ pro další vývoj.
+
+### Výstupy
+
+* upřesněná dokumentace,
+* návrh informační architektury,
+* návrh databázových entit,
+* založení solution a projektů,
+* konfigurace prostředí,
+* základ layoutu, lokalizace a themingu.
+
+### Úkoly
+
+* založení ASP.NET Core Razor Pages řešení,
+* definice projektové struktury,
+* návrh doménových entit,
+* příprava connection stringů a konfigurací,
+* nastavení Bootstrapu a globálního stylování,
+* zavedení Roboto fontu,
+* zavedení CSS proměnných pro barvy,
+* nastavení lokalizace přes `.resx`,
+* návrh routingu veřejné a admin části,
+* návrh autentizace a role-based přístupu,
+* příprava loggingu.
+
+### Hotovo znamená
+
+* projekt běží,
+* má základní layout,
+* je připraven na tvorbu veřejných stránek,
+* architektonické rozhodnutí jsou zaznamenána.
+
+---
+
+## Sprint 1 – Veřejný layout, navigace a statické stránky
+
+### Cíl
+
+Postavit veřejnou část ve statické/demo verzi, ale s finální strukturou a stylem.
+
+### Výstupy
+
+* header,
+* footer,
+* navigace,
+* domovská stránka v demo verzi,
+* O nás,
+* Kontakt,
+* Galerie placeholder,
+* struktura menu stránek.
+
+### Úkoly
+
+* implementace veřejného layoutu,
+* responzivní header s dropdowny,
+* přepínač jazyků,
+* footer s demo kontakty a demo otevírací dobou,
+* vytvoření stránek Domů, O nás, Kontakt, Fotogalerie,
+* implementace mapového bloku,
+* vytvoření design systému komponent,
+* příprava placeholderů pro slider, akce, galerii a pivovary.
+
+### Hotovo znamená
+
+* web působí jako reálná prezentační stránka,
+* funguje na mobilu i desktopu,
+* navigace a obsahová struktura jsou finalizované.
+
+---
+
+## Sprint 2 – Veřejné menu a pivní sekce
+
+### Cíl
+
+Přidat informační sekce s menu a pivy v podobě připravené na databázové napojení.
+
+### Výstupy
+
+* Jídelní lístek,
+* Nápojový lístek,
+* Vodní dýmky,
+* Čaje,
+* Prodej,
+* stránky pro piva na čepu, piva v lednici a pivovary.
+
+### Úkoly
+
+* návrh komponent pro zobrazení menu ve dvou sloupcích,
+* samostatné komponenty pro jedno-sloupcové sekce,
+* příprava ViewModelů pro menu položky,
+* vytvoření layoutu pivní sekce,
+* vytvoření detailu pivovaru,
+* příprava pro karusel pivovarů.
+
+### Hotovo znamená
+
+* všechny veřejné informační sekce existují,
+* zatím mohou být plněny demo daty,
+* vizuální forma odpovídá budoucímu cílovému stavu.
+
+---
+
+## Sprint 3 – Databáze a napojení veřejného webu
+
+### Cíl
+
+Nahradit demo data reálnými daty z databáze a připravit veřejný web na správu obsahu.
+
+### Výstupy
+
+* databázové tabulky,
+* seed/demo data,
+* načítání slideru, otevírací doby, galerie, menu a piv z databáze.
+
+### Úkoly
+
+* implementace databázového schématu,
+* migrace nebo SQL skripty,
+* repository/service vrstva,
+* napojení domovské stránky na DB,
+* načítání otevírací doby z DB,
+* načítání menu položek z DB,
+* načítání pivovarů a piv,
+* načítání galerie,
+* načítání akcí.
+
+### Hotovo znamená
+
+* veřejný web používá databázi,
+* administrace ještě nemusí být hotová,
+* ale data už nejsou natvrdo v kódu.
+
+---
+
+## Sprint 4 – Rezervační systém veřejné části
+
+### Cíl
+
+Implementovat první verzi rezervací bez přihlášení.
+
+### Výstupy
+
+* stránka rezervace,
+* model stolů,
+* výběr data a času,
+* rezervační formulář,
+* validace,
+* ochrana proti zneužití.
+
+### Úkoly
+
+* návrh tabulek pro stoly a rezervace,
+* implementace kalendáře / date pickeru,
+* vizuální model stolů,
+* kontrola dostupnosti stolů,
+* validace proti otevírací době,
+* rate limiting,
+* anti-spam ochrana,
+* generování cancel tokenu,
+* potvrzovací workflow.
+
+### Hotovo znamená
+
+* návštěvník dokáže vytvořit rezervaci,
+* systém brání základnímu zneužití,
+* rezervace se ukládají do databáze.
+
+---
+
+## Sprint 5 – Přihlášení, role a základ administrace
+
+### Cíl
+
+Postavit bezpečný základ interní části.
+
+### Výstupy
+
+* přihlašování,
+* role,
+* oddělená admin část,
+* dashboard,
+* sidebar podle role.
+
+### Úkoly
+
+* implementace identity/autentizace,
+* JWT/cookies strategie,
+* role employee/admin/superadmin,
+* autorizační pravidla,
+* admin layout,
+* dashboard skeleton,
+* základ notifikačního panelu.
+
+### Hotovo znamená
+
+* uživatelé se mohou přihlásit,
+* systém rozlišuje role,
+* existuje funkční základ administrace.
+
+---
+
+## Sprint 6 – Správa obsahu veřejného webu
+
+### Cíl
+
+Umožnit administrátorům spravovat obsah, který se zobrazuje na veřejném webu.
+
+### Výstupy
+
+* správa slideru,
+* správa galerie,
+* správa akcí,
+* správa otevírací doby,
+* základ správy textových bloků.
+
+### Úkoly
+
+* CRUD pro slider položky,
+* upload a správa obrázků,
+* CRUD pro galerii,
+* CRUD pro akce,
+* správa otevírací doby,
+* jednoduchá CMS vrstva pro texty typu O nás.
+
+### Hotovo znamená
+
+* veřejný web lze spravovat z administrace bez zásahu do kódu.
+
+---
+
+## Sprint 7 – Kalendář směn a provozní dashboard
+
+### Cíl
+
+Implementovat interní provozní řízení směn.
+
+### Výstupy
+
+* kalendář směn,
+* zápis/odepsání/přepsání směny,
+* přehled relevantních rezervací na dashboardu.
+
+### Úkoly
+
+* návrh tabulek směn a přiřazení,
+* měsíční kalendář,
+* logika zápisu a odepsání,
+* warning dialogy,
+* napojení směn na dashboard,
+* zobrazení relevantních rezervací podle přihlášeného uživatele.
+
+### Hotovo znamená
+
+* zaměstnanec může pracovat se směnami,
+* vidí svou provozní agendu.
+
+---
+
+## Sprint 8 – Správa rezervací v administraci
+
+### Cíl
+
+Doplnit interní přehled a správu rezervací.
+
+### Výstupy
+
+* přehled rezervací,
+* filtrace a vyhledávání,
+* potvrzení/storno rezervací,
+* notifikace na nové rezervace.
+
+### Úkoly
+
+* administrační seznam rezervací,
+* filtrování dle data, stolu, stavu,
+* role-based viditelnost,
+* potvrzování rezervací,
+* storna,
+* notifikace pro relevantní zaměstnance.
+
+### Hotovo znamená
+
+* rezervace jsou provozně použitelné pro personál.
+
+---
+
+## Sprint 9 – Menu management a čep
+
+### Cíl
+
+Přidat interní správu menu a čepovaných piv.
+
+### Výstupy
+
+* CRUD menu položek,
+* filtrování,
+* kategoriální správa,
+* správa čepovaných piv,
+* upozornění při více než 4 aktivních pivech.
+
+### Úkoly
+
+* implementace správy kategorií,
+* realtime vyhledávání,
+* řešení numeric/text ceny,
+* CRUD čepovaných piv,
+* aktivace/deaktivace,
+* public sync pro sekci „Dnes na čepu“.
+
+### Hotovo znamená
+
+* obsah menu a čep lze plně spravovat interně.
+
+---
+
+## Sprint 10 – Lahvová piva a pivovary
+
+### Cíl
+
+Dokončit pivní doménu včetně vazby na veřejnou část.
+
+### Výstupy
+
+* správa lahvových piv,
+* správa pivovarů,
+* upload obrázků,
+* preview zobrazení.
+
+### Úkoly
+
+* CRUD pivovarů,
+* CRUD lahvových piv,
+* filtrace,
+* náhled veřejného výstupu,
+* karusel pivovarů na homepage,
+* detail pivovaru na veřejném webu.
+
+### Hotovo znamená
+
+* pivní sekce je plně propojena mezi webem a administrací.
+
+---
+
+## Sprint 11 – Uživatelé, logy a audit
+
+### Cíl
+
+Posílit správu systému a dohledatelnost změn.
+
+### Výstupy
+
+* správa uživatelů,
+* změny rolí,
+* auditní log,
+* rozšířený systémový log.
+
+### Úkoly
+
+* CRUD uživatelů,
+* role management,
+* audit log tabulka a UI,
+* technický log pro superadmina,
+* logování klíčových akcí.
+
+### Hotovo znamená
+
+* systém je lépe spravovatelný,
+* změny jsou dohledatelné.
+
+---
+
+## Sprint 12 – Uzávěrka, polishing a produkční příprava
+
+### Cíl
+
+Doplnit poslední provozní modul a připravit aplikaci na nasazení.
+
+### Výstupy
+
+* uzávěrka směny,
+* validační a UX dopracování,
+* optimalizace,
+* produkční checklist.
+
+### Úkoly
+
+* implementace uzávěrky,
+* automatické výpočty a odchylky,
+* responsivní polishing,
+* optimalizace obrázků,
+* bezpečnostní kontrola,
+* kontrola rolí a oprávnění,
+* seed produkčních nastavení,
+* příprava deploymentu.
+
+### Hotovo znamená
+
+* aplikace je připravená na první ostré nasazení nebo pilotní provoz.
+
+---
+
+## 13. Doporučení k prioritizaci MVP
+
+Pokud bude potřeba jít cestou minimální životaschopné verze, doporučené MVP pořadí je:
+
+1. veřejný web layout,
+2. domovská stránka,
+3. kontakt, o nás, galerie,
+4. menu,
+5. piva a pivovary,
+6. databázové napojení,
+7. jednoduchá administrace obsahu,
+8. rezervace,
+9. směny a interní provoz.
+
+Tímto způsobem lze relativně rychle získat veřejně použitelný web a až následně rozšiřovat interní správu.
+
+---
+
+## 14. Rizika projektu
+
+### Funkční rizika
+
+* nejasnosti v rezervační logice,
+* složitost práv a role-based přístupů,
+* různé typy cen a kategorií v menu,
+* požadavky na flexibilitu obsahu.
+
+### Technická rizika
+
+* komplikace s ukládáním obrázků do databáze versus file storage,
+* výkon při větším množství médií,
+* bezpečnost veřejných formulářů,
+* rostoucí složitost administrace.
+
+### Doporučení
+
+* rezervační systém oddělit jako samostatný modul,
+* média ukládat promyšleně,
+* auditní log řešit od začátku,
+* nepřetěžovat první verzi zbytečnými bonusy.
+
+---
+
+## 15. Závěr
+
+Projekt Bistro Stars Hollow má potenciál vyrůst z klasického informačního webu do plnohodnotného interního provozního systému pro podnik. Zadané požadavky jsou rozsáhlé, ale dávají smysl, pokud budou realizovány postupně a nad kvalitním technickým základem.
+
+Doporučený postup je začít profesionálně navrženou veřejnou informační částí, která již od počátku počítá s databází a administrací, a poté modulárně přidávat interní provozní funkce. Tento přístup sníží riziko chaosu v implementaci a současně umožní poměrně rychle dodat první reálně použitelnou verzi systému.
+
+Výsledkem by měl být jednotný, moderní a udržitelný systém, který bude podporovat jak marketingovou prezentaci podniku, tak jeho každodenní provoz.

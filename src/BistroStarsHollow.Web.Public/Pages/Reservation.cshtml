@@ -1,0 +1,178 @@
+@page
+@model BistroStarsHollow.Web.Public.Pages.ReservationModel
+@{
+    ViewData["Title"] = "Rezervace";
+}
+
+<!-- Page Header -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h1 class="section-title section-title-center">Rezervace stolu</h1>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center">
+            Vyberte si datum, čas a stůl. Rezervace je bez přihlášení.
+        </p>
+    </div>
+</section>
+
+<!-- Reservation Content -->
+<section class="py-5 section-white">
+    <div class="container">
+        <div class="row g-5">
+            <!-- Calendar & Table Map -->
+            <div class="col-lg-7">
+                <div class="menu-card">
+                    <h4 class="mb-4">
+                        <i class="bi bi-calendar3 text-primary me-2"></i>
+                        Vyberte datum a stůl
+                    </h4>
+
+                    <!-- Calendar placeholder -->
+                    <div class="placeholder-img rounded mb-4" style="min-height: 280px;">
+                        <i class="bi bi-calendar-week" style="font-size: 3rem;"></i>
+                        <span class="small">Interaktivní kalendář</span>
+                        <span class="small text-muted">Bude implementován v dalším sprintu</span>
+                    </div>
+
+                    <!-- Table map placeholder -->
+                    <h5 class="mb-3">
+                        <i class="bi bi-grid-3x3 text-primary me-2"></i>
+                        Rozložení stolů
+                    </h5>
+                    <div class="placeholder-img rounded" style="min-height: 250px;">
+                        <i class="bi bi-diagram-3" style="font-size: 3rem;"></i>
+                        <span class="small">Interaktivní model stolů</span>
+                        <span class="small text-muted">Klikněte na volný stůl pro rezervaci</span>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="d-flex gap-4 mt-3 flex-wrap">
+                        <div class="d-flex align-items-center gap-2">
+                            <div style="width: 16px; height: 16px; border-radius: 4px; background: var(--bistro-success);"></div>
+                            <span class="small text-muted">Volný</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div style="width: 16px; height: 16px; border-radius: 4px; background: #ef4444;"></div>
+                            <span class="small text-muted">Obsazený</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <div style="width: 16px; height: 16px; border-radius: 4px; background: var(--bistro-gold);"></div>
+                            <span class="small text-muted">Vybraný</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reservation Form -->
+            <div class="col-lg-5">
+                <div class="menu-card">
+                    <h4 class="mb-4">
+                        <i class="bi bi-pencil-square text-primary me-2"></i>
+                        Údaje pro rezervaci
+                    </h4>
+
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Jméno <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Jan" disabled />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Příjmení <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" placeholder="Novák" disabled />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Telefon <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" placeholder="+420 000 000 000" disabled />
+                        </div>
+
+                        <div class="row g-3 mb-3">
+                            <div class="col-6">
+                                <label class="form-label fw-medium">Datum <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" disabled />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label fw-medium">Čas <span class="text-danger">*</span></label>
+                                <input type="time" class="form-control" disabled />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Počet osob <span class="text-danger">*</span></label>
+                            <select class="form-select" disabled>
+                                <option>Vyberte počet osob</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-medium">Vybraný stůl</label>
+                            <input type="text" class="form-control" value="Zatím nevybrán" disabled />
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-medium">Poznámka</label>
+                            <textarea class="form-control" rows="3" placeholder="Máte speciální přání?" disabled></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-primary w-100 btn-lg" disabled>
+                            <i class="bi bi-calendar-check me-1"></i> Odeslat rezervaci
+                        </button>
+
+                        <p class="text-muted small text-center mt-3 mb-0">
+                            <i class="bi bi-shield-check me-1"></i>
+                            Formulář bude implementován v dalším sprintu.
+                            Vaše údaje budou zpracovány v souladu s GDPR.
+                        </p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Info -->
+<section class="py-5 section-light">
+    <div class="container">
+        <div class="row g-4 justify-content-center">
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bistro-card-icon mx-auto mb-3">
+                        <i class="bi bi-clock"></i>
+                    </div>
+                    <h6>Rychlé potvrzení</h6>
+                    <p class="text-muted small mb-0">
+                        Rezervaci potvrdíme během otevírací doby.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bistro-card-icon mx-auto mb-3">
+                        <i class="bi bi-x-circle"></i>
+                    </div>
+                    <h6>Snadné zrušení</h6>
+                    <p class="text-muted small mb-0">
+                        Rezervaci můžete zrušit pomocí odkazu v potvrzovací zprávě.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center">
+                    <div class="bistro-card-icon mx-auto mb-3">
+                        <i class="bi bi-telephone"></i>
+                    </div>
+                    <h6>Osobní přístup</h6>
+                    <p class="text-muted small mb-0">
+                        Preferujete telefon? Zavolejte nám na
+                        <a href="tel:+420000000000" class="text-primary text-decoration-none">+420 000 000 000</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,269 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Domů";
+}
+
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="hero-overlay">
+        <div class="container text-center text-white">
+            <p class="text-uppercase fw-bold mb-3" style="letter-spacing: 0.15em; font-size: 0.85rem; opacity: 0.6;">
+                Frenštát pod Radhoštěm
+            </p>
+            <h1 class="hero-title mb-3">Bistro Stars Hollow</h1>
+            <p class="hero-subtitle mb-4">
+                Craft pivo, domácí kuchyně, slané i sladké palačinky, vodní dýmky
+                a přátelská atmosféra na jednom místě.
+            </p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a asp-page="/Reservation" class="btn btn-primary btn-lg hero-cta">
+                    <i class="bi bi-calendar-check"></i> Rezervovat stůl
+                </a>
+                <a asp-page="/Menu" class="btn btn-outline-light btn-lg hero-cta">
+                    <i class="bi bi-book"></i> Prohlédnout menu
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- About Section -->
+<section class="py-5 section-white">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <h2 class="section-title">O Bistro Stars Hollow</h2>
+                <hr class="section-divider" />
+                <p class="mb-3" style="line-height: 1.8;">
+                    @(Model.AboutText?.Content ?? "Vítejte v Bistro Stars Hollow – útulném bistru v samém srdci Frenštátu pod Radhoštěm. Nabízíme pečlivě vybraná craft piva, domácí kuchyni a naše oblíbené palačinky.")
+                </p>
+                <p class="text-muted mb-4" style="line-height: 1.8;">
+                    @(Model.AboutDetail?.Content ?? "Ať už přijdete na oběd, na pivo po práci nebo na víkendový brunch – u nás se budete cítit jako doma.")
+                </p>
+                <a asp-page="/About" class="btn btn-outline-primary">
+                    <i class="bi bi-arrow-right me-1"></i> Více o nás
+                </a>
+            </div>
+            <div class="col-lg-6">
+                <div class="placeholder-img rounded" style="min-height: 350px;">
+                    <i class="bi bi-image" style="font-size: 4rem;"></i>
+                    <span class="small">Fotka interiéru bistra</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Today on Tap -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h2 class="section-title section-title-center">Dnes na čepu</h2>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center mb-5">
+            Aktuální nabídka čepovaných piv &ndash; pravidelně obměňujeme.
+        </p>
+
+        @if (Model.DraftBeers.Any())
+        {
+            <div class="row g-4 justify-content-center">
+                @foreach (var beer in Model.DraftBeers.Take(4))
+                {
+                    <div class="col-sm-6 col-lg-3">
+                        <div class="tap-card">
+                            <div class="tap-icon"><i class="bi bi-cup-fill"></i></div>
+                            <div class="tap-name">@beer.Name</div>
+                            <div class="tap-brewery">@beer.BreweryName</div>
+                            @if (!string.IsNullOrEmpty(beer.Style))
+                            {
+                                <div class="tap-style">@beer.Style</div>
+                            }
+                            <div class="tap-price">@beer.PriceText</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="bi bi-cup"></i>
+                <p>Momentálně nejsou žádná čepovaná piva v nabídce.</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Who's Serving Today -->
+<section class="py-5 section-white">
+    <div class="container">
+        <h2 class="section-title section-title-center">Kdo dnes obsluhuje</h2>
+        <hr class="section-divider section-divider-center" />
+
+        @if (Model.Staff.Any())
+        {
+            <p class="section-subtitle section-subtitle-center mb-5">
+                Seznamte se s naším týmem &ndash; dnes se o vás postarají:
+            </p>
+            <div class="row g-4 justify-content-center">
+                @foreach (var person in Model.Staff)
+                {
+                    <div class="col-auto">
+                        <div class="staff-card">
+                            <div class="staff-photo">
+                                @if (!string.IsNullOrEmpty(person.PhotoPath))
+                                {
+                                    <img src="@person.PhotoPath" alt="@person.DisplayName" />
+                                }
+                                else
+                                {
+                                    <i class="bi bi-person-fill"></i>
+                                }
+                            </div>
+                            <div class="staff-name">@person.DisplayName</div>
+                            <div class="staff-role">@(person.IsPrimary ? "Hlavní čepař" : "Kuchyně")</div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="section-subtitle section-subtitle-center mb-4">
+                Dnes zatím není určen personál. Sledujte nás pro aktualizace!
+            </p>
+        }
+    </div>
+</section>
+
+<!-- Events -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h2 class="section-title section-title-center">Akce a události</h2>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center mb-5">
+            Co se u nás chystá? Sledujte nadcházející akce.
+        </p>
+
+        @if (Model.Events.Any())
+        {
+            <div class="row g-4 justify-content-center">
+                @foreach (var evt in Model.Events.Take(3))
+                {
+                    <div class="col-md-6 col-lg-4">
+                        <div class="event-card">
+                            <div class="event-card-img">
+                                @if (!string.IsNullOrEmpty(evt.ImagePath))
+                                {
+                                    <img src="@evt.ImagePath" alt="@evt.Title" style="width:100%;height:100%;object-fit:cover;" />
+                                }
+                                else
+                                {
+                                    <i class="bi bi-calendar-event"></i>
+                                }
+                            </div>
+                            <div class="event-card-body">
+                                @if (evt.ValidFrom.HasValue)
+                                {
+                                    <div class="event-date">
+                                        <i class="bi bi-calendar3"></i> @evt.ValidFrom.Value.ToString("d. M. yyyy")
+                                    </div>
+                                }
+                                <h5 class="mb-2">@evt.Title</h5>
+                                @if (!string.IsNullOrEmpty(evt.Description))
+                                {
+                                    <p class="text-muted small mb-0">@evt.Description</p>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="bi bi-calendar-event"></i>
+                <p>Momentálně nejsou žádné aktivní akce.</p>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Mini Gallery -->
+<section class="py-5 section-white">
+    <div class="container">
+        <h2 class="section-title section-title-center">Z naší galerie</h2>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center mb-5">
+            Nahlédněte do bistra.
+        </p>
+
+        <div class="gallery-grid">
+            @foreach (var img in Model.GalleryImages)
+            {
+                <div class="gallery-item">
+                    <i class="bi bi-image"></i>
+                </div>
+            }
+            @if (!Model.GalleryImages.Any())
+            {
+                @for (var i = 0; i < 6; i++)
+                {
+                    <div class="gallery-item">
+                        <i class="bi bi-image"></i>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="text-center mt-4">
+            <a asp-page="/Gallery" class="btn btn-outline-primary">
+                <i class="bi bi-images me-1"></i> Zobrazit celou galerii
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Brewery Carousel -->
+@if (Model.Breweries.Any())
+{
+    <section class="py-5 section-light">
+        <div class="container">
+            <h2 class="section-title section-title-center">Naši oblíbení pivovary</h2>
+            <hr class="section-divider section-divider-center" />
+            <p class="section-subtitle section-subtitle-center mb-5">
+                Spolupracujeme s českými i zahraničními pivovary.
+            </p>
+
+            <div class="brewery-track justify-content-center flex-wrap">
+                @foreach (var brewery in Model.Breweries)
+                {
+                    <a asp-page="/Beers/BreweryDetail" asp-route-id="@brewery.Id" class="brewery-logo text-decoration-none">
+                        @if (!string.IsNullOrEmpty(brewery.LogoImagePath))
+                        {
+                            <img src="@brewery.LogoImagePath" alt="@brewery.Name" />
+                        }
+                        else
+                        {
+                            <span class="text-muted small">@brewery.Name</span>
+                        }
+                    </a>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- CTA / Reservation -->
+<section class="py-5 section-dark">
+    <div class="container text-center">
+        <h2 class="mb-3" style="color: var(--bistro-light);">Zarezervujte si svůj stůl</h2>
+        <p style="color: rgba(255,255,255,0.6); max-width: 500px; margin: 0 auto 1.5rem;">
+            Nechcete čekat? Vyberte si datum, čas a stůl pohodlně online.
+        </p>
+        <a asp-page="/Reservation" class="btn btn-primary btn-lg hero-cta">
+            <i class="bi bi-calendar-check"></i> Rezervovat
+        </a>
+    </div>
+</section>

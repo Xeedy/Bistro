@@ -1,0 +1,14 @@
+namespace BistroStarsHollow.Application.Common.Models;
+
+public class EmailSettings
+{
+    public const string SectionName = "Mail";
+
+    public string SmtpHost { get; set; } = string.Empty;
+    public int SmtpPort { get; set; } = 587;
+    public string SmtpUser { get; set; } = string.Empty;
+    public string SmtpPass { get; set; } = string.Empty;
+    public string FromEmail { get; set; } = string.Empty;
+    public string FromName { get; set; } = "Bistro Stars Hollow";
+    public string? DefaultTo { get; set; }
+}

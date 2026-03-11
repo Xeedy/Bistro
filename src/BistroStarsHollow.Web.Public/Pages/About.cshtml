@@ -1,0 +1,210 @@
+@page
+@model BistroStarsHollow.Web.Public.Pages.AboutModel
+@{
+    ViewData["Title"] = "O nás";
+}
+
+<!-- Page Header -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h1 class="section-title section-title-center">O Bistro Stars Hollow</h1>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center">
+            Poznejte náš příběh a zjistěte, co nás dělá výjimečnými.
+        </p>
+    </div>
+</section>
+
+<!-- Story Section -->
+<section class="py-5 section-white">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <h2 class="section-title">Náš příběh</h2>
+                <hr class="section-divider" />
+                <p style="line-height: 1.8;">
+                    @(Model.StoryText?.Content ?? "Bistro Stars Hollow vzniklo z lásky k dobrému pivu, poctivému jídlu a touhy vytvořit místo, kam se budete chtít vracet. Otevřeli jsme ve Frenštátě pod Radhoštěm s jednoduchým cílem – nabídnout kvalitu, pohodu a přátelskou atmosféru.")
+                </p>
+                <p class="text-muted" style="line-height: 1.8;">
+                    @(Model.StoryDetail?.Content ?? "Od samého začátku klademe důraz na pečlivý výběr surovin. Naše craft piva pochází z malých i velkých českých pivovarů, které osobně navštěvujeme. Kuchyně staví na jednoduchých receptech s čerstvými ingrediencemi – od klasických jídel po naše proslulé slané a sladké palačinky.")
+                </p>
+            </div>
+            <div class="col-lg-6">
+                <div class="placeholder-img rounded" style="min-height: 350px;">
+                    <i class="bi bi-shop" style="font-size: 4rem;"></i>
+                    <span class="small">Fotka bistra</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- What We Offer -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h2 class="section-title section-title-center">Co u nás najdete</h2>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center mb-5">
+            Kombinace, která dělá Bistro Stars Hollow jedinečným.
+        </p>
+
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4">
+                <div class="bistro-card h-100">
+                    <div class="bistro-card-body">
+                        <div class="bistro-card-icon">
+                            <i class="bi bi-cup-fill"></i>
+                        </div>
+                        <h5>Craft piva</h5>
+                        <p class="text-muted mb-0">
+                            Pečlivě vybraná čepovaná i lahvová piva z českých
+                            a zahraničních minipivovarů. Nabídku pravidelně obměňujeme.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="bistro-card h-100">
+                    <div class="bistro-card-body">
+                        <div class="bistro-card-icon">
+                            <i class="bi bi-egg-fried"></i>
+                        </div>
+                        <h5>Domácí kuchyně</h5>
+                        <p class="text-muted mb-0">
+                            Od klasických pokrmů po naše oblíbené palačinky &ndash;
+                            sladké i slané. Vaříme z čerstvých a lokálních surovin.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="bistro-card h-100">
+                    <div class="bistro-card-body">
+                        <div class="bistro-card-icon">
+                            <i class="bi bi-cloud"></i>
+                        </div>
+                        <h5>Vodní dýmky</h5>
+                        <p class="text-muted mb-0">
+                            Kvalitní vodní dýmky s širokou nabídkou příchutí
+                            pro ty, kteří si chtějí zpestřit svůj večer.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="bistro-card h-100">
+                    <div class="bistro-card-body">
+                        <div class="bistro-card-icon">
+                            <i class="bi bi-cup-hot"></i>
+                        </div>
+                        <h5>Čaje a nápoje</h5>
+                        <p class="text-muted mb-0">
+                            Sypaný čaj, limonády a nealko nápoje pro všechny,
+                            kteří dávají přednost nealko alternativám.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="bistro-card h-100">
+                    <div class="bistro-card-body">
+                        <div class="bistro-card-icon">
+                            <i class="bi bi-people"></i>
+                        </div>
+                        <h5>Atmosféra</h5>
+                        <p class="text-muted mb-0">
+                            Přátelské prostředí, kde se cítíte jako doma.
+                            Ideální pro posezení s přáteli i klidný večer ve dvou.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="bistro-card h-100">
+                    <div class="bistro-card-body">
+                        <div class="bistro-card-icon">
+                            <i class="bi bi-calendar-event"></i>
+                        </div>
+                        <h5>Akce a eventy</h5>
+                        <p class="text-muted mb-0">
+                            Pravidelné tematické večery, živá hudba, pivní degustace
+                            a speciální nabídky.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Philosophy -->
+<section class="py-5 section-white">
+    <div class="container">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6 order-lg-2">
+                <h2 class="section-title">Naše filozofie</h2>
+                <hr class="section-divider" />
+                <div class="about-feature">
+                    <div class="about-feature-icon">
+                        <i class="bi bi-heart"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">Kvalita na prvním místě</h6>
+                        <p class="text-muted mb-0">
+                            Každý produkt v naší nabídce si pečlivě vybíráme.
+                            Spolupracujeme přímo s dodavateli a pivovary.
+                        </p>
+                    </div>
+                </div>
+                <div class="about-feature">
+                    <div class="about-feature-icon">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">Lokální základ</h6>
+                        <p class="text-muted mb-0">
+                            Podporujeme lokální dodavatele a regionální pivovary.
+                            Naše jídla připravujeme z čerstvých surovin.
+                        </p>
+                    </div>
+                </div>
+                <div class="about-feature">
+                    <div class="about-feature-icon">
+                        <i class="bi bi-emoji-smile"></i>
+                    </div>
+                    <div>
+                        <h6 class="mb-1">Osobní přístup</h6>
+                        <p class="text-muted mb-0">
+                            Každý host je pro nás důležitý. Rádi poradíme
+                            s výběrem piva nebo jídla.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 order-lg-1">
+                <div class="placeholder-img rounded" style="min-height: 350px;">
+                    <i class="bi bi-people" style="font-size: 4rem;"></i>
+                    <span class="small">Fotka týmu</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<section class="py-5 section-dark">
+    <div class="container text-center">
+        <h2 class="mb-3" style="color: var(--bistro-light);">Přijďte nás navštívit</h2>
+        <p style="color: rgba(255,255,255,0.6); max-width: 500px; margin: 0 auto 1.5rem;">
+            Těšíme se na vás v Bistro Stars Hollow ve Frenštátě pod Radhoštěm.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a asp-page="/Reservation" class="btn btn-primary btn-lg hero-cta">
+                <i class="bi bi-calendar-check"></i> Rezervovat stůl
+            </a>
+            <a asp-page="/Contact" class="btn btn-outline-light btn-lg hero-cta">
+                <i class="bi bi-geo-alt"></i> Kde nás najdete
+            </a>
+        </div>
+    </div>
+</section>

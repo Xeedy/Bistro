@@ -1,0 +1,97 @@
+is_global = true
+build_property.TargetFramework = net9.0
+build_property.TargetFramework = net9.0
+build_property.TargetPlatformMinVersion = 
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = BistroStarsHollow.Web.Public
+build_property.RootNamespace = BistroStarsHollow.Web.Public
+build_property.ProjectDir = C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Web.Public\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 9.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\micha\Documents\bistroWeb\src\BistroStarsHollow.Web.Public
+build_property._RazorSourceGeneratorDebug = 
+build_property.EffectiveAnalysisLevelStyle = 9.0
+build_property.EnableCodeStyleSeverity = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/About.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWJvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Beers/BottledBeers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmVlcnNcQm90dGxlZEJlZXJzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Beers/Breweries.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmVlcnNcQnJld2VyaWVzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Beers/BreweryDetail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmVlcnNcQnJld2VyeURldGFpbC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Beers/DraftBeers.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQmVlcnNcRHJhZnRCZWVycy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Contact.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGFjdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Gallery.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcR2FsbGVyeS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Menu.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWVudS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Reservation.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXRpb24uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Shared/Components/OpeningHours/Default.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXENvbXBvbmVudHNcT3BlbmluZ0hvdXJzXERlZmF1bHQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Shared/_MenuSection.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9NZW51U2VjdGlvbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/bistroWeb/src/BistroStarsHollow.Web.Public/Pages/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-vy1a4yh4cj

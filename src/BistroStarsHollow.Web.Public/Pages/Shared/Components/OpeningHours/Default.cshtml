@@ -1,0 +1,20 @@
+@using BistroStarsHollow.Web.Public.Pages.Shared
+@using BistroStarsHollow.Domain.Enums
+@model List<BistroStarsHollow.Domain.Entities.OpeningHours>
+
+<ul class="opening-hours">
+    @foreach (var oh in Model)
+    {
+        <li>
+            <span class="day">@OpeningHoursHelper.GetDayName(oh.DayOfWeek)</span>
+            @if (oh.IsClosed)
+            {
+                <span class="closed">Zavřeno</span>
+            }
+            else
+            {
+                <span class="time">@($"{oh.OpenTime:hh\\:mm}") - @($"{oh.CloseTime:hh\\:mm}")</span>
+            }
+        </li>
+    }
+</ul>

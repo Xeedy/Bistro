@@ -1,0 +1,40 @@
+@using BistroStarsHollow.Web.Public.Pages.Shared
+@model MenuSectionViewModel
+
+<div class="menu-section">
+    <h3 class="menu-section-title">
+        <i class="bi @Model.Icon"></i> @Model.Title
+    </h3>
+
+    @if (!string.IsNullOrEmpty(Model.Subtitle))
+    {
+        <p class="text-muted mb-3">@Model.Subtitle</p>
+    }
+
+    @if (Model.Items.Any())
+    {
+        @foreach (var item in Model.Items.OrderBy(i => i.SortOrder))
+        {
+            <div class="menu-item">
+                <div>
+                    <div class="menu-item-name">@item.Name</div>
+                    @if (!string.IsNullOrEmpty(item.Description))
+                    {
+                        <div class="menu-item-desc">@item.Description</div>
+                    }
+                </div>
+                @if (!string.IsNullOrEmpty(item.PriceText))
+                {
+                    <div class="menu-item-price">@item.PriceText</div>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <div class="empty-state">
+            <i class="bi bi-inbox"></i>
+            <p>Žádné položky v této kategorii.</p>
+        </div>
+    }
+</div>

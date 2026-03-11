@@ -1,0 +1,81 @@
+@page
+@model BistroStarsHollow.Web.Public.Pages.Beers.DraftBeersModel
+@{
+    ViewData["Title"] = "Piva na čepu";
+}
+
+<!-- Page Header -->
+<section class="py-5 section-light">
+    <div class="container">
+        <h1 class="section-title section-title-center">Piva na čepu</h1>
+        <hr class="section-divider section-divider-center" />
+        <p class="section-subtitle section-subtitle-center">
+            Aktuální nabídka čepovaných piv &ndash; pravidelně obměňujeme.
+        </p>
+    </div>
+</section>
+
+<!-- Beer Grid -->
+<section class="py-5 section-white">
+    <div class="container">
+        @if (Model.Beers.Any())
+        {
+            <div class="row g-4">
+                @foreach (var beer in Model.Beers.OrderBy(b => b.SortOrder))
+                {
+                    <div class="col-sm-6 col-lg-4 col-xl-3">
+                        <div class="beer-card">
+                            <div class="beer-card-img">
+                                <i class="bi bi-cup-fill"></i>
+                            </div>
+                            <div class="beer-card-body">
+                                <h5 class="beer-card-name">@beer.Name</h5>
+                                <p class="beer-card-brewery">
+                                    <i class="bi bi-building me-1"></i>@beer.BreweryName
+                                </p>
+                                @if (!string.IsNullOrEmpty(beer.Style))
+                                {
+                                    <span class="beer-card-style">@beer.Style</span>
+                                }
+                                @if (!string.IsNullOrEmpty(beer.Description))
+                                {
+                                    <p class="beer-card-desc">@beer.Description</p>
+                                }
+                                <div class="beer-card-price">@beer.PriceText</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="empty-state">
+                <i class="bi bi-cup"></i>
+                <p>Momentálně nejsou žádná čepovaná piva v nabídce.</p>
+            </div>
+        }
+
+        <div class="text-center mt-5">
+            <p class="text-muted small">
+                <i class="bi bi-info-circle me-1"></i>
+                Nabídka čepovaných piv se mění. Toto jsou demo data.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Other Beer Sections -->
+<section class="py-5 section-light">
+    <div class="container text-center">
+        <h3 class="section-title mb-4">Další pivní nabídka</h3>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a asp-page="/Beers/BottledBeers" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-box-seam me-1"></i> Piva v lednici
+            </a>
+            <a asp-page="/Beers/Breweries" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-building me-1"></i> Oblíbené pivovary
+            </a>
+        </div>
+    </div>
+</section>
