@@ -1,0 +1,72 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Admin.Pages.Content.Breweries.EditModel
+@{
+    ViewData["Title"] = "Upravit pivovar";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">Upravit pivovar</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Brewery.Id" />
+                    <input type="hidden" asp-for="Brewery.LogoImagePath" />
+                    <input type="hidden" asp-for="Brewery.CreatedAt" />
+                    <input type="hidden" asp-for="Brewery.CreatedBy" />
+
+                    <div class="mb-3">
+                        <label asp-for="Brewery.Name" class="form-label">Název <span class="text-danger">*</span></label>
+                        <input asp-for="Brewery.Name" class="form-control" required />
+                        <span asp-validation-for="Brewery.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Brewery.Description" class="form-label">Popis</label>
+                        <textarea asp-for="Brewery.Description" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Brewery.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Logo</label>
+                        @if (!string.IsNullOrEmpty(Model.Brewery.LogoImagePath))
+                        {
+                            <div class="mb-2">
+                                <img src="@Model.Brewery.LogoImagePath" alt="@Model.Brewery.Name" class="img-thumbnail" style="max-height:150px;" />
+                            </div>
+                        }
+                        <input type="file" name="LogoFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                        <div class="form-text">Ponechte prázdné pro zachování stávajícího loga.</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Brewery.SortOrder" class="form-label">Pořadí</label>
+                            <input asp-for="Brewery.SortOrder" class="form-control" type="number" />
+                            <span asp-validation-for="Brewery.SortOrder" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input asp-for="Brewery.IsActive" class="form-check-input" />
+                        <label asp-for="Brewery.IsActive" class="form-check-label">Aktivní</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Uložit změny</button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Content.Gallery.IndexModel
+@{
+    ViewData["Title"] = "Galerie";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Galerie</h1>
+    <a asp-page="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i> Přidat obrázek
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th style="width:80px">Náhled</th>
+                        <th>Alt text</th>
+                        <th>Pořadí</th>
+                        <th>Stav</th>
+                        <th style="width:120px">Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var img in Model.Images)
+                    {
+                        <tr>
+                            <td>
+                                <img src="@img.FilePath" alt="@img.AltText" class="img-thumbnail" style="width:60px;height:40px;object-fit:cover;" />
+                            </td>
+                            <td>@(img.AltText ?? "—")</td>
+                            <td>@img.SortOrder</td>
+                            <td>
+                                @if (img.IsActive)
+                                {
+                                    <span class="badge bg-success">Aktivní</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary">Neaktivní</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-page="Edit" asp-route-id="@img.Id" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-page="Delete" asp-route-id="@img.Id" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Images.Any())
+                    {
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">Zatím žádné obrázky.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Admin.Pages.Content.Breweries.DeleteModel
+@{
+    ViewData["Title"] = "Smazat pivovar";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="card-title mb-0">Opravdu smazat tento pivovar?</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.BeerCount > 0)
+                {
+                    <div class="alert alert-warning">
+                        <i class="bi bi-exclamation-triangle me-1"></i>
+                        Tento pivovar má <strong>@Model.BeerCount</strong> přiřazených piv.
+                        Smazání pivovaru smaže i všechna jeho piva!
+                    </div>
+                }
+
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Název</dt>
+                    <dd class="col-sm-8">@Model.Brewery.Name</dd>
+                    <dt class="col-sm-4">Popis</dt>
+                    <dd class="col-sm-8">@(Model.Brewery.Description ?? "—")</dd>
+                    <dt class="col-sm-4">Počet piv</dt>
+                    <dd class="col-sm-8">@Model.BeerCount</dd>
+                    <dt class="col-sm-4">Stav</dt>
+                    <dd class="col-sm-8">@(Model.Brewery.IsActive ? "Aktivní" : "Neaktivní")</dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <form method="post">
+                    <input type="hidden" asp-for="Brewery.Id" />
+                    <button type="submit" class="btn btn-danger">Smazat</button>
+                </form>
+                <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+            </div>
+        </div>
+    </div>
+</div>

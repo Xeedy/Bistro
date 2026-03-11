@@ -1,0 +1,79 @@
+@page
+@model BistroStarsHollow.Web.Public.Pages.ReservationConfirmationModel
+@{
+    ViewData["Title"] = "Rezervace potvrzena";
+}
+
+<section class="py-5 section-light">
+    <div class="container">
+        <h1 class="section-title section-title-center">Rezervace přijata</h1>
+        <hr class="section-divider section-divider-center" />
+    </div>
+</section>
+
+<section class="py-5 section-white">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="menu-card text-center">
+                    <div class="mb-4">
+                        <i class="bi bi-check-circle-fill text-success" style="font-size: 4rem;"></i>
+                    </div>
+                    <h3 class="mb-4">Děkujeme za Vaši rezervaci!</h3>
+                    <p class="text-muted mb-4">
+                        Vaše rezervace byla přijata a čeká na potvrzení. Potvrdíme ji co nejdříve.
+                    </p>
+
+                    <div class="text-start mb-4">
+                        <table class="table table-borderless mb-0">
+                            <tr>
+                                <td class="text-muted fw-medium" style="width: 40%;">Jméno:</td>
+                                <td class="fw-bold">@Model.FirstName @Model.LastName</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-medium">Datum:</td>
+                                <td class="fw-bold">
+                                    @if (DateTime.TryParse(Model.Date, out var date))
+                                    {
+                                        @date.ToString("d. MMMM yyyy", new System.Globalization.CultureInfo("cs-CZ"))
+                                    }
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-medium">Čas:</td>
+                                <td class="fw-bold">@Model.Time</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-medium">Počet osob:</td>
+                                <td class="fw-bold">@Model.NumberOfPeople</td>
+                            </tr>
+                            <tr>
+                                <td class="text-muted fw-medium">Stůl:</td>
+                                <td class="fw-bold">@Model.TableName</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="alert alert-info text-start">
+                        <h6 class="alert-heading mb-2">
+                            <i class="bi bi-info-circle me-1"></i> Zrušení rezervace
+                        </h6>
+                        <p class="mb-2 small">
+                            Pokud potřebujete rezervaci zrušit, použijte následující odkaz:
+                        </p>
+                        <a href="@Model.CancelUrl" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-x-circle me-1"></i> Zrušit rezervaci
+                        </a>
+                        <p class="mb-0 mt-2 small text-muted">
+                            Tento odkaz si uložte — slouží k případnému zrušení rezervace.
+                        </p>
+                    </div>
+
+                    <a asp-page="Index" class="btn btn-primary mt-3">
+                        <i class="bi bi-house me-1"></i> Zpět na hlavní stránku
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

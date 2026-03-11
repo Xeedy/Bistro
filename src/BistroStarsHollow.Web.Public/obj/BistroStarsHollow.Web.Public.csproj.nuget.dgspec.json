@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Web.Public\\BistroStarsHollow.Web.Public.csproj": {}
+    "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Web.Public\\BistroStarsHollow.Web.Public.csproj": {}
   },
   "projects": {
-    "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj": {
+    "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj",
+        "projectUniqueName": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj",
         "projectName": "BistroStarsHollow.Application",
-        "projectPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj",
+        "projectPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj",
         "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Application\\obj\\",
+        "outputPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Application\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -33,8 +33,8 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj": {
-                "projectPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj"
+              "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj": {
+                "projectPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj"
               }
             }
           }
@@ -74,14 +74,14 @@
         }
       }
     },
-    "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj": {
+    "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj",
         "projectName": "BistroStarsHollow.Domain",
-        "projectPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj",
+        "projectPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj",
         "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Domain\\obj\\",
+        "outputPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -140,14 +140,14 @@
         }
       }
     },
-    "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj": {
+    "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj",
         "projectName": "BistroStarsHollow.Infrastructure",
-        "projectPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -169,11 +169,11 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj": {
-                "projectPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj"
+              "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj": {
+                "projectPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj"
               },
-              "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj": {
-                "projectPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj"
+              "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj": {
+                "projectPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Domain\\BistroStarsHollow.Domain.csproj"
               }
             }
           }
@@ -237,14 +237,14 @@
         }
       }
     },
-    "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Web.Public\\BistroStarsHollow.Web.Public.csproj": {
+    "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Web.Public\\BistroStarsHollow.Web.Public.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Web.Public\\BistroStarsHollow.Web.Public.csproj",
+        "projectUniqueName": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Web.Public\\BistroStarsHollow.Web.Public.csproj",
         "projectName": "BistroStarsHollow.Web.Public",
-        "projectPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Web.Public\\BistroStarsHollow.Web.Public.csproj",
+        "projectPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Web.Public\\BistroStarsHollow.Web.Public.csproj",
         "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Web.Public\\obj\\",
+        "outputPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Web.Public\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -266,11 +266,11 @@
           "net9.0": {
             "targetAlias": "net9.0",
             "projectReferences": {
-              "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj": {
-                "projectPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj"
+              "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj": {
+                "projectPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Application\\BistroStarsHollow.Application.csproj"
               },
-              "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj": {
-                "projectPath": "C:\\Users\\micha\\Documents\\bistroWeb\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj"
+              "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj": {
+                "projectPath": "C:\\Users\\micha\\Documents\\Projekty\\Bistro\\src\\BistroStarsHollow.Infrastructure\\BistroStarsHollow.Infrastructure.csproj"
               }
             }
           }

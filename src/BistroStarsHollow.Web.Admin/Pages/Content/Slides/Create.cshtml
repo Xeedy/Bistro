@@ -1,0 +1,60 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Content.Slides.CreateModel
+@{
+    ViewData["Title"] = "Nový slide";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">Nový slide</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Obrázek <span class="text-danger">*</span></label>
+                        <input type="file" name="ImageFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" required />
+                        <div class="form-text">Max 5 MB. Formáty: jpg, jpeg, png, webp.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Slide.Title" class="form-label">Titulek</label>
+                        <input asp-for="Slide.Title" class="form-control" />
+                        <span asp-validation-for="Slide.Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Slide.LinkUrl" class="form-label">URL odkaz</label>
+                        <input asp-for="Slide.LinkUrl" class="form-control" placeholder="https://..." />
+                        <span asp-validation-for="Slide.LinkUrl" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Slide.SortOrder" class="form-label">Pořadí</label>
+                        <input asp-for="Slide.SortOrder" class="form-control" type="number" />
+                        <span asp-validation-for="Slide.SortOrder" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input asp-for="Slide.IsActive" class="form-check-input" />
+                        <label asp-for="Slide.IsActive" class="form-check-label">Aktivní</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Uložit</button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

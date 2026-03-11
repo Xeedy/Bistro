@@ -1,0 +1,55 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Content.ContentBlocks.IndexModel
+@{
+    ViewData["Title"] = "Textové bloky";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Textové bloky</h1>
+    <a asp-page="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i> Přidat blok
+    </a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Klíč</th>
+                        <th>Titulek</th>
+                        <th>Jazyk</th>
+                        <th style="width:120px">Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var block in Model.Blocks)
+                    {
+                        <tr>
+                            <td><code>@block.Key</code></td>
+                            <td>@block.Title</td>
+                            <td>
+                                <span class="badge bg-info">@block.Language.ToUpper()</span>
+                            </td>
+                            <td>
+                                <a asp-page="Edit" asp-route-id="@block.Id" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-page="Delete" asp-route-id="@block.Id" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Blocks.Any())
+                    {
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-4">Zatím žádné textové bloky.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,60 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Admin.Pages.Content.ContentBlocks.EditModel
+@{
+    ViewData["Title"] = "Upravit textový blok";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">Upravit textový blok</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Block.Id" />
+                    <input type="hidden" asp-for="Block.CreatedAt" />
+                    <input type="hidden" asp-for="Block.CreatedBy" />
+
+                    <div class="mb-3">
+                        <label asp-for="Block.Key" class="form-label">Klíč</label>
+                        <input asp-for="Block.Key" class="form-control" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Block.Title" class="form-label">Titulek <span class="text-danger">*</span></label>
+                        <input asp-for="Block.Title" class="form-control" required />
+                        <span asp-validation-for="Block.Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Block.Content" class="form-label">Obsah <span class="text-danger">*</span></label>
+                        <textarea asp-for="Block.Content" class="form-control" rows="6" required></textarea>
+                        <span asp-validation-for="Block.Content" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Block.Language" class="form-label">Jazyk</label>
+                        <select asp-for="Block.Language" class="form-select">
+                            <option value="cs">Čeština (CS)</option>
+                            <option value="en">Angličtina (EN)</option>
+                        </select>
+                        <span asp-validation-for="Block.Language" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Uložit změny</button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

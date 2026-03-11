@@ -1,0 +1,44 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Admin.Pages.Content.Gallery.DeleteModel
+@{
+    ViewData["Title"] = "Smazat obrázek";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na galerii
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="card-title mb-0">Opravdu smazat tento obrázek?</h5>
+            </div>
+            <div class="card-body">
+                @if (!string.IsNullOrEmpty(Model.Image.FilePath))
+                {
+                    <div class="mb-3">
+                        <img src="@Model.Image.FilePath" alt="@Model.Image.AltText" class="img-thumbnail" style="max-height:200px;" />
+                    </div>
+                }
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Název souboru</dt>
+                    <dd class="col-sm-8">@Model.Image.FileName</dd>
+                    <dt class="col-sm-4">Alt text</dt>
+                    <dd class="col-sm-8">@(Model.Image.AltText ?? "—")</dd>
+                    <dt class="col-sm-4">Stav</dt>
+                    <dd class="col-sm-8">@(Model.Image.IsActive ? "Aktivní" : "Neaktivní")</dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <form method="post">
+                    <input type="hidden" asp-for="Image.Id" />
+                    <button type="submit" class="btn btn-danger">Smazat</button>
+                </form>
+                <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+            </div>
+        </div>
+    </div>
+</div>

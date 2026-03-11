@@ -1,0 +1,78 @@
+@page
+@using BistroStarsHollow.Domain.Enums
+@model BistroStarsHollow.Web.Admin.Pages.Content.OpeningHours.IndexModel
+@{
+    ViewData["Title"] = "Otevírací doba";
+}
+
+@{
+    string DayName(DayOfWeekCz day) => day switch
+    {
+        DayOfWeekCz.Monday => "Pondělí",
+        DayOfWeekCz.Tuesday => "Úterý",
+        DayOfWeekCz.Wednesday => "Středa",
+        DayOfWeekCz.Thursday => "Čtvrtek",
+        DayOfWeekCz.Friday => "Pátek",
+        DayOfWeekCz.Saturday => "Sobota",
+        DayOfWeekCz.Sunday => "Neděle",
+        _ => day.ToString()
+    };
+}
+
+<div class="mb-4">
+    <h1 class="h3 mb-0">Otevírací doba</h1>
+</div>
+
+@if (Model.SuccessMessage != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @Model.SuccessMessage
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                    <table class="table mb-3">
+                        <thead>
+                            <tr>
+                                <th>Den</th>
+                                <th style="width:150px">Otevřeno od</th>
+                                <th style="width:150px">Zavřeno v</th>
+                                <th style="width:100px">Zavřeno</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Hours.Count; i++)
+                            {
+                                <tr>
+                                    <td class="align-middle fw-medium">
+                                        <input type="hidden" name="Hours[@i].Id" value="@Model.Hours[i].Id" />
+                                        <input type="hidden" name="Hours[@i].DayOfWeek" value="@((int)Model.Hours[i].DayOfWeek)" />
+                                        <input type="hidden" name="Hours[@i].CreatedAt" value="@Model.Hours[i].CreatedAt.ToString("o")" />
+                                        <input type="hidden" name="Hours[@i].CreatedBy" value="@Model.Hours[i].CreatedBy" />
+                                        @DayName(Model.Hours[i].DayOfWeek)
+                                    </td>
+                                    <td>
+                                        <input type="time" name="Hours[@i].OpenTime" value="@Model.Hours[i].OpenTime?.ToString(@"hh\:mm")" class="form-control" />
+                                    </td>
+                                    <td>
+                                        <input type="time" name="Hours[@i].CloseTime" value="@Model.Hours[i].CloseTime?.ToString(@"hh\:mm")" class="form-control" />
+                                    </td>
+                                    <td class="align-middle text-center">
+                                        <input type="checkbox" name="Hours[@i].IsClosed" value="true" @(Model.Hours[i].IsClosed ? "checked" : "") class="form-check-input" />
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                    <button type="submit" class="btn btn-primary">Uložit změny</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

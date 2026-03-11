@@ -1,0 +1,42 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Admin.Pages.Content.Events.DeleteModel
+@{
+    ViewData["Title"] = "Smazat akci";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="card-title mb-0">Opravdu smazat tuto akci?</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Název</dt>
+                    <dd class="col-sm-8">@Model.Event.Title</dd>
+                    <dt class="col-sm-4">Popis</dt>
+                    <dd class="col-sm-8">@(Model.Event.Description ?? "—")</dd>
+                    <dt class="col-sm-4">Platné od</dt>
+                    <dd class="col-sm-8">@(Model.Event.ValidFrom?.ToString("dd.MM.yyyy") ?? "—")</dd>
+                    <dt class="col-sm-4">Platné do</dt>
+                    <dd class="col-sm-8">@(Model.Event.ValidTo?.ToString("dd.MM.yyyy") ?? "—")</dd>
+                    <dt class="col-sm-4">Stav</dt>
+                    <dd class="col-sm-8">@(Model.Event.IsActive ? "Aktivní" : "Neaktivní")</dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <form method="post">
+                    <input type="hidden" asp-for="Event.Id" />
+                    <button type="submit" class="btn btn-danger">Smazat</button>
+                </form>
+                <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+            </div>
+        </div>
+    </div>
+</div>

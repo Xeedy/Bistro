@@ -4,7 +4,9 @@
       "Bash(dotnet new:*)",
       "Bash(dotnet sln:*)",
       "Bash(dotnet sln add:*)",
-      "Bash(dotnet build:*)"
+      "Bash(dotnet build:*)",
+      "Bash(find /c/Users/micha/Documents/Projekty/Bistro -type f -name \"*.cs\" | xargs grep -l \"Reservation\" | grep -E \"\\(Service|Handler|Controller|Page\\)\" | head -10)",
+      "Bash(grep -E \"MenuCategory\\\\.|BeerType\\\\.|ReservationStatus\\\\.\" /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Domain/Enums/* | head -20)"
     ]
   }
 }

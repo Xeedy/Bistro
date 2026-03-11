@@ -1,0 +1,77 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Admin.Pages.Content.Events.EditModel
+@{
+    ViewData["Title"] = "Upravit akci";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">Upravit akci</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Event.Id" />
+                    <input type="hidden" asp-for="Event.ImagePath" />
+                    <input type="hidden" asp-for="Event.CreatedAt" />
+                    <input type="hidden" asp-for="Event.CreatedBy" />
+
+                    <div class="mb-3">
+                        <label asp-for="Event.Title" class="form-label">Název <span class="text-danger">*</span></label>
+                        <input asp-for="Event.Title" class="form-control" required />
+                        <span asp-validation-for="Event.Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Event.Description" class="form-label">Popis</label>
+                        <textarea asp-for="Event.Description" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="Event.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Obrázek</label>
+                        @if (!string.IsNullOrEmpty(Model.Event.ImagePath))
+                        {
+                            <div class="mb-2">
+                                <img src="@Model.Event.ImagePath" alt="@Model.Event.Title" class="img-thumbnail" style="max-height:150px;" />
+                            </div>
+                        }
+                        <input type="file" name="ImageFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" />
+                        <div class="form-text">Ponechte prázdné pro zachování stávajícího obrázku.</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Event.ValidFrom" class="form-label">Platné od</label>
+                            <input asp-for="Event.ValidFrom" class="form-control" type="date" />
+                            <span asp-validation-for="Event.ValidFrom" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Event.ValidTo" class="form-label">Platné do</label>
+                            <input asp-for="Event.ValidTo" class="form-control" type="date" />
+                            <span asp-validation-for="Event.ValidTo" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input asp-for="Event.IsActive" class="form-check-input" />
+                        <label asp-for="Event.IsActive" class="form-check-label">Aktivní</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Uložit změny</button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

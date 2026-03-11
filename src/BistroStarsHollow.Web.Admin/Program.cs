@@ -19,6 +19,7 @@ builder.Services.AddRazorPages()
 
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
+builder.Services.AddScoped<ImageUploadService>();
 builder.Services.AddInfrastructure(builder.Configuration);
 
 // Rate limiting
