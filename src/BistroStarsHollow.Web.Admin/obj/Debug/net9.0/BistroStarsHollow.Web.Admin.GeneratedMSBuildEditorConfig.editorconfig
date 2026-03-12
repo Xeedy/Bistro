@@ -164,6 +164,14 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/Reservations/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xSZXNlcnZhdGlvbnNcRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/Reservations/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xSZXNlcnZhdGlvbnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Shared/_Sidebar.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXF9TaWRlYmFyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 

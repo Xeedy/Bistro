@@ -6,7 +6,8 @@
       "Bash(dotnet sln add:*)",
       "Bash(dotnet build:*)",
       "Bash(find /c/Users/micha/Documents/Projekty/Bistro -type f -name \"*.cs\" | xargs grep -l \"Reservation\" | grep -E \"\\(Service|Handler|Controller|Page\\)\" | head -10)",
-      "Bash(grep -E \"MenuCategory\\\\.|BeerType\\\\.|ReservationStatus\\\\.\" /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Domain/Enums/* | head -20)"
+      "Bash(grep -E \"MenuCategory\\\\.|BeerType\\\\.|ReservationStatus\\\\.\" /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Domain/Enums/* | head -20)",
+      "Bash(tree -L 3 -I 'bin|obj|node_modules' /c/Users/micha/Documents/Projekty/Bistro/src/ 2>/dev/null || find /c/Users/micha/Documents/Projekty/Bistro/src -type d -not -path '*/bin/*' -not -path '*/obj/*' | head -50)"
     ]
   }
 }

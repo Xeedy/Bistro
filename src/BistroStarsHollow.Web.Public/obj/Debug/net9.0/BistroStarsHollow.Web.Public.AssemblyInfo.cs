@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BistroStarsHollow.Web.Public")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1d222ac5cd301a0c552a149bae5af2c3c1959cbe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ed736b0b737c75bd1de54f063e4a1f3c246d9bf")]
 [assembly: System.Reflection.AssemblyProductAttribute("BistroStarsHollow.Web.Public")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BistroStarsHollow.Web.Public")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
