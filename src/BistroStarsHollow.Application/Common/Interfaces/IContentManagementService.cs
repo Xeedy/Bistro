@@ -10,6 +10,8 @@ public interface IContentManagementService
     Task CreateSlideAsync(HeroSlide slide);
     Task UpdateSlideAsync(HeroSlide slide);
     Task DeleteSlideAsync(Guid id);
+    Task ToggleSlideActiveAsync(Guid id);
+    Task UpdateSlideSortOrderAsync(List<Guid> orderedIds);
 
     // Gallery
     Task<List<GalleryImage>> GetAllGalleryImagesAsync();
@@ -17,6 +19,8 @@ public interface IContentManagementService
     Task CreateGalleryImageAsync(GalleryImage image);
     Task UpdateGalleryImageAsync(GalleryImage image);
     Task DeleteGalleryImageAsync(Guid id);
+    Task ToggleGalleryImageActiveAsync(Guid id);
+    Task UpdateGalleryImageSortOrderAsync(List<Guid> orderedIds);
 
     // Events
     Task<List<Event>> GetAllEventsAsync();
@@ -24,6 +28,7 @@ public interface IContentManagementService
     Task CreateEventAsync(Event evt);
     Task UpdateEventAsync(Event evt);
     Task DeleteEventAsync(Guid id);
+    Task ToggleEventActiveAsync(Guid id);
 
     // Opening Hours
     Task<List<OpeningHours>> GetAllOpeningHoursAsync();
@@ -42,6 +47,8 @@ public interface IContentManagementService
     Task CreateMenuItemAsync(MenuItem item);
     Task UpdateMenuItemAsync(MenuItem item);
     Task DeleteMenuItemAsync(Guid id);
+    Task ToggleMenuItemActiveAsync(Guid id);
+    Task UpdateMenuItemSortOrderAsync(List<Guid> orderedIds);
 
     // Beers
     Task<List<Beer>> GetAllBeersAsync();
@@ -49,6 +56,16 @@ public interface IContentManagementService
     Task CreateBeerAsync(Beer beer);
     Task UpdateBeerAsync(Beer beer);
     Task DeleteBeerAsync(Guid id);
+    Task ToggleBeerActiveAsync(Guid id);
+    Task<int> GetActiveDraftBeerCountAsync();
+    Task UpdateBeerSortOrderAsync(List<Guid> orderedIds);
+
+    // Beer Styles
+    Task<List<BeerStyle>> GetAllBeerStylesAsync();
+    Task CreateBeerStyleAsync(BeerStyle style);
+    Task UpdateBeerStyleAsync(BeerStyle style);
+    Task DeleteBeerStyleAsync(Guid id);
+    Task UpdateBeerStyleSortOrderAsync(List<Guid> orderedIds);
 
     // Breweries
     Task<List<Brewery>> GetAllBreweriesAsync();
@@ -57,4 +74,6 @@ public interface IContentManagementService
     Task UpdateBreweryAsync(Brewery brewery);
     Task DeleteBreweryAsync(Guid id);
     Task<int> GetBreweryBeerCountAsync(Guid breweryId);
+    Task ToggleBreweryActiveAsync(Guid id);
+    Task UpdateBrewerySortOrderAsync(List<Guid> orderedIds);
 }
