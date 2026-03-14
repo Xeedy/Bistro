@@ -11,7 +11,10 @@
     </a>
 </div>
 
-<div class="card">
+@Html.AntiForgeryToken()
+
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
@@ -32,14 +35,10 @@
                             <td>@(evt.ValidFrom?.ToString("dd.MM.yyyy") ?? "—")</td>
                             <td>@(evt.ValidTo?.ToString("dd.MM.yyyy") ?? "—")</td>
                             <td>
-                                @if (evt.IsActive)
-                                {
-                                    <span class="badge bg-success">Aktivní</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Neaktivní</span>
-                                }
+                                <input type="checkbox" class="form-check-input item-active-toggle"
+                                       data-id="@evt.Id"
+                                       @(evt.IsActive ? "checked" : "")
+                                       title="@(evt.IsActive ? "Deaktivovat" : "Aktivovat")" />
                             </td>
                             <td>
                                 <a asp-page="Edit" asp-route-id="@evt.Id" class="btn btn-sm btn-outline-primary me-1">
@@ -62,3 +61,59 @@
         </div>
     </div>
 </div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none">
+    @foreach (var evt in Model.Events)
+    {
+        <div class="card mb-2 item-card">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@evt.Title</div>
+                        <div class="d-flex align-items-center gap-2 mt-1">
+                            <small class="text-muted">
+                                @(evt.ValidFrom?.ToString("dd.MM.yyyy") ?? "—") — @(evt.ValidTo?.ToString("dd.MM.yyyy") ?? "—")
+                            </small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <input type="checkbox" class="form-check-input item-active-toggle"
+                               data-id="@evt.Id"
+                               @(evt.IsActive ? "checked" : "") />
+                        <a asp-page="Edit" asp-route-id="@evt.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@evt.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.Events.Any())
+    {
+        <div class="text-center text-muted py-4">Zatím žádné akce.</div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+            document.querySelectorAll('.item-active-toggle').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const id = this.dataset.id, checkbox = this;
+                    fetch('?handler=ToggleActive', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'RequestVerificationToken': token },
+                        body: 'id=' + encodeURIComponent(id)
+                    }).then(r => r.json()).then(data => { if (data.success) { document.querySelectorAll('.item-active-toggle[data-id="' + id + '"]').forEach(c => c.checked = data.isActive); } })
+                      .catch(() => { checkbox.checked = !checkbox.checked; });
+                });
+            });
+        })();
+    </script>
+}

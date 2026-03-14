@@ -20,7 +20,7 @@
             <span class="sidebar-section-title">Hlavní</span>
             <ul class="sidebar-menu">
                 <li>
-                    <a class="sidebar-link @(currentPage.Contains("Dashboard") ? "active" : "")" asp-page="/Dashboard/Index">
+                    <a class="sidebar-link @(currentPage == "/Index" || currentPage == "/" ? "active" : "")" asp-page="/Index">
                         <i class="bi bi-grid-1x2"></i>
                         <span>Dashboard</span>
                     </a>
@@ -39,22 +39,40 @@
                             <span>Hero Slider</span>
                         </a>
                     </li>
+                    @{
+                        var isProductsOpen = currentPage.Contains("/Content/Menu") || currentPage.Contains("/Content/DraftBeers") || currentPage.Contains("/Content/BottledBeers");
+                    }
                     <li>
-                        <a class="sidebar-link @(currentPage.Contains("/Content/Menu") ? "active" : "")" asp-page="/Content/Menu/Index">
-                            <i class="bi bi-card-list"></i>
-                            <span>Menu</span>
+                        <a class="sidebar-link sidebar-submenu-toggle @(isProductsOpen ? "open" : "")" href="#" data-submenu="productsSubmenu">
+                            <i class="bi bi-basket3"></i>
+                            <span>Produkty</span>
+                            <i class="bi bi-chevron-down ms-auto sidebar-chevron"></i>
                         </a>
+                        <ul class="sidebar-submenu @(isProductsOpen ? "show" : "")" id="productsSubmenu">
+                            <li>
+                                <a class="sidebar-link @(currentPage.Contains("/Content/Menu") ? "active" : "")" asp-page="/Content/Menu/Index">
+                                    <i class="bi bi-card-list"></i>
+                                    <span>Menu</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="sidebar-link @(currentPage.Contains("/Content/DraftBeers") ? "active" : "")" asp-page="/Content/DraftBeers/Index">
+                                    <i class="bi bi-cup-straw"></i>
+                                    <span>Čepovaná piva</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="sidebar-link @(currentPage.Contains("/Content/BottledBeers") ? "active" : "")" asp-page="/Content/BottledBeers/Index">
+                                    <i class="bi bi-box-seam"></i>
+                                    <span>Lahvová piva</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                     <li>
-                        <a class="sidebar-link @(currentPage.Contains("/Content/Beers") ? "active" : "")" asp-page="/Content/Beers/Index" asp-route-type="Draft">
-                            <i class="bi bi-cup-straw"></i>
-                            <span>Čepovaná piva</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="sidebar-link @(currentPage.Contains("/Content/Beers") ? "active" : "")" asp-page="/Content/Beers/Index" asp-route-type="Bottled">
-                            <i class="bi bi-box-seam"></i>
-                            <span>Lahvová piva</span>
+                        <a class="sidebar-link @(currentPage.Contains("/Content/BeerStyles") ? "active" : "")" asp-page="/Content/BeerStyles/Index">
+                            <i class="bi bi-tags"></i>
+                            <span>Pivní styly</span>
                         </a>
                     </li>
                     <li>
@@ -89,7 +107,7 @@
             <span class="sidebar-section-title">Provoz</span>
             <ul class="sidebar-menu">
                 <li>
-                    <a class="sidebar-link" href="#">
+                    <a class="sidebar-link @(currentPage.Contains("/Operations/Shifts") ? "active" : "")" asp-page="/Operations/Shifts/Index">
                         <i class="bi bi-calendar3"></i>
                         <span>Směny</span>
                     </a>
@@ -105,7 +123,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="sidebar-link" href="#">
+                    <a class="sidebar-link @(currentPage.Contains("/Operations/CashClosures") ? "active" : "")" asp-page="/Operations/CashClosures/Index">
                         <i class="bi bi-cash-stack"></i>
                         <span>Uzávěrka</span>
                     </a>
@@ -119,7 +137,7 @@
                 <span class="sidebar-section-title">Administrace</span>
                 <ul class="sidebar-menu">
                     <li>
-                        <a class="sidebar-link" href="#">
+                        <a class="sidebar-link @(currentPage.Contains("/Administration/Users") ? "active" : "")" asp-page="/Administration/Users/Index">
                             <i class="bi bi-people"></i>
                             <span>Uživatelé</span>
                         </a>
@@ -131,7 +149,7 @@
                         </a>
                     </li>
                     <li>
-                        <a class="sidebar-link" href="#">
+                        <a class="sidebar-link @(currentPage.Contains("/Administration/AuditLog") ? "active" : "")" asp-page="/Administration/AuditLog/Index">
                             <i class="bi bi-journal-text"></i>
                             <span>Audit log</span>
                         </a>

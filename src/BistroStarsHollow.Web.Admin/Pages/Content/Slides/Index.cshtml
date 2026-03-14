@@ -11,39 +11,40 @@
     </a>
 </div>
 
-<div class="card">
+@Html.AntiForgeryToken()
+
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0" id="slideTable">
                 <thead>
                     <tr>
+                        <th style="width:40px"></th>
                         <th style="width:80px">Náhled</th>
                         <th>Titulek</th>
                         <th>URL odkaz</th>
-                        <th>Pořadí</th>
                         <th>Stav</th>
                         <th style="width:120px">Akce</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="slideTableBody">
                     @foreach (var slide in Model.Slides)
                     {
-                        <tr>
+                        <tr data-id="@slide.Id">
+                            <td style="cursor:grab;">
+                                <i class="bi bi-grip-vertical text-muted"></i>
+                            </td>
                             <td>
-                                <img src="@slide.ImagePath" alt="@slide.Title" class="img-thumbnail" style="width:60px;height:40px;object-fit:cover;" />
+                                <img src="@slide.ImagePath" alt="@slide.Title" style="width:60px;height:40px;object-fit:cover;border-radius:4px;" />
                             </td>
                             <td>@slide.Title</td>
                             <td><small class="text-muted">@slide.LinkUrl</small></td>
-                            <td>@slide.SortOrder</td>
                             <td>
-                                @if (slide.IsActive)
-                                {
-                                    <span class="badge bg-success">Aktivní</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Neaktivní</span>
-                                }
+                                <input type="checkbox" class="form-check-input item-active-toggle"
+                                       data-id="@slide.Id"
+                                       @(slide.IsActive ? "checked" : "")
+                                       title="@(slide.IsActive ? "Deaktivovat" : "Aktivovat")" />
                             </td>
                             <td>
                                 <a asp-page="Edit" asp-route-id="@slide.Id" class="btn btn-sm btn-outline-primary me-1">
@@ -66,3 +67,111 @@
         </div>
     </div>
 </div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none" id="slideCards">
+    @{ var idx = 1; }
+    @foreach (var slide in Model.Slides)
+    {
+        <div class="card mb-2 item-card" data-id="@slide.Id">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-center gap-2">
+                    <img src="@slide.ImagePath" alt="@slide.Title" style="width:60px;height:40px;object-fit:cover;border-radius:4px;" />
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@slide.Title</div>
+                        @if (!string.IsNullOrEmpty(slide.LinkUrl))
+                        {
+                            <small class="text-muted">@slide.LinkUrl</small>
+                        }
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <input type="checkbox" class="form-check-input item-active-toggle"
+                               data-id="@slide.Id"
+                               @(slide.IsActive ? "checked" : "") />
+                        <a asp-page="Edit" asp-route-id="@slide.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@slide.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-1 mt-2 border-top pt-2">
+                    <span class="badge bg-light text-dark item-order-badge" style="min-width:28px;">@(idx)</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-move-up" data-id="@slide.Id" title="Nahoru">
+                        <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-move-down" data-id="@slide.Id" title="Dolů">
+                        <i class="bi bi-arrow-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        idx++;
+    }
+    @if (!Model.Slides.Any())
+    {
+        <div class="text-center text-muted py-4">Zatím žádné slidy.</div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+            const tbody = document.getElementById('slideTableBody');
+            if (tbody && window.Sortable) {
+                Sortable.create(tbody, { handle: '.bi-grip-vertical', animation: 150, onEnd: function () { saveOrder(getDesktopIds()); } });
+            }
+            function getDesktopIds() { return Array.from(document.querySelectorAll('#slideTableBody tr[data-id]')).map(tr => tr.dataset.id); }
+
+            const cards = document.getElementById('slideCards');
+            if (cards && window.Sortable) {
+                Sortable.create(cards, { handle: '.item-order-badge', animation: 150, draggable: '.item-card', onEnd: function () { updateCardNumbers(); saveOrder(getCardIds()); } });
+            }
+            function getCardIds() { return Array.from(document.querySelectorAll('#slideCards .item-card')).map(c => c.dataset.id); }
+
+            function updateCardNumbers() {
+                document.querySelectorAll('#slideCards .item-card').forEach((card, i) => {
+                    const badge = card.querySelector('.item-order-badge');
+                    if (badge) badge.textContent = i + 1;
+                });
+            }
+
+            function saveOrder(orderedIds) {
+                fetch('?handler=UpdateSortOrder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify(orderedIds)
+                });
+            }
+
+            document.querySelectorAll('#slideCards .btn-move-up').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), prev = card.previousElementSibling;
+                    if (prev && prev.classList.contains('item-card')) { card.parentNode.insertBefore(card, prev); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+            document.querySelectorAll('#slideCards .btn-move-down').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), next = card.nextElementSibling;
+                    if (next && next.classList.contains('item-card')) { card.parentNode.insertBefore(next, card); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+
+            document.querySelectorAll('.item-active-toggle').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const id = this.dataset.id, checkbox = this;
+                    fetch('?handler=ToggleActive', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'RequestVerificationToken': token },
+                        body: 'id=' + encodeURIComponent(id)
+                    }).then(r => r.json()).then(data => { if (data.success) { document.querySelectorAll('.item-active-toggle[data-id="' + id + '"]').forEach(c => c.checked = data.isActive); } })
+                      .catch(() => { checkbox.checked = !checkbox.checked; });
+                });
+            });
+        })();
+    </script>
+}

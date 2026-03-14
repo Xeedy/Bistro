@@ -1,0 +1,142 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Operations.CashClosures.IndexModel
+@{
+    ViewData["Title"] = "Uzávěrky";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Uzávěrky</h1>
+    <a asp-page="Create" class="btn btn-primary">
+        <i class="bi bi-plus-lg me-1"></i> Nová uzávěrka
+    </a>
+</div>
+
+@if (TempData["Success"] is string successMsg)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @successMsg
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] is string errorMsg)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @errorMsg
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label">Od</label>
+                <input type="date" name="FilterFrom" value="@Model.FilterFrom?.ToString("yyyy-MM-dd")" class="form-control" />
+            </div>
+            <div class="col-md-3">
+                <label class="form-label">Do</label>
+                <input type="date" name="FilterTo" value="@Model.FilterTo?.ToString("yyyy-MM-dd")" class="form-control" />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-funnel me-1"></i>Filtrovat</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Datum</th>
+                        <th>Zaměstnanec</th>
+                        <th class="text-end">Karta</th>
+                        <th class="text-end">Hotovost</th>
+                        <th class="text-end">Celkem</th>
+                        <th class="text-end">Odchylka</th>
+                        <th style="width:120px">Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var c in Model.Closures)
+                    {
+                        var diffClass = c.Difference == 0 ? "text-success" : (c.Difference > 0 ? "text-primary" : "text-danger");
+                        <tr>
+                            <td>@c.Date.ToString("dd.MM.yyyy")</td>
+                            <td>@(Model.UserNames.GetValueOrDefault(c.UserId, "—"))</td>
+                            <td class="text-end">@c.CardAmount.ToString("N2") Kč</td>
+                            <td class="text-end">@c.CashAmount.ToString("N2") Kč</td>
+                            <td class="text-end fw-bold">@c.TotalAmount.ToString("N2") Kč</td>
+                            <td class="text-end @diffClass fw-bold">
+                                @(c.Difference >= 0 ? "+" : "")@c.Difference.ToString("N2") Kč
+                            </td>
+                            <td>
+                                <a asp-page="Detail" asp-route-id="@c.Id" class="btn btn-sm btn-outline-info me-1" title="Detail">
+                                    <i class="bi bi-eye"></i>
+                                </a>
+                                <a asp-page="Edit" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary me-1" title="Upravit">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-page="Delete" asp-route-id="@c.Id" class="btn btn-sm btn-outline-danger" title="Smazat">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Closures.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">Žádné uzávěrky.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none">
+    @foreach (var c in Model.Closures)
+    {
+        var diffClass = c.Difference == 0 ? "text-success" : (c.Difference > 0 ? "text-primary" : "text-danger");
+        <div class="card mb-2 item-card">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <div class="fw-semibold">@c.Date.ToString("dd.MM.yyyy")</div>
+                        <small class="text-muted">@(Model.UserNames.GetValueOrDefault(c.UserId, "—"))</small>
+                    </div>
+                    <div class="text-end">
+                        <div class="fw-bold">@c.TotalAmount.ToString("N2") Kč</div>
+                        <div class="@diffClass fw-bold" style="font-size:0.8rem;">
+                            @(c.Difference >= 0 ? "+" : "")@c.Difference.ToString("N2") Kč
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-3 mt-1">
+                    <small class="text-muted"><i class="bi bi-credit-card me-1"></i>@c.CardAmount.ToString("N2") Kč</small>
+                    <small class="text-muted"><i class="bi bi-cash me-1"></i>@c.CashAmount.ToString("N2") Kč</small>
+                </div>
+                <div class="d-flex align-items-center gap-1 mt-2 border-top pt-2">
+                    <a asp-page="Detail" asp-route-id="@c.Id" class="btn btn-sm btn-outline-info" title="Detail">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <a asp-page="Edit" asp-route-id="@c.Id" class="btn btn-sm btn-outline-primary" title="Upravit">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <a asp-page="Delete" asp-route-id="@c.Id" class="btn btn-sm btn-outline-danger" title="Smazat">
+                        <i class="bi bi-trash"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.Closures.Any())
+    {
+        <div class="text-center text-muted py-4">Žádné uzávěrky.</div>
+    }
+</div>

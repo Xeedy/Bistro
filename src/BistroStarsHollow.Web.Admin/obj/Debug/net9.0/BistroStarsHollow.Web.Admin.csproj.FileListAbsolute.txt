@@ -433,10 +433,8 @@ C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Deb
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\scopedcss\bundle\BistroStarsHollow.Web.Admin.styles.css
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\scopedcss\projectbundle\BistroStarsHollow.Web.Admin.bundle.scp.css
-C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\compressed\q04pt1ng8p-1j5okenv8e.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\compressed\qcjx7j6yso-b9sayid5wm.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\compressed\lneqqemg7q-61n19gt1b8.gz
-C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\compressed\fvypbp1ql6-s43g7idexq.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\compressed\2dhwz0udyu-xtxxf3hu2r.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\compressed\rw0o0uwhef-t1cqhe9u97.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\compressed\7c3bdcbmy9-c2jlpeoesf.gz
@@ -509,3 +507,6 @@ C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Deb
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\BistroStarsHollow.Web.Admin.pdb
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\BistroStarsHollow.Web.Admin.genruntimeconfig.cache
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\ref\BistroStarsHollow.Web.Admin.dll
+C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\staticwebassets.upToDateCheck.txt
+C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\compressed\fvypbp1ql6-4vmprnm5ko.gz
+C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Admin\obj\Debug\net9.0\compressed\q04pt1ng8p-6n9lirbj1d.gz

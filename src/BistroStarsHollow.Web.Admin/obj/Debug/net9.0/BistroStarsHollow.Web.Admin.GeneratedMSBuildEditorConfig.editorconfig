@@ -40,6 +40,34 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxMb2dvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWNjb3VudFxQcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Administration/AuditLog/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cQXVkaXRMb2dcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Administration/Users/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cVXNlcnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Administration/Users/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cVXNlcnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Administration/Users/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cVXNlcnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Administration/Users/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWRtaW5pc3RyYXRpb25cVXNlcnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/BeerStyles/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxCZWVyU3R5bGVzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/Beers/Create.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxCZWVyc1xDcmVhdGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
@@ -54,6 +82,22 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/Beers/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxCZWVyc1xJbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/BottledBeers/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxCb3R0bGVkQmVlcnNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/BottledBeers/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxCb3R0bGVkQmVlcnNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/BottledBeers/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxCb3R0bGVkQmVlcnNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/BottledBeers/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxCb3R0bGVkQmVlcnNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/Breweries/Create.cshtml]
@@ -86,6 +130,22 @@ build_metadata.AdditionalFiles.CssScope =
 
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/ContentBlocks/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxDb250ZW50QmxvY2tzXEluZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/DraftBeers/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxEcmFmdEJlZXJzXENyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/DraftBeers/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxEcmFmdEJlZXJzXERlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/DraftBeers/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxEcmFmdEJlZXJzXEVkaXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/DraftBeers/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ29udGVudFxEcmFmdEJlZXJzXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Content/Events/Create.cshtml]
@@ -164,12 +224,36 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/CashClosures/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xDYXNoQ2xvc3VyZXNcQ3JlYXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/CashClosures/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xDYXNoQ2xvc3VyZXNcRGVsZXRlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/CashClosures/Detail.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xDYXNoQ2xvc3VyZXNcRGV0YWlsLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/CashClosures/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xDYXNoQ2xvc3VyZXNcRWRpdC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/CashClosures/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xDYXNoQ2xvc3VyZXNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/Reservations/Detail.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xSZXNlcnZhdGlvbnNcRGV0YWlsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/Reservations/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xSZXNlcnZhdGlvbnNcSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Operations/Shifts/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcT3BlcmF0aW9uc1xTaGlmdHNcSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin/Pages/Shared/_Sidebar.cshtml]

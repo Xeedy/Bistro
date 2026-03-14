@@ -1,0 +1,224 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Content.BottledBeers.IndexModel
+@{
+    ViewData["Title"] = "Lahvová piva";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Lahvová piva</h1>
+    <div class="d-flex gap-2">
+        <a href="@(Model.PublicUrl)/Beers/BottledBeers" target="_blank" class="btn btn-outline-secondary">
+            <i class="bi bi-eye me-1"></i> Náhled webu
+        </a>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Přidat pivo
+        </a>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+<div class="mb-3">
+    <input type="text" id="beerSearch" class="form-control" placeholder="Filtrovat podle názvu..." />
+</div>
+
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" id="beerTable">
+                <thead>
+                    <tr>
+                        <th style="width:40px"></th>
+                        <th>Název</th>
+                        <th>Styl</th>
+                        <th>Pivovar</th>
+                        <th>Objem</th>
+                        <th>Cena</th>
+                        <th>Stav</th>
+                        <th style="width:160px">Akce</th>
+                    </tr>
+                </thead>
+                <tbody id="beerTableBody">
+                    @foreach (var beer in Model.Beers)
+                    {
+                        <tr data-id="@beer.Id">
+                            <td style="cursor:grab;">
+                                <i class="bi bi-grip-vertical text-muted"></i>
+                            </td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(beer.ImagePath))
+                                {
+                                    <img src="@beer.ImagePath" alt="" class="me-2" style="width:24px;height:32px;object-fit:cover;border-radius:4px;" />
+                                }
+                                @beer.Name
+                            </td>
+                            <td>@(beer.Style ?? "—")</td>
+                            <td>@(beer.Brewery?.Name ?? "—")</td>
+                            <td>@(beer.Capacity ?? "—")</td>
+                            <td>@beer.Price.ToString("0 Kč")</td>
+                            <td>
+                                <input type="checkbox" class="form-check-input item-active-toggle"
+                                       data-id="@beer.Id"
+                                       @(beer.IsActive ? "checked" : "")
+                                       title="@(beer.IsActive ? "Deaktivovat" : "Aktivovat")" />
+                            </td>
+                            <td>
+                                <a asp-page="Edit" asp-route-id="@beer.Id" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-page="Delete" asp-route-id="@beer.Id" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Beers.Any())
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center text-muted py-4">Zatím žádná lahvová piva.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none" id="beerCards">
+    @{ var idx = 1; }
+    @foreach (var beer in Model.Beers)
+    {
+        <div class="card mb-2 item-card" data-id="@beer.Id">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-center gap-2">
+                    @if (!string.IsNullOrEmpty(beer.ImagePath))
+                    {
+                        <img src="@beer.ImagePath" alt="" style="width:30px;height:40px;object-fit:cover;border-radius:4px;" />
+                    }
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@beer.Name</div>
+                        <div class="d-flex align-items-center gap-2 mt-1">
+                            @if (!string.IsNullOrEmpty(beer.Style))
+                            {
+                                <span class="badge" style="font-size:0.65rem;background:rgba(37,99,235,0.1);color:#2563eb;">@beer.Style</span>
+                            }
+                            @if (!string.IsNullOrEmpty(beer.Capacity))
+                            {
+                                <span class="badge" style="font-size:0.65rem;background:rgba(100,116,139,0.1);color:#64748b;">@beer.Capacity</span>
+                            }
+                            <small class="text-muted">@(beer.Brewery?.Name ?? "—")</small>
+                        </div>
+                    </div>
+                    <div class="text-end" style="min-width:50px;">
+                        <strong style="color:#d97706;">@beer.Price.ToString("0 Kč")</strong>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center justify-content-between mt-2 border-top pt-2">
+                    <div class="d-flex align-items-center gap-1">
+                        <span class="badge bg-light text-dark item-order-badge" style="min-width:28px;">@(idx)</span>
+                        <button type="button" class="btn btn-sm btn-outline-secondary btn-move-up" data-id="@beer.Id" title="Nahoru">
+                            <i class="bi bi-arrow-up"></i>
+                        </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary btn-move-down" data-id="@beer.Id" title="Dolů">
+                            <i class="bi bi-arrow-down"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <input type="checkbox" class="form-check-input item-active-toggle"
+                               data-id="@beer.Id"
+                               @(beer.IsActive ? "checked" : "") />
+                        <a asp-page="Edit" asp-route-id="@beer.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@beer.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        idx++;
+    }
+    @if (!Model.Beers.Any())
+    {
+        <div class="text-center text-muted py-4">Zatím žádná lahvová piva.</div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+            document.getElementById('beerSearch')?.addEventListener('input', function () {
+                const filter = this.value.toLowerCase();
+                document.querySelectorAll('#beerTableBody tr[data-id]').forEach(row => {
+                    const name = row.cells[1]?.textContent.toLowerCase() ?? '';
+                    const brewery = row.cells[3]?.textContent.toLowerCase() ?? '';
+                    row.style.display = (name.includes(filter) || brewery.includes(filter)) ? '' : 'none';
+                });
+                document.querySelectorAll('#beerCards .item-card').forEach(card => {
+                    const name = card.querySelector('.fw-semibold')?.textContent.toLowerCase() ?? '';
+                    card.style.display = name.includes(filter) ? '' : 'none';
+                });
+            });
+
+            // Desktop drag
+            const tbody = document.getElementById('beerTableBody');
+            if (tbody && window.Sortable) {
+                Sortable.create(tbody, { handle: '.bi-grip-vertical', animation: 150, onEnd: function () { saveOrder(getDesktopIds()); } });
+            }
+            function getDesktopIds() { return Array.from(document.querySelectorAll('#beerTableBody tr[data-id]')).map(tr => tr.dataset.id); }
+
+            // Mobile drag
+            const cards = document.getElementById('beerCards');
+            if (cards && window.Sortable) {
+                Sortable.create(cards, { handle: '.item-order-badge', animation: 150, draggable: '.item-card', onEnd: function () { updateCardNumbers(); saveOrder(getCardIds()); } });
+            }
+            function getCardIds() { return Array.from(document.querySelectorAll('#beerCards .item-card')).map(c => c.dataset.id); }
+
+            function updateCardNumbers() {
+                document.querySelectorAll('#beerCards .item-card').forEach((card, i) => {
+                    const badge = card.querySelector('.item-order-badge');
+                    if (badge) badge.textContent = i + 1;
+                });
+            }
+
+            function saveOrder(orderedIds) {
+                fetch('?handler=UpdateSortOrder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify(orderedIds)
+                });
+            }
+
+            document.querySelectorAll('#beerCards .btn-move-up').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), prev = card.previousElementSibling;
+                    if (prev && prev.classList.contains('item-card')) { card.parentNode.insertBefore(card, prev); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+            document.querySelectorAll('#beerCards .btn-move-down').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), next = card.nextElementSibling;
+                    if (next && next.classList.contains('item-card')) { card.parentNode.insertBefore(next, card); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+
+            document.querySelectorAll('.item-active-toggle').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const id = this.dataset.id, checkbox = this;
+                    fetch('?handler=ToggleActive', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'RequestVerificationToken': token },
+                        body: 'id=' + encodeURIComponent(id)
+                    }).then(r => r.json()).then(data => { if (data.success) { document.querySelectorAll('.item-active-toggle[data-id="' + id + '"]').forEach(c => c.checked = data.isActive); } })
+                      .catch(() => { checkbox.checked = !checkbox.checked; });
+                });
+            });
+        })();
+    </script>
+}

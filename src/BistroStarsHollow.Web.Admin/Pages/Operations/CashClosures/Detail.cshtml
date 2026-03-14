@@ -1,0 +1,69 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Admin.Pages.Operations.CashClosures.DetailModel
+@{
+    ViewData["Title"] = "Detail uzávěrky";
+    var diffClass = Model.Closure.Difference == 0 ? "text-success" : (Model.Closure.Difference > 0 ? "text-primary" : "text-danger");
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Detail uzávěrky</h1>
+    <a asp-page="Index" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left me-1"></i>Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header bg-white">
+                <h6 class="mb-0">Uzávěrka ze dne @Model.Closure.Date.ToString("dd.MM.yyyy")</h6>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Datum</dt>
+                    <dd class="col-sm-8">@Model.Closure.Date.ToString("dd.MM.yyyy")</dd>
+
+                    <dt class="col-sm-4">Zaměstnanec</dt>
+                    <dd class="col-sm-8">@Model.UserName</dd>
+
+                    <dt class="col-sm-4">Platby kartou</dt>
+                    <dd class="col-sm-8">@Model.Closure.CardAmount.ToString("N2") Kč</dd>
+
+                    <dt class="col-sm-4">Hotovost</dt>
+                    <dd class="col-sm-8">@Model.Closure.CashAmount.ToString("N2") Kč</dd>
+
+                    <dt class="col-sm-4">Celkem</dt>
+                    <dd class="col-sm-8 fw-bold">@Model.Closure.TotalAmount.ToString("N2") Kč</dd>
+
+                    <dt class="col-sm-4">Odchylka</dt>
+                    <dd class="col-sm-8 fw-bold @diffClass">
+                        @(Model.Closure.Difference >= 0 ? "+" : "")@Model.Closure.Difference.ToString("N2") Kč
+                    </dd>
+
+                    <dt class="col-sm-4">Poznámka</dt>
+                    <dd class="col-sm-8">@(Model.Closure.Note ?? "—")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h6 class="mb-0">Systémové údaje</h6>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-5">ID</dt>
+                    <dd class="col-sm-7"><small class="text-muted">@Model.Closure.Id</small></dd>
+
+                    <dt class="col-sm-5">Vytvořeno</dt>
+                    <dd class="col-sm-7">@Model.Closure.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+
+                    <dt class="col-sm-5">Upraveno</dt>
+                    <dd class="col-sm-7">@(Model.Closure.ModifiedAt?.ToString("dd.MM.yyyy HH:mm") ?? "—")</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>

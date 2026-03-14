@@ -84,7 +84,7 @@ app.Use(async (context, next) =>
     context.Response.Headers["Permissions-Policy"] = "camera=(), microphone=(), geolocation=()";
     context.Response.Headers["Content-Security-Policy"] =
         "default-src 'self'; " +
-        "script-src 'self' 'unsafe-inline'; " +
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; " +
         "style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; " +
         "font-src 'self' https://cdn.jsdelivr.net https://fonts.gstatic.com; " +
         "img-src 'self' data:; " +
@@ -94,6 +94,18 @@ app.Use(async (context, next) =>
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
+// Serve shared uploads from solution-level uploads folder
+var sharedUploadsPath = Path.GetFullPath(Path.Combine(app.Environment.ContentRootPath, "..", "..", "uploads"));
+if (Directory.Exists(sharedUploadsPath))
+{
+    app.UseStaticFiles(new StaticFileOptions
+    {
+        FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(sharedUploadsPath),
+        RequestPath = "/uploads"
+    });
+}
+
 app.UseRouting();
 app.UseRateLimiter();
 app.UseAuthentication();

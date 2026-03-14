@@ -1,0 +1,280 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Admin.Pages.Content.BottledBeers.EditModel
+@{
+    ViewData["Title"] = "Upravit lahvové pivo";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-xl-7 col-lg-12">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">Upravit lahvové pivo</h5>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" id="beerForm">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                    <input type="hidden" asp-for="Beer.Id" />
+                    <input type="hidden" asp-for="Beer.CreatedAt" />
+                    <input type="hidden" asp-for="Beer.CreatedBy" />
+                    <input type="hidden" asp-for="Beer.SortOrder" />
+                    <input type="hidden" asp-for="Beer.ImagePath" />
+
+                    <div class="mb-3">
+                        <label asp-for="Beer.Name" class="form-label">Název <span class="text-danger">*</span></label>
+                        <input asp-for="Beer.Name" class="form-control" required id="beerName" />
+                        <span asp-validation-for="Beer.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Beer.Style" class="form-label">Styl</label>
+                        <input type="hidden" asp-for="Beer.Style" id="beerStyle" />
+                        <div class="chip-picker" id="stylePicker">
+                            @foreach (var style in Model.BeerStyles)
+                            {
+                                <button type="button" class="chip-option @(Model.Beer.Style == style.Name ? "active" : "")" data-value="@style.Name">@style.Name</button>
+                            }
+                            <button type="button" class="chip-option chip-custom-toggle @(
+                                !string.IsNullOrEmpty(Model.Beer.Style) && !Model.BeerStyles.Any(s => s.Name == Model.Beer.Style) ? "active" : ""
+                            )" data-value="__custom" title="Vlastní styl">
+                                <i class="bi bi-plus-lg"></i> Jiný
+                            </button>
+                        </div>
+                        <input type="text" class="form-control mt-2 chip-custom-input" id="styleCustomInput"
+                               placeholder="Zadejte vlastní styl..."
+                               style="@(!string.IsNullOrEmpty(Model.Beer.Style) && !Model.BeerStyles.Any(s => s.Name == Model.Beer.Style) ? "" : "display:none;")"
+                               value="@(!string.IsNullOrEmpty(Model.Beer.Style) && !Model.BeerStyles.Any(s => s.Name == Model.Beer.Style) ? Model.Beer.Style : "")" />
+                        <span asp-validation-for="Beer.Style" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Beer.Capacity" class="form-label">Objem</label>
+                        <input type="hidden" asp-for="Beer.Capacity" id="beerCapacity" />
+                        <div class="chip-picker" id="capacityPicker">
+                            @{
+                                var capacityOptions = new[] { "0.33l", "0.5l", "0.7l", "1l", "1.5l" };
+                            }
+                            @foreach (var cap in capacityOptions)
+                            {
+                                <button type="button" class="chip-option @(Model.Beer.Capacity == cap ? "active" : "")" data-value="@cap">@cap</button>
+                            }
+                            <button type="button" class="chip-option chip-custom-toggle @(
+                                !string.IsNullOrEmpty(Model.Beer.Capacity) && !capacityOptions.Contains(Model.Beer.Capacity) ? "active" : ""
+                            )" data-value="__custom" title="Vlastní objem">
+                                <i class="bi bi-plus-lg"></i> Jiný
+                            </button>
+                        </div>
+                        <input type="text" class="form-control mt-2 chip-custom-input" id="capacityCustomInput"
+                               placeholder="Zadejte vlastní objem..."
+                               style="@(!string.IsNullOrEmpty(Model.Beer.Capacity) && !capacityOptions.Contains(Model.Beer.Capacity) ? "" : "display:none;")"
+                               value="@(!string.IsNullOrEmpty(Model.Beer.Capacity) && !capacityOptions.Contains(Model.Beer.Capacity) ? Model.Beer.Capacity : "")" />
+                        <span asp-validation-for="Beer.Capacity" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Beer.Price" class="form-label">Cena <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <input asp-for="Beer.Price" class="form-control" type="number" step="0.01" required id="beerPrice" />
+                                <span class="input-group-text">Kč</span>
+                            </div>
+                            <span asp-validation-for="Beer.Price" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Beer.BreweryId" class="form-label">Pivovar <span class="text-danger">*</span></label>
+                            <select asp-for="Beer.BreweryId" class="form-select" required id="beerBrewery">
+                                <option value="">— Vyberte pivovar —</option>
+                                @foreach (var brewery in Model.Breweries)
+                                {
+                                    <option value="@brewery.Id">@brewery.Name</option>
+                                }
+                            </select>
+                            <span asp-validation-for="Beer.BreweryId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Beer.Description" class="form-label">Popis</label>
+                        <textarea asp-for="Beer.Description" class="form-control" rows="3" id="beerDescription"></textarea>
+                        <span asp-validation-for="Beer.Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Obrázek</label>
+                        @if (!string.IsNullOrEmpty(Model.Beer.ImagePath))
+                        {
+                            <div class="mb-2" id="existingImageContainer">
+                                <img src="@Model.Beer.ImagePath" alt="@Model.Beer.Name" class="img-thumbnail" style="max-height:150px;" id="existingImage" />
+                            </div>
+                        }
+                        <input type="file" name="ImageFile" class="form-control" accept=".jpg,.jpeg,.png,.webp" id="beerImage" />
+                        <div class="form-text">Ponechte prázdné pro zachování stávajícího obrázku.</div>
+                        <div id="imagePreviewContainer" class="mt-2" style="display:none;">
+                            <img id="imagePreview" class="img-thumbnail" style="max-height:150px;" alt="Náhled" />
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input asp-for="Beer.IsActive" class="form-check-input" id="beerIsActive" />
+                        <label asp-for="Beer.IsActive" class="form-check-label">Aktivní</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Uložit změny</button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-5 d-none d-xl-block">
+        <div class="card" style="position:sticky;top:80px;">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0"><i class="bi bi-eye me-1"></i> Náhled karty</h5>
+            </div>
+            <div class="card-body">
+                <div class="beer-card-preview">
+                    <div class="beer-card-preview-img" id="previewImgArea">
+                        @if (!string.IsNullOrEmpty(Model.Beer.ImagePath))
+                        {
+                            <img src="@Model.Beer.ImagePath" style="width:100%;height:100%;object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-box-seam" id="previewIcon"></i>
+                        }
+                    </div>
+                    <div class="beer-card-preview-body">
+                        <h5 class="beer-card-preview-name" id="previewName">@Model.Beer.Name</h5>
+                        <p class="beer-card-preview-brewery" id="previewBrewery">
+                            <i class="bi bi-building me-1"></i><span id="previewBreweryName">@(Model.Beer.Brewery?.Name ?? "Pivovar")</span>
+                        </p>
+                        <span class="beer-card-preview-style" id="previewStyle" style="@(string.IsNullOrEmpty(Model.Beer.Style) ? "display:none;" : "")">@Model.Beer.Style</span>
+                        <span class="beer-card-preview-capacity" id="previewCapacity" style="@(string.IsNullOrEmpty(Model.Beer.Capacity) ? "display:none;" : "")">@Model.Beer.Capacity</span>
+                        <p class="beer-card-preview-desc" id="previewDesc">@Model.Beer.Description</p>
+                        <div class="beer-card-preview-price" id="previewPrice">@Model.Beer.Price.ToString("0") Kč</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const beerId = '@Model.Beer.Id';
+            const DRAFT_KEY = 'beer-draft-bottled-' + beerId;
+            const DRAFT_MAX_AGE = 24 * 60 * 60 * 1000;
+            const form = document.getElementById('beerForm');
+            const fields = {
+                name: document.getElementById('beerName'),
+                style: document.getElementById('beerStyle'),
+                capacity: document.getElementById('beerCapacity'),
+                price: document.getElementById('beerPrice'),
+                brewery: document.getElementById('beerBrewery'),
+                description: document.getElementById('beerDescription'),
+                isActive: document.getElementById('beerIsActive')
+            };
+
+            function initChipPicker(pickerEl, hiddenInput, customInput) {
+                const chips = pickerEl.querySelectorAll('.chip-option');
+                const customToggle = pickerEl.querySelector('.chip-custom-toggle');
+                chips.forEach(chip => {
+                    chip.addEventListener('click', function () {
+                        const val = this.dataset.value;
+                        if (val === '__custom') {
+                            chips.forEach(c => c.classList.remove('active'));
+                            customToggle.classList.add('active');
+                            customInput.style.display = ''; customInput.focus();
+                            hiddenInput.value = customInput.value;
+                        } else {
+                            const wasActive = this.classList.contains('active');
+                            chips.forEach(c => c.classList.remove('active'));
+                            customInput.style.display = 'none'; customInput.value = '';
+                            if (wasActive) { hiddenInput.value = ''; } else { this.classList.add('active'); hiddenInput.value = val; }
+                        }
+                        hiddenInput.dispatchEvent(new Event('change'));
+                    });
+                });
+                customInput.addEventListener('input', function () { hiddenInput.value = this.value; hiddenInput.dispatchEvent(new Event('change')); });
+            }
+            function syncChipState(pickerEl, hiddenInput, customInput) {
+                const val = hiddenInput.value; const chips = pickerEl.querySelectorAll('.chip-option'); let matched = false;
+                chips.forEach(c => { if (c.dataset.value === val) { c.classList.add('active'); matched = true; } else if (c.dataset.value !== '__custom') { c.classList.remove('active'); } });
+                const ct = pickerEl.querySelector('.chip-custom-toggle');
+                if (val && !matched) { if (ct) ct.classList.add('active'); customInput.style.display = ''; customInput.value = val; }
+                else { if (ct) ct.classList.remove('active'); customInput.style.display = 'none'; customInput.value = ''; }
+            }
+            initChipPicker(document.getElementById('stylePicker'), fields.style, document.getElementById('styleCustomInput'));
+            initChipPicker(document.getElementById('capacityPicker'), fields.capacity, document.getElementById('capacityCustomInput'));
+
+            // Image preview
+            document.getElementById('beerImage').addEventListener('change', function () {
+                const file = this.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        document.getElementById('imagePreview').src = e.target.result;
+                        document.getElementById('imagePreviewContainer').style.display = '';
+                        const ec = document.getElementById('existingImageContainer');
+                        if (ec) ec.style.display = 'none';
+                        document.getElementById('previewImgArea').innerHTML = '<img src="' + e.target.result + '" style="width:100%;height:100%;object-fit:cover;" />';
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            function updatePreview() {
+                document.getElementById('previewName').textContent = fields.name.value || 'Název piva';
+                const breweryName = fields.brewery.options[fields.brewery.selectedIndex]?.text || 'Pivovar';
+                document.getElementById('previewBreweryName').textContent = breweryName === '— Vyberte pivovar —' ? 'Pivovar' : breweryName;
+                const styleEl = document.getElementById('previewStyle');
+                if (fields.style.value) { styleEl.textContent = fields.style.value; styleEl.style.display = ''; } else { styleEl.style.display = 'none'; }
+                const capEl = document.getElementById('previewCapacity');
+                if (fields.capacity.value) { capEl.textContent = fields.capacity.value; capEl.style.display = ''; } else { capEl.style.display = 'none'; }
+                document.getElementById('previewDesc').textContent = fields.description.value;
+                const price = parseFloat(fields.price.value) || 0;
+                document.getElementById('previewPrice').textContent = price.toFixed(0) + ' Kč';
+            }
+
+            [fields.name, fields.price, fields.brewery, fields.description].forEach(el => {
+                if (el) { el.addEventListener('input', updatePreview); el.addEventListener('change', updatePreview); }
+            });
+            fields.style.addEventListener('change', updatePreview);
+            fields.capacity.addEventListener('change', updatePreview);
+
+            let draftInterval = setInterval(saveDraft, 5000);
+            function saveDraft() {
+                localStorage.setItem(DRAFT_KEY, JSON.stringify({
+                    name: fields.name.value, style: fields.style.value, capacity: fields.capacity.value,
+                    price: fields.price.value, brewery: fields.brewery.value, description: fields.description.value,
+                    isActive: fields.isActive.checked, savedAt: Date.now()
+                }));
+            }
+            function restoreDraft() {
+                const raw = localStorage.getItem(DRAFT_KEY); if (!raw) return;
+                try {
+                    const d = JSON.parse(raw);
+                    if (Date.now() - d.savedAt > DRAFT_MAX_AGE) { localStorage.removeItem(DRAFT_KEY); return; }
+                    if (!confirm('Byl nalezen neuložený koncept. Chcete ho obnovit?')) { localStorage.removeItem(DRAFT_KEY); return; }
+                    fields.name.value = d.name || ''; fields.style.value = d.style || '';
+                    fields.capacity.value = d.capacity || ''; fields.price.value = d.price || '';
+                    fields.brewery.value = d.brewery || ''; fields.description.value = d.description || '';
+                    fields.isActive.checked = d.isActive !== false;
+                    syncChipState(document.getElementById('stylePicker'), fields.style, document.getElementById('styleCustomInput'));
+                    syncChipState(document.getElementById('capacityPicker'), fields.capacity, document.getElementById('capacityCustomInput'));
+                    updatePreview();
+                } catch (e) { localStorage.removeItem(DRAFT_KEY); }
+            }
+            restoreDraft();
+            form.addEventListener('submit', function () { localStorage.removeItem(DRAFT_KEY); clearInterval(draftInterval); });
+        })();
+    </script>
+}

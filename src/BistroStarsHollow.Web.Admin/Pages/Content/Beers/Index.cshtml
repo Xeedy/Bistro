@@ -1,15 +1,32 @@
 @page
 @model BistroStarsHollow.Web.Admin.Pages.Content.Beers.IndexModel
+@using BistroStarsHollow.Domain.Enums
 @{
     ViewData["Title"] = "Piva";
 }
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3 mb-0">Piva</h1>
-    <a asp-page="Create" class="btn btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> Přidat pivo
-    </a>
+    <div class="d-flex gap-2">
+        <a href="@(Model.PublicUrl)/Beers/DraftBeers" target="_blank" class="btn btn-outline-secondary">
+            <i class="bi bi-eye me-1"></i> Náhled webu
+        </a>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Přidat pivo
+        </a>
+    </div>
 </div>
+
+@if (Model.ActiveDraftBeerCount > 4)
+{
+    <div class="alert alert-warning d-flex align-items-center" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        <div>
+            Na čepu je aktuálně <strong>@Model.ActiveDraftBeerCount</strong> aktivních piv. Doporučený limit je 4.
+            Zvažte deaktivaci některých piv pro přehlednost veřejné sekce.
+        </div>
+    </div>
+}
 
 <ul class="nav nav-tabs mb-3">
     <li class="nav-item">
@@ -23,26 +40,36 @@
     </li>
 </ul>
 
+@Html.AntiForgeryToken()
+
+<div class="mb-3">
+    <input type="text" id="beerSearch" class="form-control" placeholder="Filtrovat podle názvu..." />
+</div>
+
 <div class="card">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0" id="beerTable">
                 <thead>
                     <tr>
+                        <th class="d-none d-lg-table-cell" style="width:40px"></th>
                         <th>Název</th>
                         <th>Typ</th>
                         <th>Styl</th>
                         <th>Pivovar</th>
                         <th>Cena</th>
-                        <th>Pořadí</th>
                         <th>Stav</th>
-                        <th style="width:120px">Akce</th>
+                        <th class="d-lg-none" style="width:60px">Pořadí</th>
+                        <th style="width:160px">Akce</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="beerTableBody">
                     @foreach (var beer in Model.Beers)
                     {
-                        <tr>
+                        <tr data-id="@beer.Id">
+                            <td class="d-none d-lg-table-cell" style="cursor:grab;">
+                                <i class="bi bi-grip-vertical text-muted"></i>
+                            </td>
                             <td>@beer.Name</td>
                             <td>
                                 @if (beer.Type == BeerType.Draft)
@@ -57,16 +84,19 @@
                             <td>@(beer.Style ?? "—")</td>
                             <td>@(beer.Brewery?.Name ?? "—")</td>
                             <td>@beer.Price.ToString("0.00 Kč")</td>
-                            <td>@beer.SortOrder</td>
                             <td>
-                                @if (beer.IsActive)
-                                {
-                                    <span class="badge bg-success">Aktivní</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Neaktivní</span>
-                                }
+                                <input type="checkbox" class="form-check-input beer-active-toggle"
+                                       data-id="@beer.Id"
+                                       @(beer.IsActive ? "checked" : "")
+                                       title="@(beer.IsActive ? "Deaktivovat" : "Aktivovat")" />
+                            </td>
+                            <td class="d-lg-none">
+                                <button type="button" class="btn btn-sm btn-outline-secondary btn-move-up" data-id="@beer.Id" title="Nahoru">
+                                    <i class="bi bi-arrow-up"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary btn-move-down" data-id="@beer.Id" title="Dolů">
+                                    <i class="bi bi-arrow-down"></i>
+                                </button>
                             </td>
                             <td>
                                 <a asp-page="Edit" asp-route-id="@beer.Id" class="btn btn-sm btn-outline-primary me-1">
@@ -81,7 +111,7 @@
                     @if (!Model.Beers.Any())
                     {
                         <tr>
-                            <td colspan="8" class="text-center text-muted py-4">Zatím žádná piva.</td>
+                            <td colspan="9" class="text-center text-muted py-4">Zatím žádná piva.</td>
                         </tr>
                     }
                 </tbody>
@@ -89,3 +119,102 @@
         </div>
     </div>
 </div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value
+                || document.querySelector('meta[name="RequestVerificationToken"]')?.getAttribute('content')
+                || '';
+
+            // Search filter
+            document.getElementById('beerSearch')?.addEventListener('input', function () {
+                const filter = this.value.toLowerCase();
+                const rows = document.querySelectorAll('#beerTableBody tr[data-id]');
+                rows.forEach(row => {
+                    const name = row.cells[1]?.textContent.toLowerCase() ?? '';
+                    const brewery = row.cells[4]?.textContent.toLowerCase() ?? '';
+                    row.style.display = (name.includes(filter) || brewery.includes(filter)) ? '' : 'none';
+                });
+            });
+
+            // SortableJS for desktop drag reorder
+            const tbody = document.getElementById('beerTableBody');
+            if (tbody && window.Sortable) {
+                Sortable.create(tbody, {
+                    handle: '.bi-grip-vertical',
+                    animation: 150,
+                    onEnd: function () {
+                        saveOrder();
+                    }
+                });
+            }
+
+            function getOrderedIds() {
+                return Array.from(document.querySelectorAll('#beerTableBody tr[data-id]'))
+                    .map(tr => tr.dataset.id);
+            }
+
+            function saveOrder() {
+                const ids = getOrderedIds();
+                fetch('?handler=UpdateSortOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify(ids)
+                });
+            }
+
+            // Mobile up/down arrows
+            document.querySelectorAll('.btn-move-up').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const row = this.closest('tr');
+                    const prev = row.previousElementSibling;
+                    if (prev && prev.dataset.id) {
+                        row.parentNode.insertBefore(row, prev);
+                        saveOrder();
+                    }
+                });
+            });
+
+            document.querySelectorAll('.btn-move-down').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const row = this.closest('tr');
+                    const next = row.nextElementSibling;
+                    if (next && next.dataset.id) {
+                        row.parentNode.insertBefore(next, row);
+                        saveOrder();
+                    }
+                });
+            });
+
+            // Inline AJAX checkbox for active state
+            document.querySelectorAll('.beer-active-toggle').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const id = this.dataset.id;
+                    const checkbox = this;
+                    fetch('?handler=ToggleActive', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'RequestVerificationToken': token
+                        },
+                        body: 'id=' + encodeURIComponent(id)
+                    })
+                    .then(r => r.json())
+                    .then(data => {
+                        if (data.success) {
+                            checkbox.checked = data.isActive;
+                        }
+                    })
+                    .catch(() => {
+                        checkbox.checked = !checkbox.checked;
+                    });
+                });
+            });
+        })();
+    </script>
+}

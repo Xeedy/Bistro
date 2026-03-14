@@ -1,5 +1,6 @@
 @page
 @model BistroStarsHollow.Web.Admin.Pages.Content.Menu.IndexModel
+@using BistroStarsHollow.Domain.Enums
 @{
     ViewData["Title"] = "Menu";
 }
@@ -30,42 +31,72 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3 mb-0">Menu</h1>
-    <a asp-page="Create" class="btn btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> Přidat položku
-    </a>
+    <div class="d-flex gap-2">
+        <a href="@(Model.PublicUrl)/Menu" target="_blank" class="btn btn-outline-secondary">
+            <i class="bi bi-eye me-1"></i> Náhled webu
+        </a>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Přidat položku
+        </a>
+    </div>
 </div>
 
-<div class="card">
+@Html.AntiForgeryToken()
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" class="row g-3 align-items-end">
+            <div class="col-md-3">
+                <label class="form-label">Kategorie</label>
+                <select name="FilterCategory" class="form-select">
+                    <option value="">Všechny</option>
+                    @foreach (var cat in Enum.GetValues<MenuCategory>())
+                    {
+                        <option value="@cat" selected="@(Model.FilterCategory == cat)">@CategoryName(cat)</option>
+                    }
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Hledat</label>
+                <input type="text" id="menuSearch" class="form-control" placeholder="Filtrovat podle názvu..." />
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-funnel me-1"></i>Filtrovat</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0" id="menuTable">
                 <thead>
                     <tr>
+                        <th style="width:40px"></th>
                         <th>Název</th>
                         <th>Kategorie</th>
                         <th>Cena</th>
-                        <th>Pořadí</th>
                         <th>Stav</th>
-                        <th style="width:120px">Akce</th>
+                        <th style="width:160px">Akce</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="menuTableBody">
                     @foreach (var item in Model.MenuItems)
                     {
-                        <tr>
+                        <tr data-id="@item.Id">
+                            <td style="cursor:grab;">
+                                <i class="bi bi-grip-vertical text-muted"></i>
+                            </td>
                             <td>@item.Name</td>
                             <td><span class="badge @CategoryBadgeClass(item.Category)">@CategoryName(item.Category)</span></td>
                             <td>@(item.DisplayPrice ?? item.Price?.ToString("0.00 Kč") ?? "—")</td>
-                            <td>@item.SortOrder</td>
                             <td>
-                                @if (item.IsActive)
-                                {
-                                    <span class="badge bg-success">Aktivní</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Neaktivní</span>
-                                }
+                                <input type="checkbox" class="form-check-input item-active-toggle"
+                                       data-id="@item.Id"
+                                       @(item.IsActive ? "checked" : "")
+                                       title="@(item.IsActive ? "Deaktivovat" : "Aktivovat")" />
                             </td>
                             <td>
                                 <a asp-page="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary me-1">
@@ -88,3 +119,136 @@
         </div>
     </div>
 </div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none" id="menuCards">
+    @{ var idx = 1; }
+    @foreach (var item in Model.MenuItems)
+    {
+        <div class="card mb-2 item-card" data-id="@item.Id">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@item.Name</div>
+                        <div class="d-flex align-items-center gap-2 mt-1">
+                            <span class="badge @CategoryBadgeClass(item.Category)" style="font-size:0.7rem;">@CategoryName(item.Category)</span>
+                            <small class="text-muted">@(item.DisplayPrice ?? item.Price?.ToString("0.00 Kč") ?? "—")</small>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <input type="checkbox" class="form-check-input item-active-toggle"
+                               data-id="@item.Id"
+                               @(item.IsActive ? "checked" : "") />
+                        <a asp-page="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-1 mt-2 border-top pt-2">
+                    <span class="badge bg-light text-dark item-order-badge" style="min-width:28px;">@(idx)</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-move-up" data-id="@item.Id" title="Nahoru">
+                        <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-move-down" data-id="@item.Id" title="Dolů">
+                        <i class="bi bi-arrow-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        idx++;
+    }
+    @if (!Model.MenuItems.Any())
+    {
+        <div class="text-center text-muted py-4">Zatím žádné položky menu.</div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+            // Search filter
+            document.getElementById('menuSearch')?.addEventListener('input', function () {
+                const filter = this.value.toLowerCase();
+                // Desktop
+                document.querySelectorAll('#menuTableBody tr[data-id]').forEach(row => {
+                    row.style.display = (row.cells[1]?.textContent.toLowerCase().includes(filter)) ? '' : 'none';
+                });
+                // Mobile
+                document.querySelectorAll('#menuCards .item-card').forEach(card => {
+                    const name = card.querySelector('.fw-semibold')?.textContent.toLowerCase() ?? '';
+                    card.style.display = name.includes(filter) ? '' : 'none';
+                });
+            });
+
+            // Desktop drag
+            const tbody = document.getElementById('menuTableBody');
+            if (tbody && window.Sortable) {
+                Sortable.create(tbody, { handle: '.bi-grip-vertical', animation: 150, onEnd: saveOrderDesktop });
+            }
+
+            function getDesktopOrderedIds() {
+                return Array.from(document.querySelectorAll('#menuTableBody tr[data-id]')).map(tr => tr.dataset.id);
+            }
+
+            function saveOrderDesktop() { saveOrder(getDesktopOrderedIds()); }
+
+            // Mobile drag
+            const cardsContainer = document.getElementById('menuCards');
+            if (cardsContainer && window.Sortable) {
+                Sortable.create(cardsContainer, { handle: '.item-order-badge', animation: 150, draggable: '.item-card', onEnd: function () { updateCardNumbers(); saveOrder(getCardOrderedIds()); } });
+            }
+
+            function getCardOrderedIds() {
+                return Array.from(document.querySelectorAll('#menuCards .item-card')).map(c => c.dataset.id);
+            }
+
+            function updateCardNumbers() {
+                document.querySelectorAll('#menuCards .item-card').forEach((card, i) => {
+                    const badge = card.querySelector('.item-order-badge');
+                    if (badge) badge.textContent = i + 1;
+                });
+            }
+
+            function saveOrder(orderedIds) {
+                fetch('?handler=UpdateSortOrder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify(orderedIds)
+                });
+            }
+
+            // Mobile move buttons
+            document.querySelectorAll('#menuCards .btn-move-up').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), prev = card.previousElementSibling;
+                    if (prev && prev.classList.contains('item-card')) { card.parentNode.insertBefore(card, prev); updateCardNumbers(); saveOrder(getCardOrderedIds()); }
+                });
+            });
+            document.querySelectorAll('#menuCards .btn-move-down').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), next = card.nextElementSibling;
+                    if (next && next.classList.contains('item-card')) { card.parentNode.insertBefore(next, card); updateCardNumbers(); saveOrder(getCardOrderedIds()); }
+                });
+            });
+
+            // AJAX active toggle
+            document.querySelectorAll('.item-active-toggle').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const id = this.dataset.id, checkbox = this;
+                    fetch('?handler=ToggleActive', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'RequestVerificationToken': token },
+                        body: 'id=' + encodeURIComponent(id)
+                    }).then(r => r.json()).then(data => { if (data.success) { document.querySelectorAll('.item-active-toggle[data-id="' + id + '"]').forEach(c => c.checked = data.isActive); } })
+                      .catch(() => { checkbox.checked = !checkbox.checked; });
+                });
+            });
+        })();
+    </script>
+}

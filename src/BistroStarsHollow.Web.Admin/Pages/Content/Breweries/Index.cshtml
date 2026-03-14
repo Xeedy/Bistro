@@ -6,33 +6,48 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h1 class="h3 mb-0">Pivovary</h1>
-    <a asp-page="Create" class="btn btn-primary">
-        <i class="bi bi-plus-lg me-1"></i> Přidat pivovar
-    </a>
+    <div class="d-flex gap-2">
+        <a href="@(Model.PublicUrl)/Beers/Breweries" target="_blank" class="btn btn-outline-secondary">
+            <i class="bi bi-eye me-1"></i> Náhled webu
+        </a>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Přidat pivovar
+        </a>
+    </div>
 </div>
 
-<div class="card">
+@Html.AntiForgeryToken()
+
+<div class="mb-3">
+    <input type="text" id="brewerySearch" class="form-control" placeholder="Filtrovat podle názvu..." />
+</div>
+
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0" id="breweryTable">
                 <thead>
                     <tr>
+                        <th style="width:40px"></th>
                         <th style="width:60px">Logo</th>
                         <th>Název</th>
                         <th>Počet piv</th>
-                        <th>Pořadí</th>
                         <th>Stav</th>
-                        <th style="width:120px">Akce</th>
+                        <th style="width:200px">Akce</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="breweryTableBody">
                     @foreach (var brewery in Model.Breweries)
                     {
-                        <tr>
+                        <tr data-id="@brewery.Id">
+                            <td style="cursor:grab;">
+                                <i class="bi bi-grip-vertical text-muted"></i>
+                            </td>
                             <td>
                                 @if (!string.IsNullOrEmpty(brewery.LogoImagePath))
                                 {
-                                    <img src="@brewery.LogoImagePath" alt="@brewery.Name" class="img-thumbnail" style="max-height:40px; max-width:50px;" />
+                                    <img src="@brewery.LogoImagePath" alt="@brewery.Name" style="max-height:40px;max-width:50px;border-radius:4px;" />
                                 }
                                 else
                                 {
@@ -41,18 +56,16 @@
                             </td>
                             <td>@brewery.Name</td>
                             <td>@(Model.BeerCounts.GetValueOrDefault(brewery.Id, 0))</td>
-                            <td>@brewery.SortOrder</td>
                             <td>
-                                @if (brewery.IsActive)
-                                {
-                                    <span class="badge bg-success">Aktivní</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Neaktivní</span>
-                                }
+                                <input type="checkbox" class="form-check-input item-active-toggle"
+                                       data-id="@brewery.Id"
+                                       @(brewery.IsActive ? "checked" : "")
+                                       title="@(brewery.IsActive ? "Deaktivovat" : "Aktivovat")" />
                             </td>
                             <td>
+                                <a href="@(Model.PublicUrl)/Beers/BreweryDetail/@brewery.Id" target="_blank" class="btn btn-sm btn-outline-info me-1" title="Náhled">
+                                    <i class="bi bi-eye"></i>
+                                </a>
                                 <a asp-page="Edit" asp-route-id="@brewery.Id" class="btn btn-sm btn-outline-primary me-1">
                                     <i class="bi bi-pencil"></i>
                                 </a>
@@ -73,3 +86,123 @@
         </div>
     </div>
 </div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none" id="breweryCards">
+    @{ var idx = 1; }
+    @foreach (var brewery in Model.Breweries)
+    {
+        <div class="card mb-2 item-card" data-id="@brewery.Id">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-center gap-2">
+                    @if (!string.IsNullOrEmpty(brewery.LogoImagePath))
+                    {
+                        <img src="@brewery.LogoImagePath" alt="@brewery.Name" style="width:36px;height:36px;object-fit:cover;border-radius:6px;" />
+                    }
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@brewery.Name</div>
+                        <small class="text-muted">@(Model.BeerCounts.GetValueOrDefault(brewery.Id, 0)) piv</small>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <input type="checkbox" class="form-check-input item-active-toggle"
+                               data-id="@brewery.Id"
+                               @(brewery.IsActive ? "checked" : "") />
+                        <a asp-page="Edit" asp-route-id="@brewery.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@brewery.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-1 mt-2 border-top pt-2">
+                    <span class="badge bg-light text-dark item-order-badge" style="min-width:28px;">@(idx)</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-move-up" data-id="@brewery.Id" title="Nahoru">
+                        <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-move-down" data-id="@brewery.Id" title="Dolů">
+                        <i class="bi bi-arrow-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        idx++;
+    }
+    @if (!Model.Breweries.Any())
+    {
+        <div class="text-center text-muted py-4">Zatím žádné pivovary.</div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+            document.getElementById('brewerySearch')?.addEventListener('input', function () {
+                const filter = this.value.toLowerCase();
+                document.querySelectorAll('#breweryTableBody tr[data-id]').forEach(row => {
+                    const name = row.cells[2]?.textContent.toLowerCase() ?? '';
+                    row.style.display = name.includes(filter) ? '' : 'none';
+                });
+                document.querySelectorAll('#breweryCards .item-card').forEach(card => {
+                    const name = card.querySelector('.fw-semibold')?.textContent.toLowerCase() ?? '';
+                    card.style.display = name.includes(filter) ? '' : 'none';
+                });
+            });
+
+            const tbody = document.getElementById('breweryTableBody');
+            if (tbody && window.Sortable) {
+                Sortable.create(tbody, { handle: '.bi-grip-vertical', animation: 150, onEnd: function () { saveOrder(getDesktopIds()); } });
+            }
+            function getDesktopIds() { return Array.from(document.querySelectorAll('#breweryTableBody tr[data-id]')).map(tr => tr.dataset.id); }
+
+            const cards = document.getElementById('breweryCards');
+            if (cards && window.Sortable) {
+                Sortable.create(cards, { handle: '.item-order-badge', animation: 150, draggable: '.item-card', onEnd: function () { updateCardNumbers(); saveOrder(getCardIds()); } });
+            }
+            function getCardIds() { return Array.from(document.querySelectorAll('#breweryCards .item-card')).map(c => c.dataset.id); }
+
+            function updateCardNumbers() {
+                document.querySelectorAll('#breweryCards .item-card').forEach((card, i) => {
+                    const badge = card.querySelector('.item-order-badge');
+                    if (badge) badge.textContent = i + 1;
+                });
+            }
+
+            function saveOrder(orderedIds) {
+                fetch('?handler=UpdateSortOrder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify(orderedIds)
+                });
+            }
+
+            document.querySelectorAll('#breweryCards .btn-move-up').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), prev = card.previousElementSibling;
+                    if (prev && prev.classList.contains('item-card')) { card.parentNode.insertBefore(card, prev); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+            document.querySelectorAll('#breweryCards .btn-move-down').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), next = card.nextElementSibling;
+                    if (next && next.classList.contains('item-card')) { card.parentNode.insertBefore(next, card); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+
+            document.querySelectorAll('.item-active-toggle').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const id = this.dataset.id, checkbox = this;
+                    fetch('?handler=ToggleActive', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'RequestVerificationToken': token },
+                        body: 'id=' + encodeURIComponent(id)
+                    }).then(r => r.json()).then(data => { if (data.success) { document.querySelectorAll('.item-active-toggle[data-id="' + id + '"]').forEach(c => c.checked = data.isActive); } })
+                      .catch(() => { checkbox.checked = !checkbox.checked; });
+                });
+            });
+        })();
+    </script>
+}

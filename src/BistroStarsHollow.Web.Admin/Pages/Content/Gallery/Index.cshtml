@@ -11,37 +11,38 @@
     </a>
 </div>
 
-<div class="card">
+@Html.AntiForgeryToken()
+
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
     <div class="card-body p-0">
         <div class="table-responsive">
-            <table class="table table-hover mb-0">
+            <table class="table table-hover mb-0" id="galleryTable">
                 <thead>
                     <tr>
+                        <th style="width:40px"></th>
                         <th style="width:80px">Náhled</th>
                         <th>Alt text</th>
-                        <th>Pořadí</th>
                         <th>Stav</th>
                         <th style="width:120px">Akce</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="galleryTableBody">
                     @foreach (var img in Model.Images)
                     {
-                        <tr>
+                        <tr data-id="@img.Id">
+                            <td style="cursor:grab;">
+                                <i class="bi bi-grip-vertical text-muted"></i>
+                            </td>
                             <td>
-                                <img src="@img.FilePath" alt="@img.AltText" class="img-thumbnail" style="width:60px;height:40px;object-fit:cover;" />
+                                <img src="@img.FilePath" alt="@img.AltText" style="width:60px;height:40px;object-fit:cover;border-radius:4px;" />
                             </td>
                             <td>@(img.AltText ?? "—")</td>
-                            <td>@img.SortOrder</td>
                             <td>
-                                @if (img.IsActive)
-                                {
-                                    <span class="badge bg-success">Aktivní</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-secondary">Neaktivní</span>
-                                }
+                                <input type="checkbox" class="form-check-input item-active-toggle"
+                                       data-id="@img.Id"
+                                       @(img.IsActive ? "checked" : "")
+                                       title="@(img.IsActive ? "Deaktivovat" : "Aktivovat")" />
                             </td>
                             <td>
                                 <a asp-page="Edit" asp-route-id="@img.Id" class="btn btn-sm btn-outline-primary me-1">
@@ -64,3 +65,107 @@
         </div>
     </div>
 </div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none" id="galleryCards">
+    @{ var idx = 1; }
+    @foreach (var img in Model.Images)
+    {
+        <div class="card mb-2 item-card" data-id="@img.Id">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-center gap-2">
+                    <img src="@img.FilePath" alt="@img.AltText" style="width:60px;height:40px;object-fit:cover;border-radius:4px;" />
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@(img.AltText ?? "Obrázek")</div>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <input type="checkbox" class="form-check-input item-active-toggle"
+                               data-id="@img.Id"
+                               @(img.IsActive ? "checked" : "") />
+                        <a asp-page="Edit" asp-route-id="@img.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@img.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="d-flex align-items-center gap-1 mt-2 border-top pt-2">
+                    <span class="badge bg-light text-dark item-order-badge" style="min-width:28px;">@(idx)</span>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-move-up" data-id="@img.Id" title="Nahoru">
+                        <i class="bi bi-arrow-up"></i>
+                    </button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary btn-move-down" data-id="@img.Id" title="Dolů">
+                        <i class="bi bi-arrow-down"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        idx++;
+    }
+    @if (!Model.Images.Any())
+    {
+        <div class="text-center text-muted py-4">Zatím žádné obrázky.</div>
+    }
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+            const tbody = document.getElementById('galleryTableBody');
+            if (tbody && window.Sortable) {
+                Sortable.create(tbody, { handle: '.bi-grip-vertical', animation: 150, onEnd: function () { saveOrder(getDesktopIds()); } });
+            }
+            function getDesktopIds() { return Array.from(document.querySelectorAll('#galleryTableBody tr[data-id]')).map(tr => tr.dataset.id); }
+
+            const cards = document.getElementById('galleryCards');
+            if (cards && window.Sortable) {
+                Sortable.create(cards, { handle: '.item-order-badge', animation: 150, draggable: '.item-card', onEnd: function () { updateCardNumbers(); saveOrder(getCardIds()); } });
+            }
+            function getCardIds() { return Array.from(document.querySelectorAll('#galleryCards .item-card')).map(c => c.dataset.id); }
+
+            function updateCardNumbers() {
+                document.querySelectorAll('#galleryCards .item-card').forEach((card, i) => {
+                    const badge = card.querySelector('.item-order-badge');
+                    if (badge) badge.textContent = i + 1;
+                });
+            }
+
+            function saveOrder(orderedIds) {
+                fetch('?handler=UpdateSortOrder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify(orderedIds)
+                });
+            }
+
+            document.querySelectorAll('#galleryCards .btn-move-up').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), prev = card.previousElementSibling;
+                    if (prev && prev.classList.contains('item-card')) { card.parentNode.insertBefore(card, prev); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+            document.querySelectorAll('#galleryCards .btn-move-down').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), next = card.nextElementSibling;
+                    if (next && next.classList.contains('item-card')) { card.parentNode.insertBefore(next, card); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+
+            document.querySelectorAll('.item-active-toggle').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const id = this.dataset.id, checkbox = this;
+                    fetch('?handler=ToggleActive', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'RequestVerificationToken': token },
+                        body: 'id=' + encodeURIComponent(id)
+                    }).then(r => r.json()).then(data => { if (data.success) { document.querySelectorAll('.item-active-toggle[data-id="' + id + '"]').forEach(c => c.checked = data.isActive); } })
+                      .catch(() => { checkbox.checked = !checkbox.checked; });
+                });
+            });
+        })();
+    </script>
+}

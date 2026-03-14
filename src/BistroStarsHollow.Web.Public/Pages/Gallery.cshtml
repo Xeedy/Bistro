@@ -24,7 +24,14 @@
                 @foreach (var img in Model.Images)
                 {
                     <div class="gallery-item" title="@img.AltText">
-                        <i class="bi bi-image"></i>
+                        @if (!string.IsNullOrEmpty(img.FilePath))
+                        {
+                            <img src="@img.FilePath" alt="@(img.AltText ?? "Galerie")" style="width:100%;height:100%;object-fit:cover;" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-image"></i>
+                        }
                     </div>
                 }
             </div>

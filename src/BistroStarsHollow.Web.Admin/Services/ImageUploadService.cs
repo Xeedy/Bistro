@@ -14,6 +14,12 @@ public class ImageUploadService
         _env = env;
     }
 
+    private string GetSharedUploadsRoot()
+    {
+        // Shared uploads folder at solution root: Bistro/uploads/
+        return Path.GetFullPath(Path.Combine(_env.ContentRootPath, "..", "..", "uploads"));
+    }
+
     public async Task<string> SaveImageAsync(IFormFile file, string subfolder)
     {
         if (file.Length > MaxFileSize)
@@ -23,7 +29,7 @@ public class ImageUploadService
         if (!AllowedExtensions.Contains(ext))
             throw new InvalidOperationException("Nepovolený formát souboru. Povolené: jpg, jpeg, png, webp.");
 
-        var uploadsDir = Path.Combine(_env.WebRootPath, "uploads", subfolder);
+        var uploadsDir = Path.Combine(GetSharedUploadsRoot(), subfolder);
         Directory.CreateDirectory(uploadsDir);
 
         var fileName = $"{Guid.NewGuid()}{ext}";
@@ -39,7 +45,7 @@ public class ImageUploadService
     {
         if (string.IsNullOrEmpty(relativePath)) return;
 
-        var fullPath = Path.Combine(_env.WebRootPath, relativePath.TrimStart('/'));
+        var fullPath = Path.Combine(GetSharedUploadsRoot(), relativePath.TrimStart('/').Replace("uploads/", ""));
         if (File.Exists(fullPath))
             File.Delete(fullPath);
     }

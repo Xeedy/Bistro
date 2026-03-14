@@ -11,7 +11,8 @@
     </a>
 </div>
 
-<div class="card">
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
@@ -52,4 +53,36 @@
             </table>
         </div>
     </div>
+</div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none">
+    @foreach (var block in Model.Blocks)
+    {
+        <div class="card mb-2 item-card">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@block.Title</div>
+                        <div class="d-flex align-items-center gap-2 mt-1">
+                            <code style="font-size:0.75rem;">@block.Key</code>
+                            <span class="badge bg-info" style="font-size:0.65rem;">@block.Language.ToUpper()</span>
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <a asp-page="Edit" asp-route-id="@block.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@block.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.Blocks.Any())
+    {
+        <div class="text-center text-muted py-4">Zatím žádné textové bloky.</div>
+    }
 </div>

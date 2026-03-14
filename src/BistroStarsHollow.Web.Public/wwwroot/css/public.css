@@ -480,6 +480,19 @@ h1, h2, h3, h4, h5, h6 {
     align-self: flex-start;
 }
 
+.beer-card-capacity {
+    display: inline-block;
+    background: rgba(100, 116, 139, 0.1);
+    color: var(--bistro-muted);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    margin-bottom: 0.75rem;
+    margin-left: 0.25rem;
+    align-self: flex-start;
+}
+
 .beer-card-desc {
     font-size: 0.85rem;
     color: var(--bistro-muted);
@@ -492,6 +505,23 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 700;
     color: var(--bistro-gold-dark);
     margin-top: auto;
+}
+
+.beer-card-img-square {
+    height: auto;
+    aspect-ratio: 1 / 1;
+}
+
+.beer-card-prices {
+    display: flex;
+    gap: 1rem;
+    margin-top: auto;
+}
+
+.beer-card-price-item {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--bistro-gold-dark);
 }
 
 /* Brewery card */

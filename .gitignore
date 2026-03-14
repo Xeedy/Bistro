@@ -1,0 +1,23 @@
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+bin/
+obj/
+
+# Rider / VS Code / misc
+.idea/
+.vscode/
+
+# Logs and caches
+*.log
+*.cache
+*.pdb
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,43 @@
+@page "{id:guid}"
+@model BistroStarsHollow.Web.Admin.Pages.Content.DraftBeers.DeleteModel
+@using BistroStarsHollow.Domain.Enums
+@{
+    ViewData["Title"] = "Smazat čepované pivo";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="card-title mb-0">Opravdu smazat toto pivo?</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Název</dt>
+                    <dd class="col-sm-8">@Model.Beer.Name</dd>
+                    <dt class="col-sm-4">Styl</dt>
+                    <dd class="col-sm-8">@(Model.Beer.Style ?? "—")</dd>
+                    <dt class="col-sm-4">Pivovar</dt>
+                    <dd class="col-sm-8">@(Model.Beer.Brewery?.Name ?? "—")</dd>
+                    <dt class="col-sm-4">Cena 0,3l</dt>
+                    <dd class="col-sm-8">@(Model.Beer.PriceSmall?.ToString("0 Kč") ?? "—")</dd>
+                    <dt class="col-sm-4">Cena 0,5l</dt>
+                    <dd class="col-sm-8">@Model.Beer.Price.ToString("0 Kč")</dd>
+                </dl>
+            </div>
+            <div class="card-footer d-flex gap-2">
+                <form method="post">
+                    <input type="hidden" asp-for="Beer.Id" />
+                    <button type="submit" class="btn btn-danger">Smazat</button>
+                </form>
+                <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+            </div>
+        </div>
+    </div>
+</div>

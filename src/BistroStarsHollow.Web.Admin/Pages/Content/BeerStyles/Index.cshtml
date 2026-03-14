@@ -1,0 +1,217 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Content.BeerStyles.IndexModel
+@{
+    ViewData["Title"] = "Pivní styly";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Pivní styly</h1>
+</div>
+
+@Html.AntiForgeryToken()
+
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
+    <div class="card-header bg-white">
+        <h5 class="card-title mb-0">Správa pivních stylů</h5>
+    </div>
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0" id="styleTable">
+                <thead>
+                    <tr>
+                        <th style="width:40px"></th>
+                        <th>Název</th>
+                        <th style="width:200px">Akce</th>
+                    </tr>
+                </thead>
+                <tbody id="styleTableBody">
+                    @foreach (var style in Model.BeerStyles)
+                    {
+                        <tr data-id="@style.Id">
+                            <td style="cursor:grab;">
+                                <i class="bi bi-grip-vertical text-muted"></i>
+                            </td>
+                            <td>
+                                <span class="style-name" data-id="@style.Id">@style.Name</span>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-outline-primary me-1 btn-rename" data-id="@style.Id" data-name="@style.Name">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                                <form method="post" asp-page-handler="Delete" class="d-inline" onsubmit="return confirm('Opravdu smazat tento pivní styl?')">
+                                    <input type="hidden" name="id" value="@style.Id" />
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.BeerStyles.Any())
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-muted py-4">Zatím žádné pivní styly.</td>
+                        </tr>
+                    }
+                    <tr class="table-light">
+                        <td colspan="3">
+                            <form method="post" asp-page-handler="Create" class="d-flex gap-2">
+                                <input type="text" name="name" class="form-control form-control-sm" placeholder="Nový pivní styl..." required />
+                                <button type="submit" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-plus-lg me-1"></i> Přidat
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none">
+    <div class="card mb-3">
+        <div class="card-header bg-white">
+            <h5 class="card-title mb-0">Správa pivních stylů</h5>
+        </div>
+        <div class="card-body p-2">
+            <div id="styleCards">
+                @{ var idx = 1; }
+                @foreach (var style in Model.BeerStyles)
+                {
+                    <div class="card mb-2 item-card" data-id="@style.Id">
+                        <div class="card-body py-2 px-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="flex-grow-1">
+                                    <div class="fw-semibold">@style.Name</div>
+                                </div>
+                                <div class="d-flex align-items-center gap-1">
+                                    <button type="button" class="btn btn-sm btn-outline-primary btn-rename" data-id="@style.Id" data-name="@style.Name">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <form method="post" asp-page-handler="Delete" class="d-inline" onsubmit="return confirm('Opravdu smazat tento pivní styl?')">
+                                        <input type="hidden" name="id" value="@style.Id" />
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center gap-1 mt-2 border-top pt-2">
+                                <span class="badge bg-light text-dark item-order-badge" style="min-width:28px;">@(idx)</span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary btn-move-up" data-id="@style.Id" title="Nahoru">
+                                    <i class="bi bi-arrow-up"></i>
+                                </button>
+                                <button type="button" class="btn btn-sm btn-outline-secondary btn-move-down" data-id="@style.Id" title="Dolů">
+                                    <i class="bi bi-arrow-down"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    idx++;
+                }
+                @if (!Model.BeerStyles.Any())
+                {
+                    <div class="text-center text-muted py-4">Zatím žádné pivní styly.</div>
+                }
+            </div>
+            <form method="post" asp-page-handler="Create" class="d-flex gap-2 mt-2">
+                <input type="text" name="name" class="form-control form-control-sm" placeholder="Nový pivní styl..." required />
+                <button type="submit" class="btn btn-sm btn-primary">
+                    <i class="bi bi-plus-lg me-1"></i> Přidat
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Rename Modal -->
+<div class="modal fade" id="renameModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form method="post" asp-page-handler="Rename">
+                <div class="modal-header">
+                    <h5 class="modal-title">Přejmenovat pivní styl</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="renameId" />
+                    <div class="mb-3">
+                        <label class="form-label">Název</label>
+                        <input type="text" name="name" id="renameName" class="form-control" required />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Zrušit</button>
+                    <button type="submit" class="btn btn-primary">Uložit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+
+            // Rename modal
+            document.querySelectorAll('.btn-rename').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    document.getElementById('renameId').value = this.dataset.id;
+                    document.getElementById('renameName').value = this.dataset.name;
+                    new bootstrap.Modal(document.getElementById('renameModal')).show();
+                });
+            });
+
+            // Desktop drag
+            const tbody = document.getElementById('styleTableBody');
+            if (tbody && window.Sortable) {
+                Sortable.create(tbody, {
+                    handle: '.bi-grip-vertical', animation: 150,
+                    filter: '.table-light',
+                    onEnd: function () { saveOrder(getDesktopIds()); }
+                });
+            }
+            function getDesktopIds() { return Array.from(document.querySelectorAll('#styleTableBody tr[data-id]')).map(tr => tr.dataset.id); }
+
+            // Mobile drag
+            const cards = document.getElementById('styleCards');
+            if (cards && window.Sortable) {
+                Sortable.create(cards, { handle: '.item-order-badge', animation: 150, draggable: '.item-card', onEnd: function () { updateCardNumbers(); saveOrder(getCardIds()); } });
+            }
+            function getCardIds() { return Array.from(document.querySelectorAll('#styleCards .item-card')).map(c => c.dataset.id); }
+
+            function updateCardNumbers() {
+                document.querySelectorAll('#styleCards .item-card').forEach((card, i) => {
+                    const badge = card.querySelector('.item-order-badge');
+                    if (badge) badge.textContent = i + 1;
+                });
+            }
+
+            function saveOrder(orderedIds) {
+                fetch('?handler=UpdateSortOrder', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', 'RequestVerificationToken': token },
+                    body: JSON.stringify(orderedIds)
+                });
+            }
+
+            document.querySelectorAll('#styleCards .btn-move-up').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), prev = card.previousElementSibling;
+                    if (prev && prev.classList.contains('item-card')) { card.parentNode.insertBefore(card, prev); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+            document.querySelectorAll('#styleCards .btn-move-down').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const card = this.closest('.item-card'), next = card.nextElementSibling;
+                    if (next && next.classList.contains('item-card')) { card.parentNode.insertBefore(next, card); updateCardNumbers(); saveOrder(getCardIds()); }
+                });
+            });
+        })();
+    </script>
+}

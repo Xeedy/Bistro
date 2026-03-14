@@ -26,7 +26,14 @@
                     <div class="col-sm-6 col-lg-4">
                         <div class="beer-card">
                             <div class="beer-card-img beer-card-img-bottled">
-                                <i class="bi bi-box-seam"></i>
+                                @if (!string.IsNullOrEmpty(beer.ImagePath))
+                                {
+                                    <img src="@beer.ImagePath" alt="@beer.Name" style="width:100%;height:100%;object-fit:cover;" />
+                                }
+                                else
+                                {
+                                    <i class="bi bi-box-seam"></i>
+                                }
                             </div>
                             <div class="beer-card-body">
                                 <h5 class="beer-card-name">@beer.Name</h5>
@@ -36,6 +43,10 @@
                                 @if (!string.IsNullOrEmpty(beer.Style))
                                 {
                                     <span class="beer-card-style">@beer.Style</span>
+                                }
+                                @if (!string.IsNullOrEmpty(beer.Capacity))
+                                {
+                                    <span class="beer-card-capacity">@beer.Capacity</span>
                                 }
                                 @if (!string.IsNullOrEmpty(beer.Description))
                                 {

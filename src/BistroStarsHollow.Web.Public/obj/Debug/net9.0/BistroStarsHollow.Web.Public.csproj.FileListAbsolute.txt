@@ -433,7 +433,6 @@ C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\De
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\scopedcss\Pages\Shared\_Layout.cshtml.rz.scp.css
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\scopedcss\bundle\BistroStarsHollow.Web.Public.styles.css
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\scopedcss\projectbundle\BistroStarsHollow.Web.Public.bundle.scp.css
-C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\sy1xh54cn0-xz43a7lj4s.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\9yaj9kq9dq-b9sayid5wm.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\j1d45qiiqp-61n19gt1b8.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\johfd49lyy-sied3x2rtc.gz
@@ -510,3 +509,4 @@ C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\De
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\BistroStarsHollow.Web.Public.pdb
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\BistroStarsHollow.Web.Public.genruntimeconfig.cache
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\ref\BistroStarsHollow.Web.Public.dll
+C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\sy1xh54cn0-hh30gl0wxy.gz

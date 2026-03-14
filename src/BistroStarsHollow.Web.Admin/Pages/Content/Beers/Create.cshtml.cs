@@ -28,15 +28,18 @@ public class CreateModel : PageModel
     public Beer Beer { get; set; } = new();
 
     public List<Brewery> Breweries { get; set; } = new();
+    public List<BeerStyle> BeerStyles { get; set; } = new();
 
     public async Task OnGetAsync()
     {
         Breweries = await _contentService.GetAllBreweriesAsync();
+        BeerStyles = await _contentService.GetAllBeerStylesAsync();
     }
 
     public async Task<IActionResult> OnPostAsync(IFormFile? imageFile)
     {
         Breweries = await _contentService.GetAllBreweriesAsync();
+        BeerStyles = await _contentService.GetAllBeerStylesAsync();
 
         if (imageFile != null && imageFile.Length > 0)
         {

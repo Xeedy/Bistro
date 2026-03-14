@@ -1,0 +1,77 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Operations.CashClosures.CreateModel
+@{
+    ViewData["Title"] = "Nová uzávěrka";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Nová uzávěrka</h1>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Date" class="form-label">Datum</label>
+                        <input asp-for="Input.Date" class="form-control" type="date" />
+                        <span asp-validation-for="Input.Date" class="text-danger"></span>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label asp-for="Input.CardAmount" class="form-label">Platby kartou (Kč)</label>
+                            <input asp-for="Input.CardAmount" class="form-control" type="number" step="0.01" min="0" id="cardAmount" />
+                            <span asp-validation-for="Input.CardAmount" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Input.CashAmount" class="form-label">Hotovost (Kč)</label>
+                            <input asp-for="Input.CashAmount" class="form-control" type="number" step="0.01" min="0" id="cashAmount" />
+                            <span asp-validation-for="Input.CashAmount" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Celkem (automaticky)</label>
+                            <input type="text" class="form-control" id="totalDisplay" readonly />
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="Input.Difference" class="form-label">Odchylka (Kč)</label>
+                            <input asp-for="Input.Difference" class="form-control" type="number" step="0.01" />
+                            <span asp-validation-for="Input.Difference" class="text-danger"></span>
+                            <div class="form-text">Kladná = přebytek, záporná = manko</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Input.Note" class="form-label">Poznámka</label>
+                        <textarea asp-for="Input.Note" class="form-control" rows="3"></textarea>
+                        <span asp-validation-for="Input.Note" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Vytvořit</button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function updateTotal() {
+            const card = parseFloat(document.getElementById('cardAmount').value) || 0;
+            const cash = parseFloat(document.getElementById('cashAmount').value) || 0;
+            document.getElementById('totalDisplay').value = (card + cash).toFixed(2) + ' Kč';
+        }
+        document.getElementById('cardAmount')?.addEventListener('input', updateTotal);
+        document.getElementById('cashAmount')?.addEventListener('input', updateTotal);
+        updateTotal();
+    </script>
+}

@@ -1,0 +1,408 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Operations.Shifts.IndexModel
+@using BistroStarsHollow.Domain.Enums
+@{
+    ViewData["Title"] = "Kalendář směn";
+
+    var prevMonth = new DateTime(Model.Year, Model.Month, 1).AddMonths(-1);
+    var nextMonth = new DateTime(Model.Year, Model.Month, 1).AddMonths(1);
+
+    string ShiftTypeLabel(ShiftType t) => t switch
+    {
+        ShiftType.Morning => "Ranní",
+        ShiftType.Afternoon => "Odpolední",
+        ShiftType.FullDay => "Celý den",
+        _ => t.ToString()
+    };
+
+    string DayStatusLabel(DayStatus s) => s switch
+    {
+        DayStatus.Open => "Otevřeno",
+        DayStatus.Closed => "Zavřeno",
+        DayStatus.Holiday => "Svátek",
+        _ => s.ToString()
+    };
+
+    string DayStatusBadge(DayStatus s) => s switch
+    {
+        DayStatus.Open => "bg-success",
+        DayStatus.Closed => "bg-secondary",
+        DayStatus.Holiday => "bg-warning text-dark",
+        _ => "bg-secondary"
+    };
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Kalendář směn</h1>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show">
+        <i class="bi bi-check-circle me-1"></i> @TempData["Success"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show">
+        <i class="bi bi-exclamation-triangle me-1"></i> @TempData["Error"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<!-- Month navigation -->
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <a asp-page="Index" asp-route-year="@prevMonth.Year" asp-route-month="@prevMonth.Month" class="btn btn-outline-secondary btn-sm">
+                <i class="bi bi-chevron-left"></i> @prevMonth.ToString("MMMM", new System.Globalization.CultureInfo("cs-CZ"))
+            </a>
+            <h5 class="mb-0">@Model.MonthName @Model.Year</h5>
+            <a asp-page="Index" asp-route-year="@nextMonth.Year" asp-route-month="@nextMonth.Month" class="btn btn-outline-secondary btn-sm">
+                @nextMonth.ToString("MMMM", new System.Globalization.CultureInfo("cs-CZ")) <i class="bi bi-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Legend -->
+<div class="d-flex gap-3 mb-3 small text-muted flex-wrap">
+    <span><i class="bi bi-circle-fill text-success me-1"></i> Volné místo</span>
+    <span><i class="bi bi-circle-fill text-primary me-1"></i> Obsazeno</span>
+    <span><i class="bi bi-circle-fill text-warning me-1"></i> Váš zápis</span>
+    <span><i class="bi bi-circle-fill text-secondary me-1"></i> Minulost / Zavřeno</span>
+</div>
+
+<!-- Calendar Grid -->
+<div class="card">
+    <div class="card-body p-0">
+        <div class="shift-calendar">
+            <!-- Header row -->
+            <div class="shift-calendar-header">
+                <div class="shift-cal-cell">Po</div>
+                <div class="shift-cal-cell">Út</div>
+                <div class="shift-cal-cell">St</div>
+                <div class="shift-cal-cell">Čt</div>
+                <div class="shift-cal-cell">Pá</div>
+                <div class="shift-cal-cell">So</div>
+                <div class="shift-cal-cell">Ne</div>
+            </div>
+
+            <!-- Calendar body -->
+            @for (int row = 0; row < Model.CalendarDays.Count / 7; row++)
+            {
+                <div class="shift-calendar-row">
+                    @for (int col = 0; col < 7; col++)
+                    {
+                        var dayIndex = row * 7 + col;
+                        var day = Model.CalendarDays[dayIndex];
+                        var shift = day.Shift;
+                        var isClosed = shift?.DayStatus != null && shift.DayStatus != DayStatus.Open;
+                        var assignmentCount = shift?.Assignments.Count ?? 0;
+                        var requiredCount = shift?.RequiredStaffCount ?? 1;
+                        var isCurrentUserAssigned = shift?.Assignments.Any(a => a.UserId == Model.CurrentUserId) ?? false;
+                        var isFull = assignmentCount >= requiredCount;
+
+                        <div class="shift-cal-day @(!day.IsCurrentMonth ? "other-month" : "") @(day.IsPast ? "past" : "") @(day.IsToday ? "today" : "") @(isClosed ? "closed" : "")">
+                            <div class="shift-day-number">
+                                <span>
+                                    @day.Date.Day
+                                    @if (day.IsToday)
+                                    {
+                                        <span class="badge bg-primary ms-1" style="font-size:0.6rem;">dnes</span>
+                                    }
+                                </span>
+                                @if ((User.IsInRole("Admin") || User.IsInRole("Superadmin")) && day.IsCurrentMonth && !day.IsPast)
+                                {
+                                    <button type="button" class="btn-shift-action"
+                                            onclick="openShiftSettings('@(shift?.Id)', '@day.Date.ToString("yyyy-MM-dd")', '@(shift?.Type ?? ShiftType.FullDay)', '@(shift?.RequiredStaffCount ?? 1)', '@(shift?.DayStatus ?? DayStatus.Open)', '@(shift?.Note?.Replace("'", "\\'") ?? "")')"
+                                            title="Nastavení směny">
+                                        <i class="bi bi-gear"></i>
+                                    </button>
+                                }
+                            </div>
+
+                            @if (day.IsCurrentMonth)
+                            {
+                                @if (isClosed)
+                                {
+                                    <div class="text-center">
+                                        <span class="badge @DayStatusBadge(shift!.DayStatus) mt-1" style="font-size:0.7rem;">@DayStatusLabel(shift.DayStatus)</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <!-- Staff count indicator -->
+                                    <div class="shift-staff-indicator mb-1">
+                                        <small class="@(isFull ? "text-success" : "text-muted")">
+                                            <i class="bi bi-people-fill me-1"></i>@assignmentCount/@requiredCount
+                                        </small>
+                                    </div>
+
+                                    <!-- Assignments -->
+                                    @if (shift != null)
+                                    {
+                                        @foreach (var assignment in shift.Assignments)
+                                        {
+                                            var isMe = assignment.UserId == Model.CurrentUserId;
+                                            <div class="shift-assignment @(isMe ? "mine" : "")">
+                                                <span class="shift-assignment-name" title="@assignment.UserDisplayName">
+                                                    @assignment.UserDisplayName
+                                                </span>
+                                                @if (!day.IsPast && !isMe)
+                                                {
+                                                    <form method="post" asp-page-handler="Override" class="d-inline"
+                                                          onsubmit="return confirm('Opravdu chcete přepsat uživatele @assignment.UserDisplayName?');">
+                                                        <input type="hidden" name="date" value="@day.Date.ToString("yyyy-MM-dd")" />
+                                                        <input type="hidden" name="existingUserId" value="@assignment.UserId" />
+                                                        <button type="submit" class="btn-shift-action" title="Přepsat">
+                                                            <i class="bi bi-arrow-repeat"></i>
+                                                        </button>
+                                                    </form>
+                                                }
+                                            </div>
+                                        }
+                                    }
+
+                                    <!-- Actions -->
+                                    @if (!day.IsPast)
+                                    {
+                                        <div class="shift-actions mt-auto">
+                                            @if (isCurrentUserAssigned)
+                                            {
+                                                <form method="post" asp-page-handler="SignOff">
+                                                    <input type="hidden" name="date" value="@day.Date.ToString("yyyy-MM-dd")" />
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm w-100" style="font-size:0.7rem;">
+                                                        <i class="bi bi-x-lg me-1"></i>Odepsat
+                                                    </button>
+                                                </form>
+                                            }
+                                            else if (!isFull)
+                                            {
+                                                <form method="post" asp-page-handler="SignUp">
+                                                    <input type="hidden" name="date" value="@day.Date.ToString("yyyy-MM-dd")" />
+                                                    <button type="submit" class="btn btn-outline-success btn-sm w-100" style="font-size:0.7rem;">
+                                                        <i class="bi bi-plus-lg me-1"></i>Zapsat
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    }
+                                }
+
+                                @if (shift?.Note != null)
+                                {
+                                    <div class="shift-note" title="@shift.Note">
+                                        <i class="bi bi-sticky"></i>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Settings Modal (Admin only) -->
+@if (User.IsInRole("Admin") || User.IsInRole("Superadmin"))
+{
+    <div class="modal fade" id="shiftSettingsModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="post" asp-page-handler="UpdateSettings">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Nastavení směny</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" name="shiftId" id="settingsShiftId" />
+                        <input type="hidden" name="date" id="settingsDate" />
+
+                        <div class="mb-3">
+                            <label class="form-label">Typ směny</label>
+                            <select name="type" id="settingsType" class="form-select">
+                                <option value="@ShiftType.FullDay">Celý den</option>
+                                <option value="@ShiftType.Morning">Ranní</option>
+                                <option value="@ShiftType.Afternoon">Odpolední</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Potřebný počet lidí</label>
+                            <input type="number" name="requiredStaffCount" id="settingsStaffCount" class="form-control" min="1" max="10" value="1" />
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Stav dne</label>
+                            <select name="dayStatus" id="settingsDayStatus" class="form-select">
+                                <option value="@DayStatus.Open">Otevřeno</option>
+                                <option value="@DayStatus.Closed">Zavřeno</option>
+                                <option value="@DayStatus.Holiday">Svátek</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Poznámka</label>
+                            <textarea name="note" id="settingsNote" class="form-control" rows="2"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zrušit</button>
+                        <button type="submit" class="btn btn-primary">Uložit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+}
+
+@section Styles {
+    <style>
+        .shift-calendar {
+            width: 100%;
+        }
+        .shift-calendar-header {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            background: #f8fafc;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .shift-calendar-header .shift-cal-cell {
+            padding: 0.5rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+        .shift-calendar-row {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .shift-calendar-row:last-child {
+            border-bottom: none;
+        }
+        .shift-cal-day {
+            min-height: 120px;
+            padding: 0.5rem;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            font-size: 0.8rem;
+        }
+        .shift-cal-day:last-child {
+            border-right: none;
+        }
+        .shift-cal-day.other-month {
+            background: #f8fafc;
+            opacity: 0.4;
+        }
+        .shift-cal-day.past {
+            background: #f1f5f9;
+            color: #94a3b8;
+        }
+        .shift-cal-day.today {
+            background: rgba(37, 99, 235, 0.05);
+            box-shadow: inset 0 0 0 2px #2563eb;
+        }
+        .shift-cal-day.closed {
+            background: #fef2f2;
+        }
+        .shift-day-number {
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .shift-staff-indicator {
+            font-size: 0.7rem;
+        }
+        .shift-assignment {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #e0e7ff;
+            border-radius: 4px;
+            padding: 0.15rem 0.35rem;
+            margin-bottom: 0.2rem;
+            font-size: 0.7rem;
+        }
+        .shift-assignment.mine {
+            background: #fef3c7;
+            border: 1px solid #f59e0b;
+        }
+        .shift-assignment-name {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 80px;
+        }
+        .btn-shift-action {
+            background: none;
+            border: none;
+            padding: 0 0.2rem;
+            cursor: pointer;
+            color: #64748b;
+            font-size: 0.7rem;
+        }
+        .btn-shift-action:hover {
+            color: #2563eb;
+        }
+        .shift-actions {
+            margin-top: 0.25rem;
+        }
+        .shift-note {
+            position: absolute;
+            top: 0.35rem;
+            right: 0.35rem;
+            color: #f59e0b;
+            font-size: 0.7rem;
+        }
+
+        @@media (max-width: 991.98px) {
+            .shift-cal-day {
+                min-height: 90px;
+                padding: 0.25rem;
+            }
+            .shift-assignment-name {
+                max-width: 50px;
+            }
+        }
+
+        @@media (max-width: 767.98px) {
+            .shift-cal-day {
+                min-height: 70px;
+                font-size: 0.65rem;
+            }
+            .shift-day-number {
+                font-size: 0.75rem;
+            }
+            .shift-assignment {
+                font-size: 0.6rem;
+                padding: 0.1rem 0.2rem;
+            }
+            .shift-assignment-name {
+                max-width: 35px;
+            }
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        function openShiftSettings(shiftId, date, type, staffCount, dayStatus, note) {
+            document.getElementById('settingsShiftId').value = shiftId || '';
+            document.getElementById('settingsDate').value = date;
+            document.getElementById('settingsType').value = type || 'FullDay';
+            document.getElementById('settingsStaffCount').value = staffCount || 1;
+            document.getElementById('settingsDayStatus').value = dayStatus || 'Open';
+            document.getElementById('settingsNote').value = note || '';
+            var modal = new bootstrap.Modal(document.getElementById('shiftSettingsModal'));
+            modal.show();
+        }
+    </script>
+}

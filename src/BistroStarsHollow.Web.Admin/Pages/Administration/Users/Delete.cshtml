@@ -1,0 +1,50 @@
+@page "{id}"
+@model BistroStarsHollow.Web.Admin.Pages.Administration.Users.DeleteModel
+@{
+    ViewData["Title"] = "Smazat uživatele";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Smazat uživatele</h1>
+</div>
+
+<div class="row">
+    <div class="col-lg-6">
+        <div class="card border-danger">
+            <div class="card-body">
+                <div class="alert alert-danger">
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Opravdu chcete smazat tohoto uživatele? Tato akce je nevratná.
+                </div>
+
+                <dl class="row mb-0">
+                    <dt class="col-sm-4">Jméno</dt>
+                    <dd class="col-sm-8">@Model.UserToDelete.FullName</dd>
+
+                    <dt class="col-sm-4">E-mail</dt>
+                    <dd class="col-sm-8">@Model.UserToDelete.Email</dd>
+
+                    <dt class="col-sm-4">Role</dt>
+                    <dd class="col-sm-8">
+                        @foreach (var role in Model.UserToDelete.Roles)
+                        {
+                            <span class="badge bg-secondary me-1">@role</span>
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">Vytvořen</dt>
+                    <dd class="col-sm-8">@Model.UserToDelete.CreatedAt.ToString("dd.MM.yyyy HH:mm")</dd>
+                </dl>
+
+                <hr />
+
+                <form method="post" asp-route-id="@Model.UserToDelete.Id">
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-danger"><i class="bi bi-trash me-1"></i>Smazat</button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -7,7 +7,25 @@
       "Bash(dotnet build:*)",
       "Bash(find /c/Users/micha/Documents/Projekty/Bistro -type f -name \"*.cs\" | xargs grep -l \"Reservation\" | grep -E \"\\(Service|Handler|Controller|Page\\)\" | head -10)",
       "Bash(grep -E \"MenuCategory\\\\.|BeerType\\\\.|ReservationStatus\\\\.\" /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Domain/Enums/* | head -20)",
-      "Bash(tree -L 3 -I 'bin|obj|node_modules' /c/Users/micha/Documents/Projekty/Bistro/src/ 2>/dev/null || find /c/Users/micha/Documents/Projekty/Bistro/src -type d -not -path '*/bin/*' -not -path '*/obj/*' | head -50)"
+      "Bash(tree -L 3 -I 'bin|obj|node_modules' /c/Users/micha/Documents/Projekty/Bistro/src/ 2>/dev/null || find /c/Users/micha/Documents/Projekty/Bistro/src -type d -not -path '*/bin/*' -not -path '*/obj/*' | head -50)",
+      "Bash(find \"C:\\\\Users\\\\micha\\\\Documents\\\\Projekty\\\\Bistro\" -type f -name \"*.cs\" | xargs grep -l \"Shift\\\\|CashClosure\" | grep -E \"\\(Interface|Service\\)\" | sort)",
+      "Bash(find \"C:\\\\Users\\\\micha\\\\Documents\\\\Projekty\\\\Bistro/src/BistroStarsHollow.Application/Common/Models\" -type f -name \"*.cs\" | xargs grep -l \"Shift\\\\|CashClosure\\\\|StaffOnDuty\" 2>/dev/null)",
+      "Bash(cd \"C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Infrastructure\" && dotnet ef database update --startup-project ../BistroStarsHollow.Web.Admin 2>&1)",
+      "Bash(cd \"C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin\" && timeout 12 dotnet run 2>&1 || true)",
+      "Bash(netstat -ano | grep 5246 | head -5)",
+      "Bash(taskkill //PID 66308 //F 2>&1)",
+      "Bash(cd \"C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Admin\" && timeout 20 dotnet run 2>&1 || true)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5246/ 2>&1)",
+      "Bash(curl -sL -o /dev/null -w \"%{http_code}\" --max-time 5 http://localhost:5246/ 2>&1)",
+      "Bash(curl -v http://localhost:5246/ 2>&1 | head -20)",
+      "Bash(grep -r \"Shift\" /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Application --include=\"*.cs\" 2>/dev/null | head -30)",
+      "Bash(find /c/Users/micha/Documents/Projekty/Bistro/src -type f \\\\\\( -name \"*.cs\" -o -name \"*.cshtml\" \\\\\\) | xargs grep -l \"Shift\\\\|Shifts\" 2>/dev/null | grep -E \"\\(Service|Repository|Page\\)\" | head -20)",
+      "Bash(grep -r \"StaffOnDuty\\\\|DayOfDuty\" /c/Users/micha/Documents/Projekty/Bistro/src --include=\"*.cs\" 2>/dev/null | head -15)",
+      "Bash(cd /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Infrastructure && dotnet ef migrations add AddShiftAssignmentsAndEnhanceShift --startup-project ../BistroStarsHollow.Web.Admin 2>&1)",
+      "Bash(cd /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Infrastructure && dotnet ef database update --startup-project ../BistroStarsHollow.Web.Admin 2>&1)",
+      "Bash(find /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Public/Pages -type f -name \"*.cshtml.cs\" | xargs grep -l \"Gallery\\\\|Image\" 2>/dev/null)",
+      "Bash(cd /c/Users/micha/Documents/Projekty/Bistro && grep -n \"beer-card\" ./src/BistroStarsHollow.Web.Public/wwwroot/css/*.css)",
+      "Bash(cd \"C:/Users/micha/Documents/Projekty/Bistro\" && dotnet ef migrations add AddBeerStyleAndCapacity --project src/BistroStarsHollow.Infrastructure --startup-project src/BistroStarsHollow.Web.Admin 2>&1 | tail -10)"
     ]
   }
 }

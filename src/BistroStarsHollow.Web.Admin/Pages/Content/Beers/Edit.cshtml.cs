@@ -28,6 +28,7 @@ public class EditModel : PageModel
     public Beer Beer { get; set; } = new();
 
     public List<Brewery> Breweries { get; set; } = new();
+    public List<BeerStyle> BeerStyles { get; set; } = new();
 
     public async Task<IActionResult> OnGetAsync(Guid id)
     {
@@ -35,12 +36,14 @@ public class EditModel : PageModel
         if (beer == null) return NotFound();
         Beer = beer;
         Breweries = await _contentService.GetAllBreweriesAsync();
+        BeerStyles = await _contentService.GetAllBeerStylesAsync();
         return Page();
     }
 
     public async Task<IActionResult> OnPostAsync(IFormFile? imageFile)
     {
         Breweries = await _contentService.GetAllBreweriesAsync();
+        BeerStyles = await _contentService.GetAllBeerStylesAsync();
 
         if (imageFile != null && imageFile.Length > 0)
         {

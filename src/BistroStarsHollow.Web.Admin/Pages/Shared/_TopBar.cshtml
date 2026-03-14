@@ -25,8 +25,8 @@
                 <span class="d-none d-md-inline">@User.Identity?.Name</span>
             </button>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i>Profil</a></li>
-                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Nastavení</a></li>
+                <li><a class="dropdown-item" asp-page="/Account/Profile"><i class="bi bi-person me-2"></i>Profil</a></li>
+                <li><a class="dropdown-item" asp-page="/Account/Profile"><i class="bi bi-gear me-2"></i>Nastavení</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" asp-page="/Account/Logout"><i class="bi bi-box-arrow-right me-2"></i>Odhlásit</a></li>
             </ul>

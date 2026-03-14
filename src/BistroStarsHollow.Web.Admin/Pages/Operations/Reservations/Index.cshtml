@@ -62,7 +62,8 @@
     </div>
 </div>
 
-<div class="card">
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
@@ -139,4 +140,72 @@
             </table>
         </div>
     </div>
+</div>
+
+<!-- Mobile/Tablet cards -->
+<div class="d-lg-none">
+    @foreach (var r in Model.Reservations)
+    {
+        <div class="card mb-2 item-card">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-start justify-content-between">
+                    <div>
+                        <div class="fw-semibold">@r.FullName</div>
+                        <div class="d-flex align-items-center gap-2 mt-1 flex-wrap">
+                            <small class="text-muted"><i class="bi bi-calendar me-1"></i>@r.Date.ToString("dd.MM.yyyy")</small>
+                            <small class="text-muted"><i class="bi bi-clock me-1"></i>@r.Time.ToString(@"hh\:mm")</small>
+                            <small class="text-muted"><i class="bi bi-people me-1"></i>@r.NumberOfPeople</small>
+                            <small class="text-muted">@r.TableName</small>
+                        </div>
+                    </div>
+                    <span class="badge @IndexModel.GetStatusBadgeClass(r.Status)" style="font-size:0.65rem;">@IndexModel.GetStatusLabel(r.Status)</span>
+                </div>
+                <div class="d-flex align-items-center gap-1 mt-2 border-top pt-2 flex-wrap">
+                    <a asp-page="Detail" asp-route-id="@r.Id" class="btn btn-sm btn-outline-info" title="Detail">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    @if (r.Status == ReservationStatus.PendingConfirmation)
+                    {
+                        <form method="post" asp-page-handler="Confirm" class="d-inline">
+                            <input type="hidden" name="id" value="@r.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-success" title="Potvrdit">
+                                <i class="bi bi-check-lg"></i>
+                            </button>
+                        </form>
+                    }
+                    @if (r.Status == ReservationStatus.PendingConfirmation || r.Status == ReservationStatus.Confirmed)
+                    {
+                        <form method="post" asp-page-handler="Cancel" class="d-inline">
+                            <input type="hidden" name="id" value="@r.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Zrušit">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </form>
+                    }
+                    @if (r.Status == ReservationStatus.Confirmed)
+                    {
+                        <form method="post" asp-page-handler="Complete" class="d-inline">
+                            <input type="hidden" name="id" value="@r.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-primary" title="Dokončit">
+                                <i class="bi bi-check-all"></i>
+                            </button>
+                        </form>
+                        <form method="post" asp-page-handler="NoShow" class="d-inline">
+                            <input type="hidden" name="id" value="@r.Id" />
+                            <button type="submit" class="btn btn-sm btn-outline-dark" title="Nedostavení">
+                                <i class="bi bi-person-x"></i>
+                            </button>
+                        </form>
+                    }
+                    <a href="tel:@r.Phone" class="btn btn-sm btn-outline-secondary ms-auto" title="Zavolat">
+                        <i class="bi bi-telephone"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.Reservations.Any())
+    {
+        <div class="text-center text-muted py-4">Žádné rezervace odpovídající filtru.</div>
+    }
 </div>
