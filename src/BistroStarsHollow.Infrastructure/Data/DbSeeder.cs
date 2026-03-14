@@ -27,6 +27,8 @@ public static class DbSeeder
         await SeedRolesAsync(roleManager, logger);
         await SeedAdminUserAsync(userManager, configuration, logger);
 
+        await SeedBeerStylesAsync(dbContext, logger);
+
         if (environment.IsDevelopment())
         {
             await SeedTestDataAsync(dbContext, userManager, logger);
@@ -87,6 +89,31 @@ public static class DbSeeder
         {
             logger.LogError("Failed to create admin user: {Errors}",
                 string.Join(", ", result.Errors.Select(e => e.Description)));
+        }
+    }
+
+    private static async Task SeedBeerStylesAsync(ApplicationDbContext dbContext, ILogger logger)
+    {
+        if (!await dbContext.BeerStyles.AnyAsync())
+        {
+            var styles = new List<BeerStyle>
+            {
+                new() { Name = "IPA", SortOrder = 1 },
+                new() { Name = "NEIPA", SortOrder = 2 },
+                new() { Name = "APA", SortOrder = 3 },
+                new() { Name = "Lager", SortOrder = 4 },
+                new() { Name = "Pilsner", SortOrder = 5 },
+                new() { Name = "Stout", SortOrder = 6 },
+                new() { Name = "Porter", SortOrder = 7 },
+                new() { Name = "Wheat", SortOrder = 8 },
+                new() { Name = "Sour", SortOrder = 9 },
+                new() { Name = "Pale Ale", SortOrder = 10 },
+                new() { Name = "Světlý ležák", SortOrder = 11 },
+                new() { Name = "Tmavý ležák", SortOrder = 12 },
+            };
+            dbContext.BeerStyles.AddRange(styles);
+            await dbContext.SaveChangesAsync();
+            logger.LogInformation("Seeded beer styles");
         }
     }
 
@@ -189,10 +216,10 @@ public static class DbSeeder
             var beers = new List<Beer>
             {
                 // Draft beers
-                new() { Name = "Radegast 12°", Type = BeerType.Draft, Style = "Světlý ležák", Price = 45, BreweryId = radegast.Id, SortOrder = 1, IsActive = true },
-                new() { Name = "Radegast Rázná 10", Type = BeerType.Draft, Style = "Světlé výčepní", Price = 35, BreweryId = radegast.Id, SortOrder = 2, IsActive = true },
-                new() { Name = "Birell", Type = BeerType.Draft, Style = "Nealkoholické", Price = 35, BreweryId = radegast.Id, SortOrder = 3, IsActive = true },
-                new() { Name = "Velkopopovický Kozel 11°", Type = BeerType.Draft, Style = "Světlý ležák", Price = 42, BreweryId = radegast.Id, SortOrder = 4, IsActive = true, Description = "Klasický český ležák s plnou chutí." },
+                new() { Name = "Radegast 12°", Type = BeerType.Draft, Style = "Světlý ležák", Price = 45, PriceSmall = 32, BreweryId = radegast.Id, SortOrder = 1, IsActive = true },
+                new() { Name = "Radegast Rázná 10", Type = BeerType.Draft, Style = "Světlé výčepní", Price = 35, PriceSmall = 25, BreweryId = radegast.Id, SortOrder = 2, IsActive = true },
+                new() { Name = "Birell", Type = BeerType.Draft, Style = "Nealkoholické", Price = 35, PriceSmall = 25, BreweryId = radegast.Id, SortOrder = 3, IsActive = true },
+                new() { Name = "Velkopopovický Kozel 11°", Type = BeerType.Draft, Style = "Světlý ležák", Price = 42, PriceSmall = 30, BreweryId = radegast.Id, SortOrder = 4, IsActive = true, Description = "Klasický český ležák s plnou chutí." },
 
                 // Bottled beers
                 new() { Name = "Matuška Raptor IPA", Type = BeerType.Bottled, Style = "IPA", Price = 79, BreweryId = matuska.Id, SortOrder = 1, IsActive = true, Description = "Intenzivní chmelový charakter s tóny tropického ovoce." },

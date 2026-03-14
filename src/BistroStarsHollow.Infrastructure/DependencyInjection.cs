@@ -84,6 +84,8 @@ public static class DependencyInjection
         services.AddScoped<IReservationService, ReservationService>();
         services.AddScoped<IAdminReservationService, AdminReservationService>();
         services.AddScoped<IContentManagementService, ContentManagementService>();
+        services.AddScoped<ICashClosureService, CashClosureService>();
+        services.AddScoped<IShiftService, ShiftService>();
 
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddAuthorization(AuthorizationPolicies.AddPolicies);

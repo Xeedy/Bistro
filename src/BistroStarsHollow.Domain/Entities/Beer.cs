@@ -9,6 +9,8 @@ public class Beer : BaseEntity
     public BeerType Type { get; set; }
     public string? Style { get; set; }
     public decimal Price { get; set; }
+    public decimal? PriceSmall { get; set; }
+    public string? Capacity { get; set; }
     public string? Description { get; set; }
     public string? ImagePath { get; set; }
     public int SortOrder { get; set; }

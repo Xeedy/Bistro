@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using BistroStarsHollow.Application.Common.Interfaces;
 using BistroStarsHollow.Domain.Entities;
+using BistroStarsHollow.Domain.Enums;
 using BistroStarsHollow.Infrastructure.Data;
 
 namespace BistroStarsHollow.Infrastructure.Services;
@@ -43,6 +44,27 @@ public class ContentManagementService : IContentManagementService
         }
     }
 
+    public async Task ToggleSlideActiveAsync(Guid id)
+    {
+        var slide = await _context.HeroSlides.FindAsync(id);
+        if (slide != null)
+        {
+            slide.IsActive = !slide.IsActive;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task UpdateSlideSortOrderAsync(List<Guid> orderedIds)
+    {
+        for (int i = 0; i < orderedIds.Count; i++)
+        {
+            var slide = await _context.HeroSlides.FindAsync(orderedIds[i]);
+            if (slide != null)
+                slide.SortOrder = i + 1;
+        }
+        await _context.SaveChangesAsync();
+    }
+
     // Gallery
     public async Task<List<GalleryImage>> GetAllGalleryImagesAsync()
         => await _context.GalleryImages.OrderBy(g => g.SortOrder).ToListAsync();
@@ -72,6 +94,27 @@ public class ContentManagementService : IContentManagementService
         }
     }
 
+    public async Task ToggleGalleryImageActiveAsync(Guid id)
+    {
+        var image = await _context.GalleryImages.FindAsync(id);
+        if (image != null)
+        {
+            image.IsActive = !image.IsActive;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task UpdateGalleryImageSortOrderAsync(List<Guid> orderedIds)
+    {
+        for (int i = 0; i < orderedIds.Count; i++)
+        {
+            var image = await _context.GalleryImages.FindAsync(orderedIds[i]);
+            if (image != null)
+                image.SortOrder = i + 1;
+        }
+        await _context.SaveChangesAsync();
+    }
+
     // Events
     public async Task<List<Event>> GetAllEventsAsync()
         => await _context.Events.OrderByDescending(e => e.ValidFrom).ToListAsync();
@@ -97,6 +140,16 @@ public class ContentManagementService : IContentManagementService
         if (evt != null)
         {
             _context.Events.Remove(evt);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task ToggleEventActiveAsync(Guid id)
+    {
+        var evt = await _context.Events.FindAsync(id);
+        if (evt != null)
+        {
+            evt.IsActive = !evt.IsActive;
             await _context.SaveChangesAsync();
         }
     }
@@ -178,6 +231,29 @@ public class ContentManagementService : IContentManagementService
         }
     }
 
+    public async Task ToggleMenuItemActiveAsync(Guid id)
+    {
+        var item = await _context.MenuItems.FindAsync(id);
+        if (item != null)
+        {
+            item.IsActive = !item.IsActive;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task UpdateMenuItemSortOrderAsync(List<Guid> orderedIds)
+    {
+        for (int i = 0; i < orderedIds.Count; i++)
+        {
+            var item = await _context.MenuItems.FindAsync(orderedIds[i]);
+            if (item != null)
+            {
+                item.SortOrder = i + 1;
+            }
+        }
+        await _context.SaveChangesAsync();
+    }
+
     // Beers
     public async Task<List<Beer>> GetAllBeersAsync()
         => await _context.Beers.Include(b => b.Brewery).OrderBy(b => b.SortOrder).ToListAsync();
@@ -203,6 +279,58 @@ public class ContentManagementService : IContentManagementService
         if (beer != null)
         {
             _context.Beers.Remove(beer);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task ToggleBeerActiveAsync(Guid id)
+    {
+        var beer = await _context.Beers.FindAsync(id);
+        if (beer != null)
+        {
+            beer.IsActive = !beer.IsActive;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task<int> GetActiveDraftBeerCountAsync()
+        => await _context.Beers.CountAsync(b => b.IsActive && b.Type == BeerType.Draft);
+
+    public async Task UpdateBeerSortOrderAsync(List<Guid> orderedIds)
+    {
+        for (int i = 0; i < orderedIds.Count; i++)
+        {
+            var beer = await _context.Beers.FindAsync(orderedIds[i]);
+            if (beer != null)
+            {
+                beer.SortOrder = i + 1;
+            }
+        }
+        await _context.SaveChangesAsync();
+    }
+
+    // Beer Styles
+    public async Task<List<BeerStyle>> GetAllBeerStylesAsync()
+        => await _context.BeerStyles.OrderBy(s => s.SortOrder).ToListAsync();
+
+    public async Task CreateBeerStyleAsync(BeerStyle style)
+    {
+        _context.BeerStyles.Add(style);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateBeerStyleAsync(BeerStyle style)
+    {
+        _context.BeerStyles.Update(style);
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task DeleteBeerStyleAsync(Guid id)
+    {
+        var style = await _context.BeerStyles.FindAsync(id);
+        if (style != null)
+        {
+            _context.BeerStyles.Remove(style);
             await _context.SaveChangesAsync();
         }
     }
@@ -238,4 +366,36 @@ public class ContentManagementService : IContentManagementService
 
     public async Task<int> GetBreweryBeerCountAsync(Guid breweryId)
         => await _context.Beers.CountAsync(b => b.BreweryId == breweryId);
+
+    public async Task ToggleBreweryActiveAsync(Guid id)
+    {
+        var brewery = await _context.Breweries.FindAsync(id);
+        if (brewery != null)
+        {
+            brewery.IsActive = !brewery.IsActive;
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task UpdateBrewerySortOrderAsync(List<Guid> orderedIds)
+    {
+        for (int i = 0; i < orderedIds.Count; i++)
+        {
+            var brewery = await _context.Breweries.FindAsync(orderedIds[i]);
+            if (brewery != null)
+                brewery.SortOrder = i + 1;
+        }
+        await _context.SaveChangesAsync();
+    }
+
+    public async Task UpdateBeerStyleSortOrderAsync(List<Guid> orderedIds)
+    {
+        for (int i = 0; i < orderedIds.Count; i++)
+        {
+            var style = await _context.BeerStyles.FindAsync(orderedIds[i]);
+            if (style != null)
+                style.SortOrder = i + 1;
+        }
+        await _context.SaveChangesAsync();
+    }
 }

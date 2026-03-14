@@ -67,12 +67,15 @@ public class PublicDataService : IPublicDataService
                 Name = b.Name,
                 Type = b.Type,
                 Style = b.Style,
+                Capacity = b.Capacity,
                 Price = b.Price,
+                PriceSmall = b.PriceSmall,
                 Description = b.Description,
                 ImagePath = b.ImagePath,
                 SortOrder = b.SortOrder,
                 BreweryId = b.BreweryId,
-                BreweryName = b.Brewery.Name
+                BreweryName = b.Brewery.Name,
+                BreweryLogoPath = b.Brewery.LogoImagePath
             })
             .ToListAsync();
     }
@@ -115,12 +118,15 @@ public class PublicDataService : IPublicDataService
                         Name = beer.Name,
                         Type = beer.Type,
                         Style = beer.Style,
+                        Capacity = beer.Capacity,
                         Price = beer.Price,
+                        PriceSmall = beer.PriceSmall,
                         Description = beer.Description,
                         ImagePath = beer.ImagePath,
                         SortOrder = beer.SortOrder,
                         BreweryId = beer.BreweryId,
-                        BreweryName = b.Name
+                        BreweryName = b.Name,
+                        BreweryLogoPath = b.LogoImagePath
                     })
                     .ToList()
             })

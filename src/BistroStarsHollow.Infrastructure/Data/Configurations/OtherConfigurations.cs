@@ -9,10 +9,24 @@ public class ShiftConfiguration : IEntityTypeConfiguration<Shift>
     public void Configure(EntityTypeBuilder<Shift> builder)
     {
         builder.HasKey(e => e.Id);
-        builder.Property(e => e.UserId).HasMaxLength(450).IsRequired();
         builder.Property(e => e.Note).HasMaxLength(500);
-        builder.HasIndex(e => e.Date);
-        builder.HasIndex(e => e.UserId);
+        builder.HasIndex(e => e.Date).IsUnique();
+        builder.HasMany(e => e.Assignments)
+            .WithOne(a => a.Shift)
+            .HasForeignKey(a => a.ShiftId)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+}
+
+public class ShiftAssignmentConfiguration : IEntityTypeConfiguration<ShiftAssignment>
+{
+    public void Configure(EntityTypeBuilder<ShiftAssignment> builder)
+    {
+        builder.HasKey(e => e.Id);
+        builder.Property(e => e.UserId).HasMaxLength(450).IsRequired();
+        builder.Property(e => e.UserDisplayName).HasMaxLength(200).IsRequired();
+        builder.Property(e => e.Note).HasMaxLength(500);
+        builder.HasIndex(e => new { e.ShiftId, e.UserId }).IsUnique();
     }
 }
 

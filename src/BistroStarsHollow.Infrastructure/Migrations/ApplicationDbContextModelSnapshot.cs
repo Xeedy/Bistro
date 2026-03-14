@@ -17,7 +17,7 @@ namespace BistroStarsHollow.Infrastructure.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.13")
+                .HasAnnotation("ProductVersion", "9.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -82,6 +82,10 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                     b.Property<Guid>("BreweryId")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("Capacity")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -113,6 +117,9 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(10,2)");
 
+                    b.Property<decimal?>("PriceSmall")
+                        .HasColumnType("decimal(10,2)");
+
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");
 
@@ -132,6 +139,40 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                     b.HasIndex("Type");
 
                     b.ToTable("Beers");
+                });
+
+            modelBuilder.Entity("BistroStarsHollow.Domain.Entities.BeerStyle", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("SortOrder")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("BeerStyles");
                 });
 
             modelBuilder.Entity("BistroStarsHollow.Domain.Entities.BistroTable", b =>
@@ -633,6 +674,9 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("DayStatus")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
@@ -643,6 +687,50 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
+                    b.Property<int>("RequiredStaffCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Date")
+                        .IsUnique();
+
+                    b.ToTable("Shifts");
+                });
+
+            modelBuilder.Entity("BistroStarsHollow.Domain.Entities.ShiftAssignment", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("ShiftId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("UserDisplayName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasMaxLength(450)
@@ -650,11 +738,10 @@ namespace BistroStarsHollow.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Date");
+                    b.HasIndex("ShiftId", "UserId")
+                        .IsUnique();
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Shifts");
+                    b.ToTable("ShiftAssignments");
                 });
 
             modelBuilder.Entity("BistroStarsHollow.Domain.Entities.StaffOnDuty", b =>
@@ -958,6 +1045,17 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                     b.Navigation("Table");
                 });
 
+            modelBuilder.Entity("BistroStarsHollow.Domain.Entities.ShiftAssignment", b =>
+                {
+                    b.HasOne("BistroStarsHollow.Domain.Entities.Shift", "Shift")
+                        .WithMany("Assignments")
+                        .HasForeignKey("ShiftId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Shift");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -1017,6 +1115,11 @@ namespace BistroStarsHollow.Infrastructure.Migrations
             modelBuilder.Entity("BistroStarsHollow.Domain.Entities.Brewery", b =>
                 {
                     b.Navigation("Beers");
+                });
+
+            modelBuilder.Entity("BistroStarsHollow.Domain.Entities.Shift", b =>
+                {
+                    b.Navigation("Assignments");
                 });
 #pragma warning restore 612, 618
         }

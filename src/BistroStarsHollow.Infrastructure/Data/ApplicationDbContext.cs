@@ -25,10 +25,12 @@ public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityR
 
     public DbSet<MenuItem> MenuItems => Set<MenuItem>();
     public DbSet<Beer> Beers => Set<Beer>();
+    public DbSet<BeerStyle> BeerStyles => Set<BeerStyle>();
     public DbSet<Brewery> Breweries => Set<Brewery>();
     public DbSet<BistroTable> BistroTables => Set<BistroTable>();
     public DbSet<Reservation> Reservations => Set<Reservation>();
     public DbSet<Shift> Shifts => Set<Shift>();
+    public DbSet<ShiftAssignment> ShiftAssignments => Set<ShiftAssignment>();
     public DbSet<CashClosure> CashClosures => Set<CashClosure>();
     public DbSet<GalleryImage> GalleryImages => Set<GalleryImage>();
     public DbSet<Event> Events => Set<Event>();
