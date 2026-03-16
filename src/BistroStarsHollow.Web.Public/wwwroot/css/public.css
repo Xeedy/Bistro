@@ -1222,3 +1222,14 @@ section[id] {
 .table-card.unavailable .table-card-icon {
     color: #ef4444;
 }
+
+/* --- Floor Plan (Public) --- */
+#floorplan-container {
+    text-align: center;
+}
+
+#floorplan-container svg {
+    border: 2px solid var(--bistro-border);
+    border-radius: var(--bistro-radius-lg);
+    box-shadow: var(--bistro-shadow);
+}

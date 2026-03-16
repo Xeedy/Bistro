@@ -436,7 +436,6 @@ C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\De
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\9yaj9kq9dq-b9sayid5wm.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\j1d45qiiqp-61n19gt1b8.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\johfd49lyy-sied3x2rtc.gz
-C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\o1tpdxkk6v-fglcicwt48.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\ydpxzxhc4h-xtxxf3hu2r.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\zvh7caebap-t1cqhe9u97.gz
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\5prpc7108o-c2jlpeoesf.gz
@@ -509,4 +508,5 @@ C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\De
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\BistroStarsHollow.Web.Public.pdb
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\BistroStarsHollow.Web.Public.genruntimeconfig.cache
 C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\ref\BistroStarsHollow.Web.Public.dll
-C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\sy1xh54cn0-hh30gl0wxy.gz
+C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\sy1xh54cn0-47ha78ixao.gz
+C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\obj\Debug\net9.0\compressed\n98fgnyzev-d3bovakrzs.gz

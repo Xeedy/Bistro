@@ -650,3 +650,79 @@ body {
     font-size: 0.75rem;
     user-select: none;
 }
+
+/* --- Floor Plan Editor (Admin) --- */
+.floorplan-editor {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 4px;
+    min-height: 480px;
+    background: #f1f5f9;
+    border: 2px solid #e2e8f0;
+    border-radius: 0.75rem;
+    padding: 8px;
+}
+
+.floorplan-editor .floorplan-cell {
+    min-height: 56px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 4px;
+    position: relative;
+    transition: background 0.15s;
+}
+
+.floorplan-editor .floorplan-cell:hover {
+    background: rgba(37, 99, 235, 0.05);
+    border-color: #93c5fd;
+}
+
+.floorplan-table {
+    background: #ffffff;
+    border: 2px solid #10b981;
+    border-radius: 0.5rem;
+    padding: 0.4rem;
+    text-align: center;
+    cursor: grab;
+    transition: all 0.15s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    user-select: none;
+}
+
+.floorplan-table.dragging {
+    opacity: 0.5;
+    transform: scale(0.95);
+}
+
+.floorplan-table.active {
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.08);
+}
+
+.floorplan-table.inactive {
+    border-color: #94a3b8;
+    background: rgba(148, 163, 184, 0.08);
+    opacity: 0.6;
+}
+
+.floorplan-table-name {
+    font-weight: 700;
+    font-size: 0.75rem;
+    color: #1e293b;
+    line-height: 1.2;
+}
+
+.floorplan-table-capacity {
+    font-size: 0.65rem;
+    color: #64748b;
+}
+
+.floorplan-table-zone {
+    font-size: 0.6rem;
+    color: #94a3b8;
+    font-style: italic;
+}

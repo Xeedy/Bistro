@@ -81,11 +81,10 @@ public static class DependencyInjection
         services.AddScoped<IIdentityService, IdentityService>();
         services.AddScoped<IAuditService, AuditService>();
         services.AddScoped<IPublicDataService, PublicDataService>();
-        services.AddScoped<IReservationService, ReservationService>();
-        services.AddScoped<IAdminReservationService, AdminReservationService>();
         services.AddScoped<IContentManagementService, ContentManagementService>();
         services.AddScoped<ICashClosureService, CashClosureService>();
         services.AddScoped<IShiftService, ShiftService>();
+        services.AddScoped<ITableManagementService, TableManagementService>();
 
         services.AddSingleton<IAuthorizationHandler, PermissionAuthorizationHandler>();
         services.AddAuthorization(AuthorizationPolicies.AddPolicies);

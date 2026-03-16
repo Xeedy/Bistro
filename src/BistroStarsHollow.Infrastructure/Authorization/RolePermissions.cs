@@ -28,7 +28,6 @@ public static class RolePermissions
         Permissions.Menu.View, Permissions.Menu.Edit, Permissions.Menu.Create, Permissions.Menu.Delete,
         Permissions.Beer.View, Permissions.Beer.Edit, Permissions.Beer.Create, Permissions.Beer.Delete,
         Permissions.Brewery.View, Permissions.Brewery.Edit, Permissions.Brewery.Create, Permissions.Brewery.Delete,
-        Permissions.Reservation.View, Permissions.Reservation.Edit, Permissions.Reservation.Create, Permissions.Reservation.Delete,
         Permissions.Shift.View, Permissions.Shift.Edit, Permissions.Shift.SignUp,
         Permissions.Gallery.View, Permissions.Gallery.Edit, Permissions.Gallery.Create, Permissions.Gallery.Delete,
         Permissions.Event.View, Permissions.Event.Edit, Permissions.Event.Create, Permissions.Event.Delete,
@@ -39,7 +38,6 @@ public static class RolePermissions
 
     private static readonly string[] EmployeePermissions =
     [
-        Permissions.Shift.View, Permissions.Shift.SignUp,
-        Permissions.Reservation.View
+        Permissions.Shift.View, Permissions.Shift.SignUp
     ];
 }

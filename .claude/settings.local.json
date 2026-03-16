@@ -25,7 +25,9 @@
       "Bash(cd /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Infrastructure && dotnet ef database update --startup-project ../BistroStarsHollow.Web.Admin 2>&1)",
       "Bash(find /c/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Public/Pages -type f -name \"*.cshtml.cs\" | xargs grep -l \"Gallery\\\\|Image\" 2>/dev/null)",
       "Bash(cd /c/Users/micha/Documents/Projekty/Bistro && grep -n \"beer-card\" ./src/BistroStarsHollow.Web.Public/wwwroot/css/*.css)",
-      "Bash(cd \"C:/Users/micha/Documents/Projekty/Bistro\" && dotnet ef migrations add AddBeerStyleAndCapacity --project src/BistroStarsHollow.Infrastructure --startup-project src/BistroStarsHollow.Web.Admin 2>&1 | tail -10)"
+      "Bash(cd \"C:/Users/micha/Documents/Projekty/Bistro\" && dotnet ef migrations add AddBeerStyleAndCapacity --project src/BistroStarsHollow.Infrastructure --startup-project src/BistroStarsHollow.Web.Admin 2>&1 | tail -10)",
+      "Bash(cd:*)",
+      "Bash(find:*)"
     ]
   }
 }

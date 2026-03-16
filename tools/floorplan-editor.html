@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bistro Stars Hollow - Floor Plan Editor</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+    body { background: #0f172a; color: #e2e8f0; min-height: 100vh; }
+    .app { display: flex; height: 100vh; }
+
+    /* Toolbar */
+    .toolbar {
+        width: 280px; background: #1e293b; padding: 1rem;
+        overflow-y: auto; border-right: 1px solid #334155; flex-shrink: 0;
+    }
+    .toolbar h2 { font-size: 1.1rem; margin-bottom: 1rem; color: #3b82f6; }
+    .toolbar h3 { font-size: 0.85rem; margin: 1rem 0 0.5rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+    .tool-group { margin-bottom: 0.75rem; }
+    .tool-btn {
+        display: block; width: 100%; padding: 0.5rem 0.75rem; margin-bottom: 4px;
+        background: #334155; border: 1px solid #475569; border-radius: 6px;
+        color: #e2e8f0; cursor: pointer; font-size: 0.85rem; text-align: left; transition: all 0.15s;
+    }
+    .tool-btn:hover { background: #475569; }
+    .tool-btn.active { background: #2563eb; border-color: #3b82f6; color: white; }
+    .form-group { margin-bottom: 0.5rem; }
+    .form-group label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 2px; }
+    .form-group input {
+        width: 100%; padding: 0.35rem 0.5rem; background: #0f172a; border: 1px solid #475569;
+        border-radius: 4px; color: #e2e8f0; font-size: 0.85rem;
+    }
+    .btn-primary {
+        display: block; width: 100%; padding: 0.6rem; margin-top: 0.5rem;
+        background: #2563eb; border: none; border-radius: 6px;
+        color: white; font-weight: 600; cursor: pointer; font-size: 0.9rem;
+    }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-danger { background: #dc2626; } .btn-danger:hover { background: #b91c1c; }
+    .btn-success { background: #059669; } .btn-success:hover { background: #047857; }
+    .table-list { max-height: 200px; overflow-y: auto; }
+    .table-item {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 0.35rem 0.5rem; background: #334155; border-radius: 4px;
+        margin-bottom: 3px; font-size: 0.8rem;
+    }
+    .table-item-remove { background: none; border: none; color: #ef4444; cursor: pointer; font-size: 1rem; }
+    .separator { height: 1px; background: #334155; margin: 1rem 0; }
+
+    /* Canvas */
+    .canvas-area { flex: 1; display: flex; align-items: center; justify-content: center; padding: 1rem; overflow: auto; }
+    .canvas-wrapper {
+        background: #ffffff; border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3); display: inline-block; position: relative;
+    }
+    .grid-canvas { display: block; cursor: crosshair; }
+
+    /* Status bar */
+    .status-bar {
+        position: fixed; bottom: 0; left: 280px; right: 0;
+        background: #1e293b; border-top: 1px solid #334155;
+        padding: 0.35rem 1rem; font-size: 0.75rem; color: #94a3b8; display: flex; gap: 1.5rem;
+    }
+
+    /* Modal */
+    .modal-overlay {
+        display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+        z-index: 100; align-items: center; justify-content: center;
+    }
+    .modal-overlay.show { display: flex; }
+    .modal {
+        background: #1e293b; border-radius: 8px; padding: 1.5rem; width: 500px; max-width: 90vw;
+        max-height: 80vh; overflow-y: auto;
+    }
+    .modal h3 { margin-bottom: 1rem; color: #3b82f6; }
+    .modal textarea {
+        width: 100%; height: 200px; background: #0f172a; border: 1px solid #475569;
+        border-radius: 4px; color: #e2e8f0; font-family: monospace; font-size: 0.75rem;
+        padding: 0.5rem; resize: vertical;
+    }
+    .modal .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; }
+</style>
+</head>
+<body>
+<div class="app">
+    <div class="toolbar">
+        <h2>Floor Plan Editor</h2>
+        <p style="font-size:0.75rem; color:#64748b; margin-bottom:1rem;">
+            Kreslete steny jako tenke cary mezi body mrizky. Stoly = 3x3 bloky.
+        </p>
+
+        <h3>Nastroj</h3>
+        <div class="tool-group">
+            <button class="tool-btn active" data-tool="line" onclick="setTool('line')">
+                Cara (klik-klik)
+            </button>
+            <button class="tool-btn" data-tool="table" onclick="setTool('table')">
+                Umistit stul (3x3)
+            </button>
+            <button class="tool-btn" data-tool="eraser" onclick="setTool('eraser')">
+                Guma (klik na caru/stul)
+            </button>
+        </div>
+
+        <h3>Velikost mrizky</h3>
+        <div style="display:flex; gap:0.5rem;">
+            <div class="form-group" style="flex:1">
+                <label>Sloupce</label>
+                <input type="number" id="gridCols" value="36" min="10" max="60">
+            </div>
+            <div class="form-group" style="flex:1">
+                <label>Radky</label>
+                <input type="number" id="gridRows" value="24" min="10" max="40">
+            </div>
+        </div>
+        <button class="btn-primary" onclick="resizeGrid()" style="margin-bottom:0.5rem; font-size:0.8rem; padding:0.4rem;">
+            Zmenit velikost
+        </button>
+
+        <div class="separator"></div>
+
+        <h3>Novy stul</h3>
+        <div class="form-group">
+            <label>Nazev</label>
+            <input type="text" id="newTableName" placeholder="Stul 1">
+        </div>
+        <div class="form-group">
+            <label>Kapacita</label>
+            <input type="number" id="newTableCapacity" value="4" min="1" max="20">
+        </div>
+        <div class="form-group">
+            <label>Zona</label>
+            <input type="text" id="newTableZone" placeholder="Hlavni sal">
+        </div>
+        <div class="form-group">
+            <label>ID stolu (Guid z DB, nepovinne)</label>
+            <input type="text" id="newTableDbId" placeholder="volitelne">
+        </div>
+        <p style="font-size:0.7rem; color:#64748b; margin-top:0.25rem;">
+            Zvolte "Umistit stul" a kliknete na mrizku (levy horni roh 3x3 bloku).
+        </p>
+
+        <div class="separator"></div>
+
+        <h3>Stoly</h3>
+        <div class="table-list" id="tableList">
+            <div style="color:#64748b; font-size:0.8rem;">Zadne stoly</div>
+        </div>
+
+        <div class="separator"></div>
+
+        <h3>Soubor</h3>
+        <button class="btn-primary btn-success" onclick="exportFloorPlan()">Exportovat JSON</button>
+        <button class="btn-primary" onclick="showImportModal()" style="margin-top:4px;">Importovat JSON</button>
+        <button class="btn-primary btn-danger" onclick="clearAll()" style="margin-top:4px;">Vymazat vse</button>
+    </div>
+
+    <div class="canvas-area">
+        <div class="canvas-wrapper" id="canvasWrapper">
+            <canvas class="grid-canvas" id="canvas"></canvas>
+        </div>
+    </div>
+</div>
+
+<div class="status-bar">
+    <span>Nastroj: <strong id="statusTool">Cara</strong></span>
+    <span>Mrizka: <strong id="statusSize">36x24</strong></span>
+    <span>Cary: <strong id="statusWalls">0</strong></span>
+    <span>Stoly: <strong id="statusTables">0</strong></span>
+    <span id="statusCoord">&mdash;</span>
+</div>
+
+<!-- Export modal -->
+<div class="modal-overlay" id="exportModal">
+    <div class="modal">
+        <h3>Export - Floor Plan JSON</h3>
+        <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:0.75rem;">
+            Zkopirujte tento JSON a ulozte ho jako soubor
+            <code>wwwroot/data/floorplan.json</code> ve vasem projektu.
+        </p>
+        <textarea id="exportText" readonly></textarea>
+        <div class="btn-group">
+            <button class="btn-primary" onclick="copyExport()">Kopirovat</button>
+            <button class="btn-primary" style="background:#475569;" onclick="downloadExport()">Stahnout .json</button>
+            <button class="btn-primary" style="background:#475569;" onclick="closeModal('exportModal')">Zavrit</button>
+        </div>
+    </div>
+</div>
+
+<!-- Import modal -->
+<div class="modal-overlay" id="importModal">
+    <div class="modal">
+        <h3>Import - Floor Plan JSON</h3>
+        <p style="font-size:0.8rem; color:#94a3b8; margin-bottom:0.75rem;">Vlozte JSON z predchoziho exportu.</p>
+        <textarea id="importText"></textarea>
+        <div class="btn-group">
+            <button class="btn-primary btn-success" onclick="importFloorPlan()">Importovat</button>
+            <button class="btn-primary" style="background:#475569;" onclick="closeModal('importModal')">Zrusit</button>
+        </div>
+    </div>
+</div>
+
+<script>
+// ─── State ───────────────────────────────────────────────────
+const CELL = 24;                // px per cell
+const SNAP_RADIUS = 8;         // snap to intersection point within this radius
+const LINE_HIT_DIST = 5;       // click distance to select/erase a line
+
+let cols = 36, rows = 24;
+let walls = [];                // [{x1,y1,x2,y2}, ...]  — grid intersection indices
+let tables = [];               // [{id, name, capacity, zone, dbId, x, y}, ...]  — x,y = top-left cell
+let currentTool = 'line';
+let lineStart = null;          // snapped {x, y} intersection index
+let hoverPt = null;            // current snapped hover point
+let hoverCell = null;          // current cell hover {x, y}
+let tableIdCounter = 1;
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+// ─── Canvas sizing ───────────────────────────────────────────
+function sizeCanvas() {
+    canvas.width = cols * CELL + 1;
+    canvas.height = rows * CELL + 1;
+}
+
+// ─── Drawing ─────────────────────────────────────────────────
+function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Grid dots (subtle intersection points)
+    ctx.fillStyle = '#cbd5e1';
+    for (let y = 0; y <= rows; y++) {
+        for (let x = 0; x <= cols; x++) {
+            ctx.beginPath();
+            ctx.arc(x * CELL, y * CELL, 1.5, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    // Table cells
+    tables.forEach(function (t) {
+        var px = t.x * CELL, py = t.y * CELL;
+        ctx.fillStyle = 'rgba(191, 219, 254, 0.6)';
+        ctx.fillRect(px + 1, py + 1, 3 * CELL - 2, 3 * CELL - 2);
+        ctx.strokeStyle = '#60a5fa';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(px + 0.5, py + 0.5, 3 * CELL, 3 * CELL);
+
+        // Label
+        ctx.fillStyle = '#1e40af';
+        ctx.font = 'bold 10px Segoe UI, sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        var cx = px + 1.5 * CELL, cy = py + 1.5 * CELL;
+        ctx.fillText(t.name, cx, cy - 5);
+        ctx.font = '9px Segoe UI, sans-serif';
+        ctx.fillStyle = '#3b82f6';
+        ctx.fillText(t.capacity + ' os.', cx, cy + 7);
+    });
+
+    // Wall lines
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
+    walls.forEach(function (w) {
+        ctx.beginPath();
+        ctx.moveTo(w.x1 * CELL, w.y1 * CELL);
+        ctx.lineTo(w.x2 * CELL, w.y2 * CELL);
+        ctx.stroke();
+    });
+
+    // Preview line
+    if (currentTool === 'line' && lineStart && hoverPt) {
+        ctx.strokeStyle = 'rgba(37, 99, 235, 0.5)';
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.moveTo(lineStart.x * CELL, lineStart.y * CELL);
+        ctx.lineTo(hoverPt.x * CELL, hoverPt.y * CELL);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    // Start point indicator
+    if (lineStart) {
+        ctx.fillStyle = '#2563eb';
+        ctx.beginPath();
+        ctx.arc(lineStart.x * CELL, lineStart.y * CELL, 4, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Hover point indicator
+    if (hoverPt && currentTool === 'line') {
+        ctx.fillStyle = 'rgba(37, 99, 235, 0.4)';
+        ctx.beginPath();
+        ctx.arc(hoverPt.x * CELL, hoverPt.y * CELL, 4, 0, Math.PI * 2);
+        ctx.fill();
+    }
+
+    // Table placement preview
+    if (currentTool === 'table' && hoverCell) {
+        var hx = hoverCell.x, hy = hoverCell.y;
+        var valid = canPlaceTable(hx, hy);
+        ctx.fillStyle = valid ? 'rgba(96, 165, 250, 0.25)' : 'rgba(248, 113, 113, 0.25)';
+        ctx.fillRect(hx * CELL, hy * CELL, 3 * CELL, 3 * CELL);
+        ctx.strokeStyle = valid ? '#60a5fa' : '#f87171';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([4, 3]);
+        ctx.strokeRect(hx * CELL, hy * CELL, 3 * CELL, 3 * CELL);
+        ctx.setLineDash([]);
+    }
+
+    // Eraser: highlight line near cursor
+    if (currentTool === 'eraser' && hoverPt) {
+        var nearLine = findNearestLine(hoverPt.px, hoverPt.py);
+        if (nearLine !== null) {
+            var w = walls[nearLine];
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            ctx.moveTo(w.x1 * CELL, w.y1 * CELL);
+            ctx.lineTo(w.x2 * CELL, w.y2 * CELL);
+            ctx.stroke();
+        }
+        // Also check table
+        var nearTable = findTableAtPixel(hoverPt.px, hoverPt.py);
+        if (nearTable !== null) {
+            var t = tables[nearTable];
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 3]);
+            ctx.strokeRect(t.x * CELL, t.y * CELL, 3 * CELL, 3 * CELL);
+            ctx.setLineDash([]);
+        }
+    }
+}
+
+// ─── Snap to intersection ────────────────────────────────────
+function snapToIntersection(px, py) {
+    var gx = Math.round(px / CELL);
+    var gy = Math.round(py / CELL);
+    gx = Math.max(0, Math.min(cols, gx));
+    gy = Math.max(0, Math.min(rows, gy));
+    var sx = gx * CELL, sy = gy * CELL;
+    var dist = Math.hypot(px - sx, py - sy);
+    if (dist <= SNAP_RADIUS) {
+        return { x: gx, y: gy, px: px, py: py };
+    }
+    return { x: gx, y: gy, px: px, py: py }; // always snap, just further away still shows hover
+}
+
+function getCanvasPos(e) {
+    var rect = canvas.getBoundingClientRect();
+    return { x: e.clientX - rect.left, y: e.clientY - rect.top };
+}
+
+// ─── Line near point (for eraser) ────────────────────────────
+function distToSegment(px, py, x1, y1, x2, y2) {
+    var dx = x2 - x1, dy = y2 - y1;
+    var len2 = dx * dx + dy * dy;
+    if (len2 === 0) return Math.hypot(px - x1, py - y1);
+    var t = Math.max(0, Math.min(1, ((px - x1) * dx + (py - y1) * dy) / len2));
+    var projX = x1 + t * dx, projY = y1 + t * dy;
+    return Math.hypot(px - projX, py - projY);
+}
+
+function findNearestLine(px, py) {
+    var best = null, bestDist = LINE_HIT_DIST + 1;
+    walls.forEach(function (w, i) {
+        var d = distToSegment(px, py, w.x1 * CELL, w.y1 * CELL, w.x2 * CELL, w.y2 * CELL);
+        if (d < bestDist) { bestDist = d; best = i; }
+    });
+    return best;
+}
+
+function findTableAtPixel(px, py) {
+    var cx = Math.floor(px / CELL), cy = Math.floor(py / CELL);
+    for (var i = 0; i < tables.length; i++) {
+        var t = tables[i];
+        if (cx >= t.x && cx < t.x + 3 && cy >= t.y && cy < t.y + 3) return i;
+    }
+    return null;
+}
+
+// ─── Table placement ─────────────────────────────────────────
+function canPlaceTable(x, y) {
+    if (x < 0 || y < 0 || x + 3 > cols || y + 3 > rows) return false;
+    for (var i = 0; i < tables.length; i++) {
+        var t = tables[i];
+        // Check overlap
+        if (x < t.x + 3 && x + 3 > t.x && y < t.y + 3 && y + 3 > t.y) return false;
+    }
+    return true;
+}
+
+// ─── Tool handling ───────────────────────────────────────────
+function setTool(tool) {
+    currentTool = tool;
+    lineStart = null;
+    document.querySelectorAll('.tool-btn').forEach(b => b.classList.remove('active'));
+    var btn = document.querySelector('.tool-btn[data-tool="' + tool + '"]');
+    if (btn) btn.classList.add('active');
+    var names = { line: 'Cara', table: 'Umistit stul', eraser: 'Guma' };
+    document.getElementById('statusTool').textContent = names[tool] || tool;
+    canvas.style.cursor = tool === 'eraser' ? 'pointer' : 'crosshair';
+    draw();
+}
+
+canvas.addEventListener('mousemove', function (e) {
+    var pos = getCanvasPos(e);
+    var snap = snapToIntersection(pos.x, pos.y);
+    hoverPt = snap;
+    hoverCell = { x: Math.floor(pos.x / CELL), y: Math.floor(pos.y / CELL) };
+
+    document.getElementById('statusCoord').textContent =
+        '[' + snap.x + ', ' + snap.y + '] px(' + Math.round(pos.x) + ',' + Math.round(pos.y) + ')';
+
+    draw();
+});
+
+canvas.addEventListener('mouseleave', function () {
+    hoverPt = null;
+    hoverCell = null;
+    draw();
+});
+
+canvas.addEventListener('click', function (e) {
+    var pos = getCanvasPos(e);
+    var snap = snapToIntersection(pos.x, pos.y);
+
+    if (currentTool === 'line') {
+        if (!lineStart) {
+            lineStart = { x: snap.x, y: snap.y };
+        } else {
+            // Don't add zero-length lines
+            if (lineStart.x !== snap.x || lineStart.y !== snap.y) {
+                walls.push({ x1: lineStart.x, y1: lineStart.y, x2: snap.x, y2: snap.y });
+            }
+            lineStart = null;
+        }
+    } else if (currentTool === 'table') {
+        var cx = Math.floor(pos.x / CELL), cy = Math.floor(pos.y / CELL);
+        if (canPlaceTable(cx, cy)) {
+            var name = document.getElementById('newTableName').value.trim() || ('Stul ' + tableIdCounter);
+            var capacity = parseInt(document.getElementById('newTableCapacity').value) || 4;
+            var zone = document.getElementById('newTableZone').value.trim() || null;
+            var dbId = document.getElementById('newTableDbId').value.trim() || null;
+
+            tables.push({ id: tableIdCounter++, name: name, capacity: capacity, zone: zone, dbId: dbId, x: cx, y: cy });
+
+            // Auto-increment name
+            var match = name.match(/^(.+?)(\d+)$/);
+            if (match) {
+                document.getElementById('newTableName').value = match[1] + (parseInt(match[2]) + 1);
+            }
+            document.getElementById('newTableDbId').value = '';
+        }
+    } else if (currentTool === 'eraser') {
+        // Try to erase a line first
+        var nearLine = findNearestLine(pos.x, pos.y);
+        if (nearLine !== null) {
+            walls.splice(nearLine, 1);
+        } else {
+            // Try table
+            var nearTable = findTableAtPixel(pos.x, pos.y);
+            if (nearTable !== null) {
+                tables.splice(nearTable, 1);
+            }
+        }
+    }
+
+    updateTableList();
+    updateStatus();
+    draw();
+});
+
+// Right-click cancels current line start
+canvas.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+    if (lineStart) {
+        lineStart = null;
+        draw();
+    }
+});
+
+// ─── Table list ──────────────────────────────────────────────
+function updateTableList() {
+    var list = document.getElementById('tableList');
+    if (tables.length === 0) {
+        list.innerHTML = '<div style="color:#64748b; font-size:0.8rem;">Zadne stoly</div>';
+        return;
+    }
+    list.innerHTML = tables.map(function (t, i) {
+        return '<div class="table-item">' +
+            '<span>' + escapeHtml(t.name) + ' (' + t.capacity + ' os.) [' + t.x + ',' + t.y + ']</span>' +
+            '<button class="table-item-remove" onclick="removeTable(' + i + ')" title="Odebrat">&times;</button>' +
+            '</div>';
+    }).join('');
+}
+
+function removeTable(index) {
+    tables.splice(index, 1);
+    updateTableList();
+    updateStatus();
+    draw();
+}
+
+// ─── Resize ──────────────────────────────────────────────────
+function resizeGrid() {
+    var nc = parseInt(document.getElementById('gridCols').value) || 36;
+    var nr = parseInt(document.getElementById('gridRows').value) || 24;
+    // Remove out-of-bounds walls
+    walls = walls.filter(function (w) {
+        return w.x1 <= nc && w.x2 <= nc && w.y1 <= nr && w.y2 <= nr;
+    });
+    // Remove out-of-bounds tables
+    tables = tables.filter(function (t) { return t.x + 3 <= nc && t.y + 3 <= nr; });
+    cols = nc; rows = nr;
+    sizeCanvas();
+    updateTableList();
+    updateStatus();
+    draw();
+}
+
+// ─── Export / Import ─────────────────────────────────────────
+function exportFloorPlan() {
+    var data = {
+        cols: cols, rows: rows,
+        walls: walls.map(function (w) { return [w.x1, w.y1, w.x2, w.y2]; }),
+        tables: tables.map(function (t) {
+            return { name: t.name, capacity: t.capacity, zone: t.zone, dbId: t.dbId, x: t.x, y: t.y };
+        })
+    };
+    document.getElementById('exportText').value = JSON.stringify(data, null, 2);
+    document.getElementById('exportModal').classList.add('show');
+}
+
+function copyExport() {
+    var textarea = document.getElementById('exportText');
+    textarea.select();
+    navigator.clipboard.writeText(textarea.value).then(function () {
+        event.target.textContent = 'Zkopirovano!';
+        setTimeout(function () { event.target.textContent = 'Kopirovat'; }, 1500);
+    });
+}
+
+function downloadExport() {
+    var text = document.getElementById('exportText').value;
+    var blob = new Blob([text], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a'); a.href = url; a.download = 'floorplan.json'; a.click();
+    URL.revokeObjectURL(url);
+}
+
+function showImportModal() {
+    document.getElementById('importText').value = '';
+    document.getElementById('importModal').classList.add('show');
+}
+
+function importFloorPlan() {
+    try {
+        var data = JSON.parse(document.getElementById('importText').value);
+        cols = data.cols || 36; rows = data.rows || 24;
+        document.getElementById('gridCols').value = cols;
+        document.getElementById('gridRows').value = rows;
+
+        walls = (data.walls || []).map(function (w) {
+            if (Array.isArray(w) && w.length === 4) return { x1: w[0], y1: w[1], x2: w[2], y2: w[3] };
+            return null;
+        }).filter(Boolean);
+
+        tables = (data.tables || []).map(function (t, i) {
+            return { id: i + 1, name: t.name, capacity: t.capacity, zone: t.zone || null, dbId: t.dbId || null, x: t.x, y: t.y };
+        });
+        tableIdCounter = tables.length + 1;
+
+        closeModal('importModal');
+        sizeCanvas();
+        updateTableList();
+        updateStatus();
+        draw();
+    } catch (e) {
+        alert('Neplatny JSON: ' + e.message);
+    }
+}
+
+function clearAll() {
+    if (!confirm('Opravdu smazat vse?')) return;
+    walls = []; tables = []; tableIdCounter = 1; lineStart = null;
+    updateTableList(); updateStatus(); draw();
+}
+
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// ─── Status ──────────────────────────────────────────────────
+function updateStatus() {
+    document.getElementById('statusSize').textContent = cols + 'x' + rows;
+    document.getElementById('statusWalls').textContent = walls.length;
+    document.getElementById('statusTables').textContent = tables.length;
+}
+
+function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.appendChild(document.createTextNode(str));
+    return div.innerHTML;
+}
+
+// ─── Keyboard shortcuts ──────────────────────────────────────
+document.addEventListener('keydown', function (e) {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    if (e.key === '1') setTool('line');
+    if (e.key === '2') setTool('table');
+    if (e.key === '3') setTool('eraser');
+    if (e.key === 'Escape') { lineStart = null; draw(); }
+});
+
+// ─── Init ────────────────────────────────────────────────────
+sizeCanvas();
+updateStatus();
+draw();
+</script>
+</body>
+</html>

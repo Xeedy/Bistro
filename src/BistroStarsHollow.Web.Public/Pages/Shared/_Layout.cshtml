@@ -82,11 +82,6 @@
                                 O nás
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link @(currentPage == "/Reservation" ? "active" : "")" asp-page="/Reservation">
-                                Rezervace
-                            </a>
-                        </li>
                         <li class="nav-item ms-lg-2">
                             <div class="lang-switch">
                                 <a class="lang-pill @(currentCulture == "cs" ? "active" : "")" href="?culture=cs&ui-culture=cs">CZ</a>
@@ -129,7 +124,6 @@
                             <li><a asp-page="/Menu">Menu</a></li>
                             <li><a asp-page="/Gallery">Fotogalerie</a></li>
                             <li><a asp-page="/About">O nás</a></li>
-                            <li><a asp-page="/Reservation">Rezervace</a></li>
                         </ul>
                     </div>
 

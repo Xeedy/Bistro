@@ -1,0 +1,132 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Operations.Tables.IndexModel
+@{
+    ViewData["Title"] = "Stoly";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Stoly</h1>
+    <div class="d-flex gap-2">
+        <a asp-page="FloorPlan" class="btn btn-outline-secondary">
+            <i class="bi bi-grid-3x3-gap me-1"></i> Plán sálu
+        </a>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg me-1"></i> Přidat stůl
+        </a>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+<!-- Desktop table -->
+<div class="card d-none d-lg-block">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Název</th>
+                        <th>Kapacita</th>
+                        <th>Zóna</th>
+                        <th>Pozice</th>
+                        <th>Pořadí</th>
+                        <th>Stav</th>
+                        <th style="width:160px">Akce</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var table in Model.Tables)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@table.Name</td>
+                            <td><i class="bi bi-people me-1"></i>@table.Capacity</td>
+                            <td>@(table.Zone ?? "—")</td>
+                            <td><span class="badge bg-light text-dark">[@table.MapX, @table.MapY]</span></td>
+                            <td>@table.SortOrder</td>
+                            <td>
+                                <input type="checkbox" class="form-check-input table-active-toggle"
+                                       data-id="@table.Id"
+                                       @(table.IsActive ? "checked" : "")
+                                       title="@(table.IsActive ? "Deaktivovat" : "Aktivovat")" />
+                            </td>
+                            <td>
+                                <a asp-page="Edit" asp-route-id="@table.Id" class="btn btn-sm btn-outline-primary me-1">
+                                    <i class="bi bi-pencil"></i>
+                                </a>
+                                <a asp-page="Delete" asp-route-id="@table.Id" class="btn btn-sm btn-outline-danger">
+                                    <i class="bi bi-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                    @if (!Model.Tables.Any())
+                    {
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">Zatím žádné stoly.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile cards -->
+<div class="d-lg-none">
+    @foreach (var table in Model.Tables)
+    {
+        <div class="card mb-2">
+            <div class="card-body py-2 px-3">
+                <div class="d-flex align-items-center gap-2">
+                    <div class="flex-grow-1">
+                        <div class="fw-semibold">@table.Name</div>
+                        <div class="d-flex align-items-center gap-2 mt-1">
+                            <small class="text-muted"><i class="bi bi-people me-1"></i>@table.Capacity</small>
+                            @if (!string.IsNullOrEmpty(table.Zone))
+                            {
+                                <span class="badge bg-light text-dark" style="font-size:0.7rem;">@table.Zone</span>
+                            }
+                        </div>
+                    </div>
+                    <div class="d-flex align-items-center gap-1">
+                        <input type="checkbox" class="form-check-input table-active-toggle"
+                               data-id="@table.Id"
+                               @(table.IsActive ? "checked" : "") />
+                        <a asp-page="Edit" asp-route-id="@table.Id" class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-pencil"></i>
+                        </a>
+                        <a asp-page="Delete" asp-route-id="@table.Id" class="btn btn-sm btn-outline-danger">
+                            <i class="bi bi-trash"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!Model.Tables.Any())
+    {
+        <div class="text-center text-muted py-4">Zatím žádné stoly.</div>
+    }
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+            document.querySelectorAll('.table-active-toggle').forEach(cb => {
+                cb.addEventListener('change', function () {
+                    const id = this.dataset.id, checkbox = this;
+                    fetch('?handler=ToggleActive', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'RequestVerificationToken': token },
+                        body: 'id=' + encodeURIComponent(id)
+                    }).then(r => r.json()).then(data => {
+                        if (data.success) {
+                            document.querySelectorAll('.table-active-toggle[data-id="' + id + '"]').forEach(c => c.checked = data.isActive);
+                        }
+                    }).catch(() => { checkbox.checked = !checkbox.checked; });
+                });
+            });
+        })();
+    </script>
+}

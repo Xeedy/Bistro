@@ -1,0 +1,140 @@
+{
+  "cols": 32,
+  "rows": 25,
+  "walls": [
+    [
+      14,
+      1,
+      14,
+      17
+    ],
+    [
+      12,
+      19,
+      14,
+      17
+    ],
+    [
+      12,
+      19,
+      1,
+      19
+    ],
+    [
+      14,
+      1,
+      31,
+      1
+    ],
+    [
+      31,
+      1,
+      31,
+      17
+    ],
+    [
+      31,
+      17,
+      31,
+      19
+    ],
+    [
+      31,
+      19,
+      29,
+      19
+    ],
+    [
+      29,
+      19,
+      27,
+      21
+    ],
+    [
+      27,
+      21,
+      27,
+      24
+    ],
+    [
+      27,
+      24,
+      1,
+      24
+    ]
+  ],
+  "tables": [
+    {
+      "name": "St\u016fl 1",
+      "capacity": 4,
+      "zone": null,
+      "dbId": "1",
+      "x": 15,
+      "y": 2
+    },
+    {
+      "name": "St\u016fl 2",
+      "capacity": 4,
+      "zone": null,
+      "dbId": "2",
+      "x": 21,
+      "y": 2
+    },
+    {
+      "name": "St\u016fl 3",
+      "capacity": 4,
+      "zone": null,
+      "dbId": "3",
+      "x": 27,
+      "y": 2
+    },
+    {
+      "name": "St\u016fl 4",
+      "capacity": 2,
+      "zone": null,
+      "dbId": "4",
+      "x": 15,
+      "y": 7
+    },
+    {
+      "name": "St\u016fl 5",
+      "capacity": 6,
+      "zone": null,
+      "dbId": "5",
+      "x": 27,
+      "y": 8
+    },
+    {
+      "name": "St\u016fl 7",
+      "capacity": 4,
+      "zone": null,
+      "dbId": "7",
+      "x": 27,
+      "y": 14
+    },
+    {
+      "name": "St\u016fl 8",
+      "capacity": 6,
+      "zone": null,
+      "dbId": "8",
+      "x": 22,
+      "y": 21
+    },
+    {
+      "name": "St\u016fl 9",
+      "capacity": 2,
+      "zone": null,
+      "dbId": "9",
+      "x": 2,
+      "y": 21
+    },
+    {
+      "name": "St\u016fl 6",
+      "capacity": 6,
+      "zone": null,
+      "dbId": "6",
+      "x": 15,
+      "y": 13
+    }
+  ]
+}

@@ -189,11 +189,15 @@ public static class DbSeeder
         {
             var tables = new List<BistroTable>
             {
-                new() { Name = "Stůl 1", Capacity = 4, SortOrder = 1 },
-                new() { Name = "Stůl 2", Capacity = 4, SortOrder = 2 },
-                new() { Name = "Stůl 3", Capacity = 6, SortOrder = 3 },
-                new() { Name = "Stůl 4", Capacity = 2, SortOrder = 4 },
-                new() { Name = "Stůl 5", Capacity = 8, SortOrder = 5 }
+                new() { Name = "Stůl 1", Capacity = 4, SortOrder = 1, MapX = 15, MapY = 2 },
+                new() { Name = "Stůl 2", Capacity = 4, SortOrder = 2, MapX = 21, MapY = 2 },
+                new() { Name = "Stůl 3", Capacity = 4, SortOrder = 3, MapX = 27, MapY = 2 },
+                new() { Name = "Stůl 4", Capacity = 2, SortOrder = 4, MapX = 15, MapY = 7 },
+                new() { Name = "Stůl 5", Capacity = 6, SortOrder = 5, MapX = 27, MapY = 8 },
+                new() { Name = "Stůl 6", Capacity = 6, SortOrder = 6, MapX = 15, MapY = 13 },
+                new() { Name = "Stůl 7", Capacity = 4, SortOrder = 7, MapX = 27, MapY = 14 },
+                new() { Name = "Stůl 8", Capacity = 6, SortOrder = 8, MapX = 22, MapY = 21 },
+                new() { Name = "Stůl 9", Capacity = 2, SortOrder = 9, MapX = 2, MapY = 21 }
             };
             dbContext.BistroTables.AddRange(tables);
             await dbContext.SaveChangesAsync();

@@ -193,6 +193,12 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<int>("MapX")
+                        .HasColumnType("int");
+
+                    b.Property<int>("MapY")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("ModifiedAt")
                         .HasColumnType("datetime2");
 
@@ -206,6 +212,10 @@ namespace BistroStarsHollow.Infrastructure.Migrations
 
                     b.Property<int>("SortOrder")
                         .HasColumnType("int");
+
+                    b.Property<string>("Zone")
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -584,81 +594,6 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                     b.ToTable("OpeningHours");
                 });
 
-            modelBuilder.Entity("BistroStarsHollow.Domain.Entities.Reservation", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("CancelToken")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("IpAddress")
-                        .HasMaxLength(45)
-                        .HasColumnType("nvarchar(45)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("ModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Note")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("NumberOfPeople")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("TableId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<TimeSpan>("Time")
-                        .HasColumnType("time");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CancelToken")
-                        .IsUnique();
-
-                    b.HasIndex("Date");
-
-                    b.HasIndex("Status");
-
-                    b.HasIndex("TableId");
-
-                    b.ToTable("Reservations");
-                });
-
             modelBuilder.Entity("BistroStarsHollow.Domain.Entities.Shift", b =>
                 {
                     b.Property<Guid>("Id")
@@ -1034,17 +969,6 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                     b.Navigation("Brewery");
                 });
 
-            modelBuilder.Entity("BistroStarsHollow.Domain.Entities.Reservation", b =>
-                {
-                    b.HasOne("BistroStarsHollow.Domain.Entities.BistroTable", "Table")
-                        .WithMany("Reservations")
-                        .HasForeignKey("TableId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Table");
-                });
-
             modelBuilder.Entity("BistroStarsHollow.Domain.Entities.ShiftAssignment", b =>
                 {
                     b.HasOne("BistroStarsHollow.Domain.Entities.Shift", "Shift")
@@ -1105,11 +1029,6 @@ namespace BistroStarsHollow.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("BistroStarsHollow.Domain.Entities.BistroTable", b =>
-                {
-                    b.Navigation("Reservations");
                 });
 
             modelBuilder.Entity("BistroStarsHollow.Domain.Entities.Brewery", b =>

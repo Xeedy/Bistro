@@ -12,8 +12,6 @@ public static class AuthorizationPolicies
     public const string CanManageMenu = "CanManageMenu";
     public const string CanManageBeers = "CanManageBeers";
     public const string CanManageBreweries = "CanManageBreweries";
-    public const string CanManageReservations = "CanManageReservations";
-    public const string CanViewReservations = "CanViewReservations";
     public const string CanManageShifts = "CanManageShifts";
     public const string CanSignUpShifts = "CanSignUpShifts";
     public const string CanManageGallery = "CanManageGallery";
@@ -43,12 +41,6 @@ public static class AuthorizationPolicies
 
         options.AddPolicy(CanManageBreweries, policy =>
             policy.Requirements.Add(new PermissionRequirement(Permissions.Brewery.Edit)));
-
-        options.AddPolicy(CanManageReservations, policy =>
-            policy.Requirements.Add(new PermissionRequirement(Permissions.Reservation.Edit)));
-
-        options.AddPolicy(CanViewReservations, policy =>
-            policy.Requirements.Add(new PermissionRequirement(Permissions.Reservation.View)));
 
         options.AddPolicy(CanManageShifts, policy =>
             policy.Requirements.Add(new PermissionRequirement(Permissions.Shift.Edit)));

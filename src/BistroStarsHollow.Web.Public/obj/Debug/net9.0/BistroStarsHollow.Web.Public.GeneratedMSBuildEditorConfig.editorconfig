@@ -68,18 +68,6 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTWVudS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Public/Pages/Reservation.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXRpb24uY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Public/Pages/ReservationCancel.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXRpb25DYW5jZWwuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
-[C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Public/Pages/ReservationConfirmation.cshtml]
-build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVzZXJ2YXRpb25Db25maXJtYXRpb24uY3NodG1s
-build_metadata.AdditionalFiles.CssScope = 
-
 [C:/Users/micha/Documents/Projekty/Bistro/src/BistroStarsHollow.Web.Public/Pages/Shared/Components/OpeningHours/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU2hhcmVkXENvbXBvbmVudHNcT3BlbmluZ0hvdXJzXERlZmF1bHQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 

@@ -1,8 +1,6 @@
 @using BistroStarsHollow.Domain.Constants
-@inject BistroStarsHollow.Application.Common.Interfaces.IAdminReservationService AdminReservationService
 @{
     var currentPage = ViewContext.RouteData.Values["page"]?.ToString() ?? "";
-    var pendingReservationCount = await AdminReservationService.GetPendingReservationCountAsync();
 }
 
 <aside class="app-sidebar" id="sidebar">
@@ -113,13 +111,9 @@
                     </a>
                 </li>
                 <li>
-                    <a class="sidebar-link @(currentPage.Contains("/Operations/Reservations") ? "active" : "")" asp-page="/Operations/Reservations/Index">
-                        <i class="bi bi-bookmark-check"></i>
-                        <span>Rezervace</span>
-                        @if (pendingReservationCount > 0)
-                        {
-                            <span class="badge bg-warning text-dark ms-auto">@pendingReservationCount</span>
-                        }
+                    <a class="sidebar-link @(currentPage.Contains("/Operations/Tables") ? "active" : "")" asp-page="/Operations/Tables/Index">
+                        <i class="bi bi-grid-3x3-gap"></i>
+                        <span>Stoly</span>
                     </a>
                 </li>
                 <li>

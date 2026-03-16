@@ -10,6 +10,7 @@ public class BistroTableConfiguration : IEntityTypeConfiguration<BistroTable>
     {
         builder.HasKey(e => e.Id);
         builder.Property(e => e.Name).HasMaxLength(100).IsRequired();
+        builder.Property(e => e.Zone).HasMaxLength(50);
         builder.HasIndex(e => e.IsActive);
     }
 }

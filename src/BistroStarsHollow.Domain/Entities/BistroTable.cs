@@ -8,6 +8,8 @@ public class BistroTable : BaseEntity
     public int Capacity { get; set; }
     public int SortOrder { get; set; }
     public bool IsActive { get; set; } = true;
+    public int MapX { get; set; }
+    public int MapY { get; set; }
+    public string? Zone { get; set; }
 
-    public ICollection<Reservation> Reservations { get; set; } = new List<Reservation>();
 }

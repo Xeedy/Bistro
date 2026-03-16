@@ -1,0 +1,203 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Operations.Tables.FloorPlanModel
+@{
+    ViewData["Title"] = "Plán sálu";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="h3 mb-0">Plán sálu</h1>
+    <div class="d-flex gap-2">
+        <a asp-page="Index" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left me-1"></i> Zpět na stoly
+        </a>
+        <button type="button" class="btn btn-primary" id="btnSave" disabled>
+            <i class="bi bi-check-lg me-1"></i> Uložit pozice
+        </button>
+    </div>
+</div>
+
+@Html.AntiForgeryToken()
+
+<div class="card mb-3">
+    <div class="card-body py-2">
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+            <span class="small text-muted"><i class="bi bi-info-circle me-1"></i>Přetáhněte stoly na požadované pozice v mřížce.</span>
+            <div class="d-flex gap-3 ms-auto">
+                <div class="d-flex align-items-center gap-1">
+                    <div style="width: 14px; height: 14px; border-radius: 3px; background: #10b981;"></div>
+                    <span class="small text-muted">Aktivní</span>
+                </div>
+                <div class="d-flex align-items-center gap-1">
+                    <div style="width: 14px; height: 14px; border-radius: 3px; background: #94a3b8;"></div>
+                    <span class="small text-muted">Neaktivní</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        <div class="floorplan-editor" id="floorplanGrid">
+            @for (int y = 0; y < 8; y++)
+            {
+                @for (int x = 0; x < 12; x++)
+                {
+                    <div class="floorplan-cell" data-x="@x" data-y="@y"
+                         ondragover="event.preventDefault();" ondrop="dropTable(event, @x, @y);">
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Unplaced tables (tables with duplicate positions or at 0,0 by default) -->
+<div class="card mt-3" id="unplacedSection" style="display:none;">
+    <div class="card-header bg-white">
+        <h6 class="mb-0">Neumístěné stoly</h6>
+    </div>
+    <div class="card-body">
+        <div class="d-flex flex-wrap gap-2" id="unplacedTables"></div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const token = document.querySelector('input[name="__RequestVerificationToken"]')?.value || '';
+            const btnSave = document.getElementById('btnSave');
+            const grid = document.getElementById('floorplanGrid');
+            let dirty = false;
+
+            const tables = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Tables.Select(t => new {
+                t.Id, t.Name, t.Capacity, t.IsActive, t.MapX, t.MapY, t.Zone
+            })));
+
+            function createTableElement(table) {
+                const el = document.createElement('div');
+                el.className = 'floorplan-table' + (table.IsActive ? ' active' : ' inactive');
+                el.draggable = true;
+                el.dataset.id = table.Id;
+                el.innerHTML =
+                    '<div class="floorplan-table-name">' + escapeHtml(table.Name) + '</div>' +
+                    '<div class="floorplan-table-capacity"><i class="bi bi-people"></i> ' + table.Capacity + '</div>';
+                if (table.Zone) {
+                    el.innerHTML += '<div class="floorplan-table-zone">' + escapeHtml(table.Zone) + '</div>';
+                }
+                el.addEventListener('dragstart', function (e) {
+                    e.dataTransfer.setData('text/plain', table.Id);
+                    e.dataTransfer.effectAllowed = 'move';
+                    el.classList.add('dragging');
+                });
+                el.addEventListener('dragend', function () {
+                    el.classList.remove('dragging');
+                });
+                return el;
+            }
+
+            function placeTablesOnGrid() {
+                // Track occupied cells
+                const occupied = {};
+                const unplaced = [];
+
+                tables.forEach(function (table) {
+                    const key = table.MapX + ',' + table.MapY;
+                    if (occupied[key]) {
+                        // Collision - put in unplaced
+                        unplaced.push(table);
+                    } else {
+                        occupied[key] = true;
+                        const cell = grid.querySelector('.floorplan-cell[data-x="' + table.MapX + '"][data-y="' + table.MapY + '"]');
+                        if (cell) {
+                            cell.appendChild(createTableElement(table));
+                        }
+                    }
+                });
+
+                if (unplaced.length > 0) {
+                    const section = document.getElementById('unplacedSection');
+                    const container = document.getElementById('unplacedTables');
+                    section.style.display = '';
+                    unplaced.forEach(function (table) {
+                        container.appendChild(createTableElement(table));
+                    });
+                }
+            }
+
+            window.dropTable = function (e, x, y) {
+                e.preventDefault();
+                const tableId = e.dataTransfer.getData('text/plain');
+                const cell = grid.querySelector('.floorplan-cell[data-x="' + x + '"][data-y="' + y + '"]');
+                if (!cell) return;
+
+                // Don't drop if cell already has a table (unless it's the same one)
+                const existing = cell.querySelector('.floorplan-table');
+                if (existing && existing.dataset.id !== tableId) return;
+
+                // Find the dragged element
+                const draggedEl = document.querySelector('.floorplan-table[data-id="' + tableId + '"]');
+                if (!draggedEl) return;
+
+                cell.appendChild(draggedEl);
+
+                // Update data
+                const table = tables.find(t => t.Id === tableId);
+                if (table) {
+                    table.MapX = x;
+                    table.MapY = y;
+                }
+
+                dirty = true;
+                btnSave.disabled = false;
+
+                // Check if unplaced section should be hidden
+                const unplacedContainer = document.getElementById('unplacedTables');
+                if (unplacedContainer && unplacedContainer.children.length === 0) {
+                    document.getElementById('unplacedSection').style.display = 'none';
+                }
+            };
+
+            btnSave.addEventListener('click', function () {
+                const positions = tables.map(function (t) {
+                    return { id: t.Id, mapX: t.MapX, mapY: t.MapY };
+                });
+
+                btnSave.disabled = true;
+                btnSave.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Ukládám...';
+
+                fetch('?handler=SavePositions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'RequestVerificationToken': token
+                    },
+                    body: JSON.stringify(positions)
+                })
+                .then(r => r.json())
+                .then(data => {
+                    if (data.success) {
+                        dirty = false;
+                        btnSave.innerHTML = '<i class="bi bi-check-lg me-1"></i> Uloženo';
+                        setTimeout(function () {
+                            btnSave.innerHTML = '<i class="bi bi-check-lg me-1"></i> Uložit pozice';
+                        }, 2000);
+                    }
+                })
+                .catch(() => {
+                    btnSave.innerHTML = '<i class="bi bi-check-lg me-1"></i> Uložit pozice';
+                    btnSave.disabled = false;
+                    alert('Nepodařilo se uložit pozice.');
+                });
+            });
+
+            function escapeHtml(str) {
+                var div = document.createElement('div');
+                div.appendChild(document.createTextNode(str));
+                return div.innerHTML;
+            }
+
+            placeTablesOnGrid();
+        })();
+    </script>
+}

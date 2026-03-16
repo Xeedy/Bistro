@@ -1,0 +1,73 @@
+@page
+@model BistroStarsHollow.Web.Admin.Pages.Operations.Tables.CreateModel
+@{
+    ViewData["Title"] = "Nový stůl";
+}
+
+<div class="mb-4">
+    <a asp-page="Index" class="text-decoration-none">
+        <i class="bi bi-arrow-left me-1"></i> Zpět na seznam
+    </a>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header bg-white">
+                <h5 class="card-title mb-0">Nový stůl</h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="BistroTable.Name" class="form-label">Název <span class="text-danger">*</span></label>
+                        <input asp-for="BistroTable.Name" class="form-control" required />
+                        <span asp-validation-for="BistroTable.Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="BistroTable.Capacity" class="form-label">Kapacita <span class="text-danger">*</span></label>
+                            <input asp-for="BistroTable.Capacity" class="form-control" type="number" min="1" required />
+                            <span asp-validation-for="BistroTable.Capacity" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="BistroTable.Zone" class="form-label">Zóna</label>
+                            <input asp-for="BistroTable.Zone" class="form-control" placeholder="např. Hlavní sál, Terasa" />
+                            <span asp-validation-for="BistroTable.Zone" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="BistroTable.MapX" class="form-label">Pozice X (0-11)</label>
+                            <input asp-for="BistroTable.MapX" class="form-control" type="number" min="0" max="11" />
+                            <span asp-validation-for="BistroTable.MapX" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="BistroTable.MapY" class="form-label">Pozice Y (0-7)</label>
+                            <input asp-for="BistroTable.MapY" class="form-control" type="number" min="0" max="7" />
+                            <span asp-validation-for="BistroTable.MapY" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="BistroTable.SortOrder" class="form-label">Pořadí</label>
+                            <input asp-for="BistroTable.SortOrder" class="form-control" type="number" />
+                            <span asp-validation-for="BistroTable.SortOrder" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3 form-check">
+                        <input asp-for="BistroTable.IsActive" class="form-check-input" />
+                        <label asp-for="BistroTable.IsActive" class="form-check-label">Aktivní</label>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">Uložit</button>
+                        <a asp-page="Index" class="btn btn-outline-secondary">Zrušit</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

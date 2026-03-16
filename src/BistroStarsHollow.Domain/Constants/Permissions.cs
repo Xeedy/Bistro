@@ -26,14 +26,6 @@ public static class Permissions
         public const string Delete = "Permissions.Brewery.Delete";
     }
 
-    public static class Reservation
-    {
-        public const string View = "Permissions.Reservation.View";
-        public const string Edit = "Permissions.Reservation.Edit";
-        public const string Create = "Permissions.Reservation.Create";
-        public const string Delete = "Permissions.Reservation.Delete";
-    }
-
     public static class Shift
     {
         public const string View = "Permissions.Shift.View";
@@ -82,7 +74,6 @@ public static class Permissions
         Menu.View, Menu.Edit, Menu.Create, Menu.Delete,
         Beer.View, Beer.Edit, Beer.Create, Beer.Delete,
         Brewery.View, Brewery.Edit, Brewery.Create, Brewery.Delete,
-        Reservation.View, Reservation.Edit, Reservation.Create, Reservation.Delete,
         Shift.View, Shift.Edit, Shift.SignUp,
         Gallery.View, Gallery.Edit, Gallery.Create, Gallery.Delete,
         Event.View, Event.Edit, Event.Create, Event.Delete,
