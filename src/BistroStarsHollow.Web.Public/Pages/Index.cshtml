@@ -17,11 +17,11 @@
                 a přátelská atmosféra na jednom místě.
             </p>
             <div class="d-flex gap-3 justify-content-center flex-wrap">
-                <a asp-page="/Reservation" class="btn btn-primary btn-lg hero-cta">
-                    <i class="bi bi-calendar-check"></i> Rezervovat stůl
-                </a>
-                <a asp-page="/Menu" class="btn btn-outline-light btn-lg hero-cta">
+                <a asp-page="/Menu" class="btn btn-primary btn-lg hero-cta">
                     <i class="bi bi-book"></i> Prohlédnout menu
+                </a>
+                <a asp-page="/Beers/DraftBeers" class="btn btn-outline-light btn-lg hero-cta">
+                    <i class="bi bi-cup-fill"></i> Piva na čepu
                 </a>
             </div>
         </div>
@@ -252,13 +252,33 @@
                 Spolupracujeme s českými i zahraničními pivovary.
             </p>
 
-            <div class="brewery-track justify-content-center flex-wrap">
+            <!-- Desktop: infinite scrolling carousel -->
+            <div class="logo-carousel" aria-label="Oblíbené pivovary">
+                <div class="logo-carousel__track" id="breweryTrack">
+                    @foreach (var brewery in Model.Breweries)
+                    {
+                        <a asp-page="/Beers/BreweryDetail" asp-route-id="@brewery.Id" class="brewery-logo text-decoration-none" title="@brewery.Name">
+                            @if (!string.IsNullOrEmpty(brewery.LogoImagePath))
+                            {
+                                <img src="@brewery.LogoImagePath" alt="@brewery.Name" loading="lazy" />
+                            }
+                            else
+                            {
+                                <span class="text-muted small">@brewery.Name</span>
+                            }
+                        </a>
+                    }
+                </div>
+            </div>
+
+            <!-- Mobile: static grid fallback -->
+            <div class="brewery-grid-mobile flex-wrap gap-3 justify-content-center">
                 @foreach (var brewery in Model.Breweries)
                 {
-                    <a asp-page="/Beers/BreweryDetail" asp-route-id="@brewery.Id" class="brewery-logo text-decoration-none">
+                    <a asp-page="/Beers/BreweryDetail" asp-route-id="@brewery.Id" class="brewery-logo text-decoration-none" title="@brewery.Name">
                         @if (!string.IsNullOrEmpty(brewery.LogoImagePath))
                         {
-                            <img src="@brewery.LogoImagePath" alt="@brewery.Name" />
+                            <img src="@brewery.LogoImagePath" alt="@brewery.Name" loading="lazy" />
                         }
                         else
                         {
@@ -271,15 +291,15 @@
     </section>
 }
 
-<!-- CTA / Reservation -->
+<!-- CTA -->
 <section class="py-5 section-dark">
     <div class="container text-center">
-        <h2 class="mb-3" style="color: var(--bistro-light);">Zarezervujte si svůj stůl</h2>
+        <h2 class="mb-3" style="color: var(--bistro-light);">Navštivte nás</h2>
         <p style="color: rgba(255,255,255,0.6); max-width: 500px; margin: 0 auto 1.5rem;">
-            Nechcete čekat? Vyberte si datum, čas a stůl pohodlně online.
+            Přijďte ochutnat naše craft piva, domácí kuchyni a užít si skvělou atmosféru.
         </p>
-        <a asp-page="/Reservation" class="btn btn-primary btn-lg hero-cta">
-            <i class="bi bi-calendar-check"></i> Rezervovat
+        <a asp-page="/Contact" class="btn btn-primary btn-lg hero-cta">
+            <i class="bi bi-geo-alt"></i> Kde nás najdete
         </a>
     </div>
 </section>
