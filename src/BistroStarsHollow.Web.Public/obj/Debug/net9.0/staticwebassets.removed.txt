@@ -1,1 +1,0 @@
-C:\Users\micha\Documents\Projekty\Bistro\src\BistroStarsHollow.Web.Public\wwwroot\js\reservation.js
